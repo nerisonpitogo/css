@@ -25,9 +25,9 @@ Route::group(['middleware' => 'auth'], function () {
     Volt::route('/libservices', 'lib_service.lib-services')->name('libservices')->middleware('can:Manage Settings');
     Volt::route('/officeservices/{office_id}', 'office_service.office-services')->name('officeservices');
     Volt::route('/sqds', 'sqd.sqds')->name('sqds');
-    Volt::route('/form/onsite/{office_id}', 'csm-form')->name('csmform');
 });
 
+Volt::route('/form/{type}/{with_sub}/{office_id}', 'csm-form')->name('csmform');
 
 // remigrate database
 Route::get('/remigrate', function () {

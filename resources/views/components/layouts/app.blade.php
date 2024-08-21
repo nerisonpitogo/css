@@ -19,8 +19,8 @@
     {{-- END IMAGE CROPPING --}}
 
     {{-- CURRENCY --}}
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/robsontenorio/mary@0.44.2/libs/currency/currency.js">
-    </script>
+    {{-- <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/robsontenorio/mary@0.44.2/libs/currency/currency.js">
+    </script> --}}
     {{-- END CURRENCY --}}
 
 

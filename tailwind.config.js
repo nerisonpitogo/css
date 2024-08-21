@@ -22,6 +22,9 @@ export default {
             fontFamily: {
                 sans: ["Figtree", ...defaultTheme.fontFamily.sans],
             },
+            height: {
+                "1/3-screen": "33.333333%",
+            },
         },
     },
 

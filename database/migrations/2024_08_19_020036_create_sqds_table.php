@@ -38,6 +38,9 @@ return new class extends Migration
             $table->string('age');
             $table->string('region');
 
+            // service_availed
+            $table->string('service_availed');
+
             // instruction
             $table->text('cc_instruction');
             $table->text('sqd_instruction');
@@ -96,7 +99,7 @@ return new class extends Migration
                 'language' => 'english',
                 'is_onsite' => true,
                 'header' => 'This Client Satisfcation Measurement (CSM) tracks the customer experience of government offices. Your feedback on your recently concluded transaction will help this office provide a better service. Personal information shared will be kept confidential and you always have the option to not answer this form.',
-                'client_type' => 'Client Type',
+                'client_type' => 'Select Client Type',
                 'citizen' => 'Citizen',
                 'business' => 'Business',
                 'government' => 'Government (Employee or another agency)',
@@ -106,6 +109,7 @@ return new class extends Migration
                 'female' => 'Female',
                 'age' => 'Age',
                 'region' => 'Region of Residence',
+                'service_availed' => 'Service Availed',
                 'cc_instruction' => 'INSTRUCTIONS: Select your answer to the Citizen\'s Charter (CC) question. The Citizen\'s Charter is an official document that reflects the services of a government agency/office including its requirements, fees, and processing times amont others.',
                 'sqd_instruction' => 'INSTRUCTIONS: For SQD 0-8, please select the emoji that best corresponds to your ansert.',
 
@@ -154,7 +158,7 @@ return new class extends Migration
                 'is_onsite' => false,
 
                 'header' => 'This Client Satisfcation Measurement (CSM) tracks the customer experience of government offices. Your feedback on your recently concluded transaction will help this office provide a better service. Personal information shared will be kept confidential and you always have the option to not answer this form.',
-                'client_type' => 'Client Type',
+                'client_type' => 'Select Client Type',
                 'citizen' => 'Citizen',
                 'business' => 'Business',
                 'government' => 'Government (Employee or another agency)',
@@ -164,6 +168,7 @@ return new class extends Migration
                 'female' => 'Female',
                 'age' => 'Age',
                 'region' => 'Region of Residence',
+                'service_availed' => 'Service Availed',
 
                 'cc_instruction' => 'INSTRUCTIONS: Select your answer to the Citizen\'s Charter (CC) question. The Citizen\'s Charter is an official document that reflects the services of a government agency/office including its requirements, fees, and processing times amont others.',
                 'sqd_instruction' => 'INSTRUCTIONS: For SQD 0-8, please select the emoji that best corresponds to your ansert.',
@@ -213,7 +218,7 @@ return new class extends Migration
                 'language' => 'tagalog',
                 'is_onsite' => true,
                 'header' => 'Ang Client Satisfaction Measurement (CSM) ay naglalayong masubaybayan ang karanasan ng taumbayan hinggil sa kanilang pakikitransaksyon sa mga tanggapan ng gobyerno. Makatutulong ang inyong kasagutan ukol sa inyong naging karanasan sa kakatapos lamang na transaction, upang mas mapabuti at lalong mapahusay ang aming serbisyo publiko. Ang personal na impormasyon na iyong ibabahagi ay mananatiling kumpidensyal. Maaari ring piliin na hindi sagutan ang sarbey na ito.',
-                'client_type' => 'Uri ng Kliyente',
+                'client_type' => 'Pumili Uri ng Kliyente',
                 'citizen' => 'Mamamayan',
                 'business' => 'Negosyo',
                 'government' => 'Gobyerno (Empleyado o Ibang Ahensya)',
@@ -223,6 +228,7 @@ return new class extends Migration
                 'female' => 'Babae',
                 'age' => 'Edad',
                 'region' => 'Rehiyon',
+                'service_availed' => 'Serbisyong Natanggap',
 
                 'cc_instruction' => 'PANUTO: Pumili ng iyong sagot sa tanong tungkol sa Citizen\'s Charter (CC). Ang Citizen\'s Charter ay isang opisyal na dokumento na naglalarawan ng mga serbisyo ng isang tanggapan ng gobyerno kasama ang mga kinakailangang dokumento, bayad, at oras ng pagproseso sa iba pa.',
                 'sqd_instruction' => 'PANUTO: Para sa SQD 0-8, pumili ng emoji na pinakaangkop sa iyong sagot.',
@@ -272,7 +278,7 @@ return new class extends Migration
                 'language' => 'tagalog',
                 'is_onsite' => false,
                 'header' => 'Ang Client Satisfaction Measurement (CSM) ay naglalayong masubaybayan ang karanasan ng taumbayan hinggil sa kanilang pakikitransaksyon sa mga tanggapan ng gobyerno. Makatutulong ang inyong kasagutan ukol sa inyong naging karanasan sa kakatapos lamang na transaction, upang mas mapabuti at lalong mapahusay ang aming serbisyo publiko. Ang personal na impormasyon na iyong ibabahagi ay mananatiling kumpidensyal. Maaari ring piliin na hindi sagutan ang sarbey na ito.',
-                'client_type' => 'Uri ng Kliyente',
+                'client_type' => 'Pumili Uri ng Kliyente',
                 'citizen' => 'Mamamayan',
                 'business' => 'Negosyo',
                 'government' => 'Gobyerno (Empleyado o Ibang Ahensya)',
@@ -282,6 +288,7 @@ return new class extends Migration
                 'female' => 'Babae',
                 'age' => 'Edad',
                 'region' => 'Rehiyon',
+                'service_availed' => 'Serbisyong Natanggap',
 
                 'cc_instruction' => 'PANUTO: Pumili ng iyong sagot sa tanong tungkol sa Citizen\'s Charter (CC). Ang Citizen\'s Charter ay isang opisyal na dokumento na naglalarawan ng mga serbisyo ng isang tanggapan ng gobyerno kasama ang mga kinakailangang dokumento, bayad, at oras ng pagproseso sa iba pa.',
                 'sqd_instruction' => 'PANUTO: Para sa SQD 0-8, pumili ng emoji na pinakaangkop sa iyong sagot.',
@@ -330,8 +337,8 @@ return new class extends Migration
                 'language' => 'bisaya',
                 'is_onsite' => true,
                 'header' => 'Ang Client Satisfaction Measurement (CSM) nagtinguha nga masubay ang kasinatian sa katawhan bahin sa ilang transaksyon sa mga opisina sa gobyerno. Ang imong tubag bahin sa imong bag-ohay lang nahuman nga transaksyon makatabang aron mapalambo ug mapaayo pa ang among serbisyo publiko. Ang personal nga impormasyon nga imong ipaambit magpabiling kumpidensyal. Mahimo nimo nga dili tubagon ang kini nga sarbey.',
-                'client_type' => 'Klase sa Kliyente',
-                'citizen' => 'Taga-syudad',
+                'client_type' => 'Pili sa Klase sa Kliyente',
+                'citizen' => 'Lungsuranon',
                 'business' => 'Negosyo',
                 'government' => 'Gobyerno (Empleyado o Laing Ahensya)',
                 'date' => 'Petsa',
@@ -340,6 +347,7 @@ return new class extends Migration
                 'female' => 'Babae',
                 'age' => 'Edad',
                 'region' => 'Rehiyon',
+                'service_availed' => 'Serbisyong Nadawat',
 
                 'cc_instruction' => 'PANUTO: Pagpili sa imong tubag sa pangutana bahin sa Citizen\'s Charter (CC). Ang Citizen\'s Charter usa ka opisyal nga dokumento nga naghulagway sa mga serbisyo sa usa ka opisina sa gobyerno, lakip na ang mga kinahanglanon nga dokumento, bayad, ug oras sa pagproseso ug uban pa.',
                 'sqd_instruction' => 'PANUTO: Para sa SQD 0-8, pagpili og emoji nga pinaka-angay sa imong tubag.',
@@ -388,8 +396,8 @@ return new class extends Migration
                 'language' => 'bisaya',
                 'is_onsite' => false,
                 'header' => 'Ang Client Satisfaction Measurement (CSM) nagtinguha nga masubay ang kasinatian sa katawhan bahin sa ilang transaksyon sa mga opisina sa gobyerno. Ang imong tubag bahin sa imong bag-ohay lang nahuman nga transaksyon makatabang aron mapalambo ug mapaayo pa ang among serbisyo publiko. Ang personal nga impormasyon nga imong ipaambit magpabiling kumpidensyal. Mahimo nimo nga dili tubagon ang kini nga sarbey.',
-                'client_type' => 'Klase sa Kliyente',
-                'citizen' => 'Taga-syudad',
+                'client_type' => 'Pili sa Klase sa Kliyente',
+                'citizen' => 'Lungsuranon',
                 'business' => 'Negosyo',
                 'government' => 'Gobyerno (Empleyado o Laing Ahensya)',
                 'date' => 'Petsa',
@@ -398,6 +406,7 @@ return new class extends Migration
                 'female' => 'Babae',
                 'age' => 'Edad',
                 'region' => 'Rehiyon',
+                'service_availed' => 'Serbisyong Nadawat',
 
                 'cc_instruction' => 'PANUTO: Pagpili sa imong tubag sa pangutana bahin sa Citizen\'s Charter (CC). Ang Citizen\'s Charter usa ka opisyal nga dokumento nga naghulagway sa mga serbisyo sa usa ka opisina sa gobyerno, lakip na ang mga kinahanglanon nga dokumento, bayad, ug oras sa pagproseso ug uban pa.',
                 'sqd_instruction' => 'PANUTO: Para sa SQD 0-8, pagpili og emoji nga pinaka-angay sa imong tubag.',
