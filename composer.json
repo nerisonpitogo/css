@@ -12,6 +12,8 @@
         "livewire/livewire": "^3.5",
         "livewire/volt": "^1.6",
         "maartenpaauw/undraw": "^4.1",
+        "mallardduck/blade-boxicons": "^2.4",
+        "owenvoke/blade-fontawesome": "^2.6",
         "robsontenorio/mary": "^1.34",
         "spatie/laravel-permission": "^6.9"
     },

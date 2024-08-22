@@ -6,25 +6,56 @@ use App\Models\Office;
 use App\Models\Sqd\sqd;
 
 new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component {
-    public int $step = 2;
+    public int $step = 4;
     public string $language = 'english';
 
     public $errorFields = [];
 
+    // STEP1
     public $clientType = 'citizen';
     public $clientSex = 'male';
     public $clientAge = '40';
     public $clientRegion = 'Caraga';
 
-    // STEP2
-    public $serViceAvailedOffice = '';
-    public $serViceAvailed = '';
-
     public $hasErrorClientType = false;
     public $hasErrorSex = false;
     public $hasErrorAge = false;
     public $hasErrorRegion = false;
+
+    // STEP2
+    public $serViceAvailedOffice = '';
+    public $serViceAvailed;
+
     public $hasErrorServiceAvailed = false;
+
+    // STEP3
+    public $cc1;
+    public $cc1_hasError = false;
+    public $cc2;
+    public $cc2_hasError = false;
+    public $cc3;
+    public $cc3_hasError = false;
+
+    // STEP4
+    public $sqd0;
+    public $sqd0_hasError = false;
+    public $sqd1;
+    public $sqd1_hasError = false;
+    public $sqd2;
+    public $sqd2_hasError = false;
+    public $sqd3;
+    public $sqd3_hasError = false;
+    public $sqd4;
+    public $sqd4_hasError = false;
+    public $sqd5;
+    public $sqd5_hasError = false;
+    public $sqd6;
+    public $sqd6_hasError = false;
+    public $sqd7;
+    public $sqd7_hasError = false;
+    public $sqd8;
+    public $sqd8_hasError = false;
+
     public $errorMessage = '';
 
     public $type, $with_sub, $office_id;
@@ -139,25 +170,110 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
     step: @entangle('step'),
     language: @entangle('language'),
     sqd_language: @js($sqd_language),
+
+    //STEP 1
     clientType: @entangle('clientType'),
     clientSex: @entangle('clientSex'),
     clientAge: @entangle('clientAge'),
     clientRegion: @entangle('clientRegion'),
-    serViceAvailedOffice: @entangle('serViceAvailedOffice'),
-    serViceAvailed: @entangle('serViceAvailed'),
 
-    errorFields: @entangle('errorFields'),
     hasErrorClientType: @entangle('hasErrorClientType'),
     hasErrorSex: @entangle('hasErrorSex'),
     hasErrorAge: @entangle('hasErrorAge'),
     hasErrorRegion: @entangle('hasErrorRegion'),
 
-    //step2
+    //STEP2
+    serViceAvailedOffice: @entangle('serViceAvailedOffice'),
+    serViceAvailed: @entangle('serViceAvailed'),
+
     hasErrorServiceAvailed: @entangle('hasErrorServiceAvailed'),
+
+    //STEP3
+    cc1: @entangle('cc1'),
+    cc1_hasError: @entangle('cc1_hasError'),
+    cc2: @entangle('cc2'),
+    cc2_hasError: @entangle('cc2_hasError'),
+    cc3: @entangle('cc3'),
+    cc3_hasError: @entangle('cc3_hasError'),
+
+    //STEP4
+    sqd0: @entangle('sqd0'),
+    sqd0_hasError: @entangle('sqd0_hasError'),
+    sqd1: @entangle('sqd1'),
+    sqd1_hasError: @entangle('sqd1_hasError'),
+    sqd2: @entangle('sqd2'),
+    sqd2_hasError: @entangle('sqd2_hasError'),
+    sqd3: @entangle('sqd3'),
+    sqd3_hasError: @entangle('sqd3_hasError'),
+    sqd4: @entangle('sqd4'),
+    sqd4_hasError: @entangle('sqd4_hasError'),
+    sqd5: @entangle('sqd5'),
+    sqd5_hasError: @entangle('sqd5_hasError'),
+    sqd6: @entangle('sqd6'),
+    sqd6_hasError: @entangle('sqd6_hasError'),
+    sqd7: @entangle('sqd7'),
+    sqd7_hasError: @entangle('sqd7_hasError'),
+    sqd8: @entangle('sqd8'),
+    sqd8_hasError: @entangle('sqd8_hasError'),
+
+
+
+    errorFields: @entangle('errorFields'),
 
     errorMessage: @entangle('errorMessage'),
     servicesArrayAll: @entangle('servicesArrayAll'),
     servicesArrayByOffice: @entangle('servicesArrayByOffice'),
+
+    handle_sqd0_click(sqd0) {
+        this.sqd0 = sqd0;
+        this.sqd0_hasError = false;
+
+        if (this.errorFields.includes('SQD0')) {
+            this.errorFields = this.errorFields.filter(field => field !== 'SQD0');
+        }
+    },
+
+
+    handle_cc1_click(cc1) {
+        this.cc1 = cc1;
+        this.cc1_hasError = false;
+
+        if (cc1 === '4') {
+            this.cc2 = null;
+            this.cc3 = null;
+
+            //remove errorFields for cc2 and cc3
+            if (this.errorFields.includes('CC2')) {
+                this.errorFields = this.errorFields.filter(field => field !== 'CC2');
+            }
+            if (this.errorFields.includes('CC3')) {
+                this.errorFields = this.errorFields.filter(field => field !== 'CC3');
+            }
+
+        }
+
+
+    },
+
+    handle_cc2_click(cc2) {
+        this.cc2 = cc2;
+        this.cc2_hasError = false;
+
+        if (this.errorFields.includes('CC2')) {
+            this.errorFields = this.errorFields.filter(field => field !== 'CC2');
+        }
+
+    },
+
+    handle_cc3_click(cc3) {
+        this.cc3 = cc3;
+        this.cc3_hasError = false;
+
+        if (this.errorFields.includes('CC3')) {
+            this.errorFields = this.errorFields.filter(field => field !== 'CC3');
+        }
+    },
+
 
     handleCLickService(serviceId) {
         this.serViceAvailed = serviceId;
@@ -248,21 +364,135 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                 }
             }
 
-            if (this.errorFields.length > 0) {
-                this.errorMessage = `Please provide ${this.errorFields.join(', ')}`;
-                return;
+
+        } else if (this.step === 2) {
+            if (this.serViceAvailed === '' || this.serViceAvailed === null) {
+                this.hasErrorServiceAvailed = true;
+                if (!this.errorFields.includes('Service Availed')) {
+                    this.errorFields.push('Service Availed');
+                }
             } else {
-                this.errorMessage = '';
-                this.errorFields = [];
-                this.hasErrorClientType = false;
-                this.hasErrorSex = false;
-                this.hasErrorAge = false;
-                this.step++;
+                this.hasErrorServiceAvailed = false;
+                this.errorFields = this.errorFields.filter(field => field !== 'Service Availed');
+            }
+        } else if (this.step === 3) {
+            if (this.cc1 === null) {
+                this.cc1_hasError = true;
+                if (!this.errorFields.includes('CC1')) {
+                    this.errorFields.push('CC1');
+                }
+            } else {
+                this.cc1_hasError = false;
+                this.errorFields = this.errorFields.filter(field => field !== 'CC1');
             }
 
+            if (this.cc1 !== '4') {
+                if (this.cc2 === null) {
+                    this.cc2_hasError = true;
+                    if (!this.errorFields.includes('CC2')) {
+                        this.errorFields.push('CC2');
+                    }
+                } else {
+                    this.cc2_hasError = false;
+                    this.errorFields = this.errorFields.filter(field => field !== 'cc2');
+                }
+
+                if (this.cc2 !== '5') {
+                    if (this.cc3 === null) {
+                        this.cc3_hasError = true;
+                        if (!this.errorFields.includes('CC3')) {
+                            this.errorFields.push('CC3');
+                        }
+                    } else {
+                        this.cc3_hasError = false;
+                        this.errorFields = this.errorFields.filter(field => field !== 'cc3');
+                    }
+                }
+            }
+        } else if (this.step === 4) {
+            if (this.sqd0 === null) {
+                this.sqd0_hasError = true;
+                if (!this.errorFields.includes('SQD0')) {
+                    this.errorFields.push('SQD0');
+                }
+            } else {
+                this.sqd0_hasError = false;
+                this.errorFields = this.errorFields.filter(field => field !== 'SQD0');
+            }
+
+            if (this.sqd0 === '1') {
+                if (this.sqd1 === null) {
+                    this.sqd1_hasError = true;
+                    if (!this.errorFields.includes('SQD1')) {
+                        this.errorFields.push('SQD1');
+                    }
+                } else {
+                    this.sqd1_hasError = false;
+                    this.errorFields = this.errorFields.filter(field => field !== 'SQD1');
+                }
+            }
+
+            if (this.sqd0 === '2') {
+                if (this.sqd2 === null) {
+                    this.sqd2_hasError = true;
+                    if (!this.errorFields.includes('SQD2')) {
+                        this.errorFields.push('SQD2');
+                    }
+                } else {
+                    this.sqd2_hasError = false;
+                    this.errorFields = this.errorFields.filter(field => field !== 'SQD2');
+                }
+            }
+
+            if (this.sqd0 === '3') {
+                if (this.sqd3 === null) {
+                    this.sqd3_hasError = true;
+                    if (!this.errorFields.includes('SQD3')) {
+                        this.errorFields.push('SQD3');
+                    }
+                } else {
+                    this.sqd3_hasError = false;
+                    this.errorFields = this.errorFields.filter(field => field !== 'SQD3');
+                }
+            }
+
+            if (this.sqd0 === '4') {
+                if (this.sqd4 === null) {
+                    this.sqd4_hasError = true;
+                    if (!this.errorFields.includes('SQD4')) {
+                        this.errorFields.push('SQD4');
+                    }
+                } else {
+                    this.sqd4_hasError = false;
+                    this.errorFields = this.errorFields.filter(field => field !== 'SQD4');
+                }
+            }
+
+            if (this.sqd0 === '5') {
+                if (this.sqd5 === null) {
+                    this.sqd5_hasError = true;
+                    if (!this.errorFields.includes('SQD5')) {
+                        this.errorFields.push('SQD5');
+                    }
+                } else {
+                    this.sqd5_hasError = false;
+                    this.errorFields = this.errorFields.filter(field => field !== 'SQD5');
+                }
+            }
+        }
 
 
+
+
+        if (this.errorFields.length > 0) {
+            this.errorMessage = `Please provide ${this.errorFields.join(', ')}`;
+            return;
         } else {
+            this.errorMessage = '';
+            this.errorFields = [];
+            this.hasErrorClientType = false;
+            this.hasErrorSex = false;
+            this.hasErrorAge = false;
             this.step++;
         }
     },
@@ -310,57 +540,74 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
             {{-- CLIENT TYPE --}}
             <span class="mt-4 mb-2 text-lg font-semibold" :class="{ 'text-error': hasErrorClientType }"
                 x-text="sqd_language[language].client_type"></span>
-            <button
-                :class="{
-                    'btn-primary': clientType === 'citizen',
-                    'btn-error': clientType === null && hasErrorClientType === true,
-                    'mb-2 btn w-full lg:w-1/2': true
-                }"
-                @click="handleClientTypeClick('citizen')">
-                <span x-text="sqd_language[language].citizen"></span>
-            </button>
-            <button
-                :class="{
-                    'btn-primary': clientType === 'business',
-                    'btn-error': clientType === null && hasErrorClientType === true,
-                    'mb-2 btn w-full lg:w-1/2': true
-                }"
-                @click="handleClientTypeClick('business')">
-                <span x-text="sqd_language[language].business"></span>
-            </button>
-            <button
-                :class="{
-                    'btn-primary': clientType === 'government',
-                    'btn-error': clientType === null && hasErrorClientType === true,
-                    'mb-2 btn w-full lg:w-1/2': true
-                }"
-                @click="handleClientTypeClick('government')">
-                <span x-text="sqd_language[language].government"></span>
-            </button>
+            <div class="flex flex-wrap justify-center sm:space-x-2">
+                <button
+                    :class="{
+                        'btn-primary': clientType === 'citizen',
+                        'btn-primary btn-outline': clientType !== 'citizen',
+                        'btn-error': clientType === null && hasErrorClientType === true,
+                        'btn w-36 h-24 flex flex-col items-center justify-center': true
+                    }"
+                    @click="handleClientTypeClick('citizen')">
+                    <x-fas-person class="h-12" />
+                    <span x-text="sqd_language[language].citizen"></span>
+                </button>
+                <button
+                    :class="{
+                        'btn-primary': clientType === 'business',
+                        'btn-primary btn-outline': clientType !== 'business',
+                        'btn-error': clientType === null && hasErrorClientType === true,
+                        'btn w-36 h-24 flex flex-col items-center justify-center': true
+                    }"
+                    @click="handleClientTypeClick('business')">
+                    <x-mary-icon name="s-briefcase" class="h-10" />
+                    <span x-text="sqd_language[language].business"></span>
+                </button>
+                <button
+                    :class="{
+                        'btn-primary': clientType === 'government',
+                        'btn-primary btn-outline': clientType !== 'government',
+                        'btn-error': clientType === null && hasErrorClientType === true,
+                        'btn w-36 h-24 flex flex-col items-center justify-center': true
+                    }"
+                    @click="handleClientTypeClick('government')">
+                    <div class="col">
+                        <x-mary-icon name="s-building-library" class="h-10" />
+                    </div>
+                    <div class="col"><span x-text="sqd_language[language].government"></span></div>
+                </button>
+            </div>
             {{-- END CLIENT TYPE --}}
             {{-- SEX --}}
             <div class="flex items-center justify-center">
                 <span class="mt-4 mb-2 text-lg font-semibold" :class="{ 'text-error': hasErrorSex }"
                     x-text="sqd_language[language].sex"></span>
             </div>
-            <button
-                :class="{
-                    'btn-primary': clientSex === 'male',
-                    'btn-error': clientSex === null && hasErrorSex === true,
-                    'mb-2 btn w-full lg:w-1/2': true
-                }"
-                @click="handleClientSexClick('male')">
-                <span x-text="sqd_language[language].male"></span>
-            </button>
-            <button
-                :class="{
-                    'btn-primary': clientSex === 'female',
-                    'btn-error': clientSex === null && hasErrorSex === true,
-                    'mb-2 btn w-full lg:w-1/2': true
-                }"
-                @click="handleClientSexClick('female')">
-                <span x-text="sqd_language[language].female"></span>
-            </button>
+
+            <div class="flex flex-wrap justify-center sm:space-x-2 xs:mt-1">
+                <button
+                    :class="{
+                        'btn-primary': clientSex === 'male',
+                        'btn-primary btn-outline': clientSex !== 'male',
+                        'btn-error': clientSex === null && hasErrorSex === true,
+                        'btn w-36 h-24 flex flex-col items-center justify-center': true
+                    }"
+                    @click="handleClientSexClick('male')">
+                    <x-fas-male class="h-12" />
+                    <span x-text="sqd_language[language].male"></span>
+                </button>
+                <button
+                    :class="{
+                        'btn-primary': clientSex === 'female',
+                        'btn-primary btn-outline': clientSex !== 'female',
+                        'btn-error': clientSex === null && hasErrorSex === true,
+                        'btn w-36 h-24 flex flex-col items-center justify-center': true
+                    }"
+                    @click="handleClientSexClick('female')">
+                    <x-fas-female class="h-12" />
+                    <span x-text="sqd_language[language].female"></span>
+                </button>
+            </div>
             {{-- END SEX --}}
             {{-- AGE --}}
             <div class="flex items-center justify-center">
@@ -386,7 +633,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
 
     {{-- STEP 2 --}}
     <div class="flex items-center justify-center ">
-        <div x-show="step === 2" class="flex flex-col max-w-3xl">
+        <div x-show="step === 2" class="flex flex-col max-w-4xl">
             <div class="flex items-center justify-center">
                 <span class="mt-4 mb-2 text-lg font-semibold" :class="{ 'text-error': hasErrorServiceAvailed }"
                     x-text="sqd_language[language].service_availed"></span>
@@ -394,33 +641,300 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
 
             <div class="grid grid-cols-2">
                 <div class="overflow-y-auto col max-h-96">
-                    <x-mary-card title="" subtitle="Select Office you have transacted." shadow separator>
-                        @foreach ($offices as $office)
-                            <livewire:form.form-office-list :office="$office" :key="$office->id" />
-                        @endforeach
-                    </x-mary-card>
+                    <div class="card">
+                        <div class="card-body">
+                            <h1 class="text-sm card-title" x-text="sqd_language[language].office_transacted"></h1>
+                            @foreach ($offices as $office)
+                                <livewire:form.form-office-list :office="$office" :key="$office->id" />
+                            @endforeach
+                        </div>
+                    </div>
                 </div>
 
                 <div class="overflow-y-auto col max-h-96">
-                    <x-mary-card title="" subtitle="Service you have availed." shadow separator>
-                        <template x-for="service in servicesArrayAll">
-                            <button @click="handleCLickService(service[0])"
-                                class="items-start justify-start w-full h-auto p-2 mt-2 text-left btn btn-sm"
-                                :class="{
-                                    'btn-primary ': serViceAvailed === service[0],
-                                    'btn-primary btn-outline': serViceAvailed !== service[0],
-                                    'btn w-full': true
-                                }">
-                                <span x-text="service[0] + ' ' + service[1]"></span>
-                            </button>
-                        </template>
-                    </x-mary-card>
+                    <div class="card">
+                        <div class="card-body">
+                            <h1 class="text-sm card-title" x-text="sqd_language[language].service_availed_header">
+                            </h1>
+                            <template x-for="service in servicesArrayAll">
+                                <button @click="handleCLickService(service[0])"
+                                    class="items-center justify-start w-full h-auto p-1 text-left btn btn-sm"
+                                    :class="{
+                                        'btn-primary ': serViceAvailed === service[0],
+                                        'btn-primary btn-outline': serViceAvailed !== service[0],
+                                        'btn-error': serViceAvailed === null && hasErrorServiceAvailed === true,
+                                        'btn w-full': true
+                                    }">
+                                    <span x-text="service[1]"></span>
+                                </button>
+                            </template>
+                        </div>
+                    </div>
                 </div>
+
             </div>
         </div>
     </div>
     {{-- END STEP 2 --}}
 
+    {{-- STEP3 --}}
+    <div class="flex items-center justify-center">
+        <div x-show="step === 3" class="flex flex-col max-w-3xl">
+            <div class="flex items-center justify-center">
+                <span class="mt-4 mb-2 text-lg font-semibold" :class="{ 'text-error': hasErrorServiceAvailed }"
+                    x-text="sqd_language[language].cc_instruction"></span>
+            </div>
+
+            <h1 class="mt-4 text-xl font-semibold" x-text="sqd_language[language].cc1"></h1>
+
+            <button
+                :class="{
+                    'btn-primary': cc1 === '1',
+                    'btn-primary btn-outline': cc1 !== '1',
+                    'btn-error': cc1 === null && cc1_hasError === true,
+                    'btn btn-sm w-full sm:ml-10 mt-1 flex items-center justify-start space-x-2 h-auto sm:h-auto md:h-auto lg:h-auto xl:h-auto': true
+                }"
+                @click="handle_cc1_click('1')">
+                <x-mary-icon name="o-squares-2x2" class="hidden h-4 sm:block" />
+                <span x-text="sqd_language[language].cc1_1"></span>
+            </button>
+            <button
+                :class="{
+                    'btn-primary': cc1 === '2',
+                    'btn-primary btn-outline': cc1 !== '2',
+                    'btn-error': cc1 === null && cc1_hasError === true,
+                    'btn btn-sm w-full sm:ml-10 mt-1 flex items-center justify-start space-x-2 h-auto sm:h-auto md:h-auto lg:h-auto xl:h-auto': true
+                }"
+                @click="handle_cc1_click('2')">
+                <x-mary-icon name="o-squares-2x2" class="hidden h-4 sm:block" />
+                <span x-text="sqd_language[language].cc1_2"></span>
+            </button>
+            <button
+                :class="{
+                    'btn-primary': cc1 === '3',
+                    'btn-primary btn-outline': cc1 !== '3',
+                    'btn-error': cc1 === null && cc1_hasError === true,
+                    'btn btn-sm w-full sm:ml-10 mt-1 flex items-center justify-start space-x-2 h-auto sm:h-auto md:h-auto lg:h-auto xl:h-auto': true
+                }"
+                @click="handle_cc1_click('3')">
+                <x-mary-icon name="o-squares-2x2" class="hidden h-4 sm:block" />
+                <span x-text="sqd_language[language].cc1_3"></span>
+            </button>
+            <button
+                :class="{
+                    'btn-primary': cc1 === '4',
+                    'btn-primary btn-outline': cc1 !== '4',
+                    'btn-error': cc1 === null && cc1_hasError === true,
+                    'btn btn-sm w-full sm:ml-10 mt-1 flex items-center justify-start space-x-2 h-auto sm:h-auto md:h-auto lg:h-auto xl:h-auto': true
+                }"
+                @click="handle_cc1_click('4')">
+                <x-mary-icon name="o-squares-2x2" class="hidden h-4 sm:block" />
+                <span x-text="sqd_language[language].cc1_4"></span>
+            </button>
+
+
+            <div x-show="cc1 !== '4'">
+                <h1 class="mt-4 text-xl font-semibold" x-text="sqd_language[language].cc2"></h1>
+                <button
+                    :class="{
+                        'btn-primary': cc2 === '1',
+                        'btn-primary btn-outline': cc2 !== '1',
+                        'btn-error': cc2 === null && cc2_hasError === true,
+                        'btn btn-sm w-full sm:ml-10 mt-1 flex items-center justify-start space-x-2 h-auto sm:h-auto md:h-auto lg:h-auto xl:h-auto': true
+                    }"
+                    @click="handle_cc2_click('1')">
+                    <x-mary-icon name="o-squares-2x2" class="hidden h-4 sm:block" />
+                    <span x-text="sqd_language[language].cc2_1"></span>
+                </button>
+                <button
+                    :class="{
+                        'btn-primary': cc2 === '2',
+                        'btn-primary btn-outline': cc2 !== '2',
+                        'btn-error': cc2 === null && cc2_hasError === true,
+                        'btn btn-sm w-full sm:ml-10 mt-1 flex items-center justify-start space-x-2 h-auto sm:h-auto md:h-auto lg:h-auto xl:h-auto': true
+                    }"
+                    @click="handle_cc2_click('2')">
+                    <x-mary-icon name="o-squares-2x2" class="hidden h-4 sm:block" />
+                    <span x-text="sqd_language[language].cc2_2"></span>
+                </button>
+                <button
+                    :class="{
+                        'btn-primary': cc2 === '3',
+                        'btn-primary btn-outline': cc2 !== '3',
+                        'btn-error': cc2 === null && cc2_hasError === true,
+                        'btn btn-sm w-full sm:ml-10 mt-1 flex items-center justify-start space-x-2 h-auto sm:h-auto md:h-auto lg:h-auto xl:h-auto': true
+                    }"
+                    @click="handle_cc2_click('3')">
+                    <x-mary-icon name="o-squares-2x2" class="hidden h-4 sm:block" />
+                    <span x-text="sqd_language[language].cc2_3"></span>
+                </button>
+                {{-- 4 --}}
+                <button
+                    :class="{
+                        'btn-primary': cc2 === '4',
+                        'btn-primary btn-outline': cc2 !== '4',
+                        'btn-error': cc2 === null && cc2_hasError === true,
+                        'btn btn-sm w-full sm:ml-10 mt-1 flex items-center justify-start space-x-2 h-auto sm:h-auto md:h-auto lg:h-auto xl:h-auto': true
+                    }"
+                    @click="handle_cc2_click('4')">
+                    <x-mary-icon name="o-squares-2x2" class="hidden h-4 sm:block" />
+                    <span x-text="sqd_language[language].cc2_4"></span>
+                </button>
+                {{-- 5 --}}
+                <button
+                    :class="{
+                        'btn-primary': cc2 === '5',
+                        'btn-primary btn-outline': cc2 !== '5',
+                        'btn-error': cc2 === null && cc2_hasError === true,
+                        'btn btn-sm w-full sm:ml-10 mt-1 flex items-center justify-start space-x-2 h-auto sm:h-auto md:h-auto lg:h-auto xl:h-auto': true
+                    }"
+                    @click="handle_cc2_click('5')">
+                    <x-mary-icon name="o-squares-2x2" class="hidden h-4 sm:block" />
+                    <span x-text="sqd_language[language].cc2_5"></span>
+                </button>
+            </div>
+
+            <div x-show="cc1 !== '4'">
+                <h1 class="mt-4 text-xl font-semibold" x-text="sqd_language[language].cc3"></h1>
+                <button
+                    :class="{
+                        'btn-primary': cc3 === '1',
+                        'btn-primary btn-outline': cc3 !== '1',
+                        'btn-error': cc3 === null && cc3_hasError === true,
+                        'btn btn-sm w-full sm:ml-10 mt-1 flex items-center justify-start space-x-2 h-auto sm:h-auto md:h-auto lg:h-auto xl:h-auto': true
+                    }"
+                    @click="handle_cc3_click('1')">
+                    <x-mary-icon name="o-squares-2x2" class="hidden h-4 sm:block" />
+                    <span x-text="sqd_language[language].cc3_1"></span>
+                </button>
+                <button
+                    :class="{
+                        'btn-primary': cc3 === '2',
+                        'btn-primary btn-outline': cc3 !== '2',
+                        'btn-error': cc3 === null && cc3_hasError === true,
+                        'btn btn-sm w-full sm:ml-10 mt-1 flex items-center justify-start space-x-2 h-auto sm:h-auto md:h-auto lg:h-auto xl:h-auto': true
+                    }"
+                    @click="handle_cc3_click('2')">
+                    <x-mary-icon name="o-squares-2x2" class="hidden h-4 sm:block" />
+                    <span x-text="sqd_language[language].cc3_2"></span>
+                </button>
+
+                <button
+                    :class="{
+                        'btn-primary': cc3 === '3',
+                        'btn-primary btn-outline': cc3 !== '3',
+                        'btn-error': cc3 === null && cc3_hasError === true,
+                        'btn btn-sm w-full sm:ml-10 mt-1 flex items-center justify-start space-x-2 h-auto sm:h-auto md:h-auto lg:h-auto xl:h-auto': true
+                    }"
+                    @click="handle_cc3_click('3')">
+                    <x-mary-icon name="o-squares-2x2" class="hidden h-4 sm:block" />
+                    <span x-text="sqd_language[language].cc3_3"></span>
+                </button>
+
+                <button
+                    :class="{
+                        'btn-primary': cc3 === '4',
+                        'btn-primary btn-outline': cc3 !== '4',
+                        'btn-error': cc3 === null && cc3_hasError === true,
+                        'btn btn-sm w-full sm:ml-10 mt-1 flex items-center justify-start space-x-2 h-auto sm:h-auto md:h-auto lg:h-auto xl:h-auto': true
+                    }"
+                    @click="handle_cc3_click('4')">
+                    <x-mary-icon name="o-squares-2x2" class="hidden h-4 sm:block" />
+                    <span x-text="sqd_language[language].cc3_4"></span>
+                </button>
+
+
+
+            </div>
+        </div>
+    </div>
+    {{-- END STEP 3 --}}
+
+    {{-- STEP 4 --}}
+    <div class="flex items-center justify-center">
+        <div x-show="step === 4" class="flex flex-col items-center max-w-3xl">
+
+            <div class="flex items-center justify-center">
+                <span class="mt-4 mb-2 text-lg font-semibold" x-text="sqd_language[language].sqd_instruction"></span>
+            </div>
+
+            <h1 class="mt-4 text-xl font-semibold" x-text="sqd_language[language].sqd0"
+                :class="{ 'text-error': sqd0_hasError }"></h1>
+
+            <div class="flex mt-4 space-x-1">
+                {{-- STRONGLY DISAGREE --}}
+                <button class="flex items-center justify-center w-20 h-auto p-1 btn"
+                    :class="{
+                        'btn-primary': sqd0 === '1',
+                        'btn-primary btn-outline': sqd0 !== '1',
+                        'btn-error': sqd0 === null && sqd0_hasError === true,
+                    }"
+                    @click="handle_sqd0_click('1')">
+                    <x-far-angry class="w-10 h-10 text-red-700" />
+                    <span x-text="sqd_language[language].label_sd" class="text-xs"></span>
+                </button>
+                {{-- DISAGREE --}}
+                <button class="flex items-center justify-center w-20 h-auto p-1 btn"
+                    :class="{
+                        'btn-primary': sqd0 === '2',
+                        'btn-primary btn-outline': sqd0 !== '2',
+                        'btn-error': sqd0 === null && sqd0_hasError === true,
+                    }"
+                    @click="handle_sqd0_click('2')">
+                    <x-far-frown class="w-10 h-10 text-red-500" />
+                    <span x-text="sqd_language[language].label_d" class="text-xs"></span>
+                </button>
+                {{-- 3 --}}
+                <button class="flex items-center justify-center w-20 h-auto p-1 btn"
+                    :class="{
+                        'btn-primary': sqd0 === '3',
+                        'btn-primary btn-outline': sqd0 !== '3',
+                        'btn-error': sqd0 === null && sqd0_hasError === true,
+                    }"
+                    @click="handle_sqd0_click('3')">
+                    <x-far-meh class="w-10 h-10 text-secondary" />
+                    <span x-text="sqd_language[language].label_n" class="text-xs"></span>
+                </button>
+                {{-- 4 --}}
+                <button class="flex items-center justify-center w-20 h-auto p-1 btn"
+                    :class="{
+                        'btn-primary': sqd0 === '4',
+                        'btn-primary btn-outline': sqd0 !== '4',
+                        'btn-error': sqd0 === null && sqd0_hasError === true,
+                    }"
+                    @click="handle_sqd0_click('4')">
+                    <x-far-smile-beam class="w-10 h-10 text-green-500" />
+                    <span x-text="sqd_language[language].label_a" class="text-xs"></span>
+                </button>
+                {{-- STRONGLY AGREE --}}
+                <button class="flex items-center justify-center w-20 h-auto p-1 btn"
+                    :class="{
+                        'btn-primary': sqd0 === '5',
+                        'btn-primary btn-outline': sqd0 !== '5',
+                        'btn-error': sqd0 === null && sqd0_hasError === true,
+                    }"
+                    @click="handle_sqd0_click('5')">
+                    <x-far-grin-stars class="w-10 h-10 text-green-700" />
+                    <span x-text="sqd_language[language].label_sa" class="text-xs"></span>
+                </button>
+                {{-- N/A --}}
+                <button class="flex items-center justify-center w-20 h-auto p-1 btn"
+                    :class="{
+                        'btn-primary': sqd0 === '6',
+                        'btn-primary btn-outline': sqd0 !== '6',
+                        'btn-error': sqd0 === null && sqd0_hasError === true,
+                    }"
+                    @click="handle_sqd0_click('6')">
+                    <x-far-question-circle class="w-10 h-10 text-gray-500" />
+                    <span x-text="sqd_language[language].label_na" class="text-xs"></span>
+                </button>
+
+            </div>
+
+        </div>
+    </div>
+
+    {{-- END STEP4 --}}
 
     <hr class="my-5" />
 
