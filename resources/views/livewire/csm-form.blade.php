@@ -233,6 +233,77 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
         }
     },
 
+    handle_sqd1_click(sqd1) {
+        this.sqd1 = sqd1;
+        this.sqd1_hasError = false;
+        if (this.errorFields.includes('SQD1')) {
+            this.errorFields = this.errorFields.filter(field => field !== 'SQD1');
+        }
+    },
+
+    handle_sqd2_click(sqd2) {
+        this.sqd2 = sqd2;
+        this.sqd2_hasError = false;
+
+        if (this.errorFields.includes('SQD2')) {
+            this.errorFields = this.errorFields.filter(field => field !== 'SQD2');
+        }
+    },
+
+    handle_sqd3_click(sqd3) {
+        this.sqd3 = sqd3;
+        this.sqd3_hasError = false;
+
+        if (this.errorFields.includes('SQD3')) {
+            this.errorFields = this.errorFields.filter(field => field !== 'SQD3');
+        }
+    },
+
+    handle_sqd4_click(sqd4) {
+        this.sqd4 = sqd4;
+        this.sqd4_hasError = false;
+
+        if (this.errorFields.includes('SQD4')) {
+            this.errorFields = this.errorFields.filter(field => field !== 'SQD4');
+        }
+    },
+
+    handle_sqd5_click(sqd5) {
+        this.sqd5 = sqd5;
+        this.sqd5_hasError = false;
+
+        if (this.errorFields.includes('SQD5')) {
+            this.errorFields = this.errorFields.filter(field => field !== 'SQD5');
+        }
+    },
+
+    handle_sqd6_click(sqd6) {
+        this.sqd6 = sqd6;
+        this.sqd6_hasError = false;
+
+        if (this.errorFields.includes('SQD6')) {
+            this.errorFields = this.errorFields.filter(field => field !== 'SQD6');
+        }
+    },
+
+    handle_sqd7_click(sqd7) {
+        this.sqd7 = sqd7;
+        this.sqd7_hasError = false;
+
+        if (this.errorFields.includes('SQD7')) {
+            this.errorFields = this.errorFields.filter(field => field !== 'SQD7');
+        }
+    },
+
+    handle_sqd8_click(sqd8) {
+        this.sqd8 = sqd8;
+        this.sqd8_hasError = false;
+
+        if (this.errorFields.includes('SQD8')) {
+            this.errorFields = this.errorFields.filter(field => field !== 'SQD8');
+        }
+    },
+
 
     handle_cc1_click(cc1) {
         this.cc1 = cc1;
@@ -420,65 +491,100 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                 this.errorFields = this.errorFields.filter(field => field !== 'SQD0');
             }
 
-            if (this.sqd0 === '1') {
-                if (this.sqd1 === null) {
-                    this.sqd1_hasError = true;
-                    if (!this.errorFields.includes('SQD1')) {
-                        this.errorFields.push('SQD1');
-                    }
-                } else {
-                    this.sqd1_hasError = false;
-                    this.errorFields = this.errorFields.filter(field => field !== 'SQD1');
+            if (this.sqd0 === null) {
+                this.sqd0_hasError = true;
+                if (!this.errorFields.includes('SQD0')) {
+                    this.errorFields.push('SQD0');
                 }
+            } else {
+                this.sqd0_hasError = false;
+                this.errorFields = this.errorFields.filter(field => field !== 'SQD0');
             }
 
-            if (this.sqd0 === '2') {
-                if (this.sqd2 === null) {
-                    this.sqd2_hasError = true;
-                    if (!this.errorFields.includes('SQD2')) {
-                        this.errorFields.push('SQD2');
-                    }
-                } else {
-                    this.sqd2_hasError = false;
-                    this.errorFields = this.errorFields.filter(field => field !== 'SQD2');
+            if (this.sqd1 === null) {
+                this.sqd1_hasError = true;
+                if (!this.errorFields.includes('SQD1')) {
+                    this.errorFields.push('SQD1');
                 }
+            } else {
+                this.sqd1_hasError = false;
+                this.errorFields = this.errorFields.filter(field => field !== 'SQD1');
             }
 
-            if (this.sqd0 === '3') {
-                if (this.sqd3 === null) {
-                    this.sqd3_hasError = true;
-                    if (!this.errorFields.includes('SQD3')) {
-                        this.errorFields.push('SQD3');
-                    }
-                } else {
-                    this.sqd3_hasError = false;
-                    this.errorFields = this.errorFields.filter(field => field !== 'SQD3');
+            if (this.sqd2 === null) {
+                this.sqd2_hasError = true;
+                if (!this.errorFields.includes('SQD2')) {
+                    this.errorFields.push('SQD2');
                 }
+            } else {
+                this.sqd2_hasError = false;
+                this.errorFields = this.errorFields.filter(field => field !== 'SQD2');
             }
 
-            if (this.sqd0 === '4') {
-                if (this.sqd4 === null) {
-                    this.sqd4_hasError = true;
-                    if (!this.errorFields.includes('SQD4')) {
-                        this.errorFields.push('SQD4');
-                    }
-                } else {
-                    this.sqd4_hasError = false;
-                    this.errorFields = this.errorFields.filter(field => field !== 'SQD4');
+            if (this.sqd3 === null) {
+                this.sqd3_hasError = true;
+                if (!this.errorFields.includes('SQD3')) {
+                    this.errorFields.push('SQD3');
                 }
+            } else {
+                this.sqd3_hasError = false;
+                this.errorFields = this.errorFields.filter(field => field !== 'SQD3');
             }
 
-            if (this.sqd0 === '5') {
-                if (this.sqd5 === null) {
-                    this.sqd5_hasError = true;
-                    if (!this.errorFields.includes('SQD5')) {
-                        this.errorFields.push('SQD5');
-                    }
-                } else {
-                    this.sqd5_hasError = false;
-                    this.errorFields = this.errorFields.filter(field => field !== 'SQD5');
+            if (this.sqd4 === null) {
+                this.sqd4_hasError = true;
+                if (!this.errorFields.includes('SQD4')) {
+                    this.errorFields.push('SQD4');
                 }
+            } else {
+                this.sqd4_hasError = false;
+                this.errorFields = this.errorFields.filter(field => field !== 'SQD4');
             }
+
+            if (this.sqd5 === null) {
+                this.sqd5_hasError = true;
+                if (!this.errorFields.includes('SQD5')) {
+                    this.errorFields.push('SQD5');
+                }
+            } else {
+                this.sqd5_hasError = false;
+                this.errorFields = this.errorFields.filter(field => field !== 'SQD5');
+            }
+
+            if (this.sqd6 === null) {
+                this.sqd6_hasError = true;
+                if (!this.errorFields.includes('SQD6')) {
+                    this.errorFields.push('SQD6');
+                }
+            } else {
+                this.sqd6_hasError = false;
+                this.errorFields = this.errorFields.filter(field => field !== 'SQD6');
+            }
+
+            if (this.sqd7 === null) {
+                this.sqd7_hasError = true;
+                if (!this.errorFields.includes('SQD7')) {
+                    this.errorFields.push('SQD7');
+                }
+            } else {
+                this.sqd7_hasError = false;
+                this.errorFields = this.errorFields.filter(field => field !== 'SQD7');
+            }
+
+            if (this.sqd8 === null) {
+                this.sqd8_hasError = true;
+                if (!this.errorFields.includes('SQD8')) {
+                    this.errorFields.push('SQD8');
+                }
+            } else {
+                this.sqd8_hasError = false;
+                this.errorFields = this.errorFields.filter(field => field !== 'SQD8');
+            }
+
+
+
+
+
         }
 
 
@@ -851,85 +957,131 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
     {{-- END STEP 3 --}}
 
     {{-- STEP 4 --}}
-    <div class="flex items-center justify-center">
-        <div x-show="step === 4" class="flex flex-col items-center max-w-3xl">
+    <div class="flex items-center justify-center ">
+        <div x-show="step === 4" class="flex flex-col items-center justify-start max-w-3xl">
 
-            <div class="flex items-center justify-center">
-                <span class="mt-4 mb-2 text-lg font-semibold" x-text="sqd_language[language].sqd_instruction"></span>
+            <div class="flex items-start justify-start">
+                <span class="mt-4 mb-2 text-lg font-semibold text-left"
+                    x-text="sqd_language[language].sqd_instruction"></span>
             </div>
 
-            <h1 class="mt-4 text-xl font-semibold" x-text="sqd_language[language].sqd0"
+            {{-- SQD0 --}}
+            <h1 class="justify-start mt-1 text-lg font-semibold text-left" x-text="sqd_language[language].sqd0"
                 :class="{ 'text-error': sqd0_hasError }"></h1>
 
-            <div class="flex mt-4 space-x-1">
+            <div class="flex mt-1 space-x-1">
                 {{-- STRONGLY DISAGREE --}}
-                <button class="flex items-center justify-center w-20 h-auto p-1 btn"
+                <button class="flex flex-col w-16 h-auto p-0.5 btn"
                     :class="{
-                        'btn-primary': sqd0 === '1',
-                        'btn-primary btn-outline': sqd0 !== '1',
-                        'btn-error': sqd0 === null && sqd0_hasError === true,
+                        'btn-primary text-base-100': sqd0 === '1',
+                        'btn-primary btn-outline !text-red-700': sqd0 !== '1',
+                        '!btn-error': sqd0 === null && sqd0_hasError === true,
                     }"
                     @click="handle_sqd0_click('1')">
-                    <x-far-angry class="w-10 h-10 text-red-700" />
-                    <span x-text="sqd_language[language].label_sd" class="text-xs"></span>
+                    <div class="flex flex-col items-center justify-center">
+                        <div class="flex items-center justify-center">
+                            <x-far-angry class="w-7 h-7" />
+                        </div>
+                        <div class="flex items-center justify-center ">
+                            <span x-text="sqd_language[language].label_sd" class="text-xxs"></span>
+                        </div>
+                    </div>
                 </button>
                 {{-- DISAGREE --}}
-                <button class="flex items-center justify-center w-20 h-auto p-1 btn"
+                <button class="flex flex-col w-16 h-auto p-0.5 btn"
                     :class="{
-                        'btn-primary': sqd0 === '2',
-                        'btn-primary btn-outline': sqd0 !== '2',
-                        'btn-error': sqd0 === null && sqd0_hasError === true,
+                        'btn-primary text-base-100': sqd0 === '2',
+                        'btn-primary btn-outline !text-red-500': sqd0 !== '2',
+                        '!btn-error': sqd0 === null && sqd0_hasError === true,
                     }"
                     @click="handle_sqd0_click('2')">
-                    <x-far-frown class="w-10 h-10 text-red-500" />
-                    <span x-text="sqd_language[language].label_d" class="text-xs"></span>
+                    <div class="flex flex-col items-center justify-center">
+                        <div class="flex items-center justify-center mb-2">
+                            <x-far-frown class="w-7 h-7" />
+                        </div>
+                        <div class="flex items-center justify-center ">
+                            <span x-text="sqd_language[language].label_d" class="text-xxs"></span>
+                        </div>
+                    </div>
                 </button>
                 {{-- 3 --}}
-                <button class="flex items-center justify-center w-20 h-auto p-1 btn"
+                <button class="flex flex-col w-16 h-auto p-0.5 btn"
                     :class="{
-                        'btn-primary': sqd0 === '3',
-                        'btn-primary btn-outline': sqd0 !== '3',
-                        'btn-error': sqd0 === null && sqd0_hasError === true,
+                        'btn-primary text-base-100': sqd0 === '3',
+                        'btn-primary btn-outline !text-primary': sqd0 !== '3',
+                        '!btn-error': sqd0 === null && sqd0_hasError === true,
                     }"
                     @click="handle_sqd0_click('3')">
-                    <x-far-meh class="w-10 h-10 text-secondary" />
-                    <span x-text="sqd_language[language].label_n" class="text-xs"></span>
+                    <div class="flex flex-col items-center justify-center">
+                        <div class="flex items-center justify-center mb-2">
+                            <x-far-meh class="w-7 h-7" />
+                        </div>
+                        <div class="flex items-center justify-center ">
+                            <span x-text="sqd_language[language].label_n" class="text-xxs"></span>
+                        </div>
+                    </div>
                 </button>
                 {{-- 4 --}}
-                <button class="flex items-center justify-center w-20 h-auto p-1 btn"
+                <button class="flex flex-col w-16 h-auto p-0.5 btn"
                     :class="{
-                        'btn-primary': sqd0 === '4',
-                        'btn-primary btn-outline': sqd0 !== '4',
-                        'btn-error': sqd0 === null && sqd0_hasError === true,
+                        'btn-primary text-base-100': sqd0 === '4',
+                        'btn-primary btn-outline !text-green-500': sqd0 !== '4',
+                        '!btn-error': sqd0 === null && sqd0_hasError === true,
                     }"
                     @click="handle_sqd0_click('4')">
-                    <x-far-smile-beam class="w-10 h-10 text-green-500" />
-                    <span x-text="sqd_language[language].label_a" class="text-xs"></span>
+                    <div class="flex flex-col items-center justify-center">
+                        <div class="flex items-center justify-center mb-2">
+                            <x-far-smile-beam class="w-7 h-7" />
+                        </div>
+                        <div class="flex items-center justify-center ">
+                            <span x-text="sqd_language[language].label_a" class="text-xxs"></span>
+                        </div>
+                    </div>
                 </button>
-                {{-- STRONGLY AGREE --}}
-                <button class="flex items-center justify-center w-20 h-auto p-1 btn"
+                {{-- STRONGLY AGREE 5 --}}
+                <button class="flex flex-col w-16 h-auto p-0.5 btn"
                     :class="{
-                        'btn-primary': sqd0 === '5',
-                        'btn-primary btn-outline': sqd0 !== '5',
-                        'btn-error': sqd0 === null && sqd0_hasError === true,
+                        'btn-primary text-base-100': sqd0 === '5',
+                        'btn-primary btn-outline !text-green-700': sqd0 !== '5',
+                        '!btn-error': sqd0 === null && sqd0_hasError === true,
                     }"
                     @click="handle_sqd0_click('5')">
-                    <x-far-grin-stars class="w-10 h-10 text-green-700" />
-                    <span x-text="sqd_language[language].label_sa" class="text-xs"></span>
+                    <div class="flex flex-col items-center justify-center">
+                        <div class="flex items-center justify-center">
+                            <x-far-grin-stars class="w-7 h-7" />
+                        </div>
+                        <div class="flex items-center justify-center">
+                            <span x-text="sqd_language[language].label_sa" class="text-xxs"></span>
+                        </div>
+                    </div>
                 </button>
                 {{-- N/A --}}
-                <button class="flex items-center justify-center w-20 h-auto p-1 btn"
+                <button class="flex flex-col w-16 h-auto p-0.5 btn"
                     :class="{
-                        'btn-primary': sqd0 === '6',
+                        'btn-primary text-gray-100': sqd0 === '6',
                         'btn-primary btn-outline': sqd0 !== '6',
-                        'btn-error': sqd0 === null && sqd0_hasError === true,
+                        '!btn-error': sqd0 === null && sqd0_hasError === true,
                     }"
                     @click="handle_sqd0_click('6')">
-                    <x-far-question-circle class="w-10 h-10 text-gray-500" />
-                    <span x-text="sqd_language[language].label_na" class="text-xs"></span>
+                    <div class="flex flex-col items-center justify-center">
+                        <div class="flex items-center justify-center mb-2">
+                            <x-far-question-circle class="w-7 h-7" />
+                        </div>
+                        <div class="flex items-center justify-center">
+                            <span x-text="sqd_language[language].label_na" class="text-xxs"></span>
+                        </div>
+                    </div>
                 </button>
-
             </div>
+            {{-- END SQD0 --}}
+
+
+
+
+
+
+
+
 
         </div>
     </div>
