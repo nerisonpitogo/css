@@ -58,21 +58,21 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
 
     public $errorMessage = '';
 
-    public $type, $with_sub, $office_id;
+    public $is_onsite, $with_sub, $office_id;
 
     public $servicesArrayByOffice = [];
     public $servicesArrayAll = [];
 
-    public function mount($type, $with_sub, $office_id)
+    public function mount($is_onsite, $with_sub, $office_id)
     {
-        $this->type = $type; //1 for onsite 0 for online
+        $this->is_onsite = $is_onsite; //1 for onsite 0 for online
         $this->with_sub = $with_sub;
         $this->office_id = $office_id;
     }
 
     public function with(): array
     {
-        $sqds = Sqd::where(['is_onsite' => $this->type])->get();
+        $sqds = Sqd::where(['is_onsite' => $this->is_onsite])->get();
         $sqd_language = [];
 
         foreach ($sqds as $sqd) {
@@ -581,10 +581,6 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                 this.errorFields = this.errorFields.filter(field => field !== 'SQD8');
             }
 
-
-
-
-
         }
 
 
@@ -957,136 +953,1054 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
     {{-- END STEP 3 --}}
 
     {{-- STEP 4 --}}
-    <div class="flex items-center justify-center ">
-        <div x-show="step === 4" class="flex flex-col items-center justify-start max-w-3xl">
+    <div class="flex justify-center items-start mx-auto my-auto">
+        <div x-show="step === 4" class="flex flex-col items-start justify-start max-w-3xl">
 
             <div class="flex items-start justify-start">
-                <span class="mt-4 mb-2 text-lg font-semibold text-left"
+                <span class="mt-4 mb-2 text-lg font-semibold text-left leading-none"
                     x-text="sqd_language[language].sqd_instruction"></span>
             </div>
 
             {{-- SQD0 --}}
-            <h1 class="justify-start mt-1 text-lg font-semibold text-left" x-text="sqd_language[language].sqd0"
-                :class="{ 'text-error': sqd0_hasError }"></h1>
+            <div class="flex flex-col items-center w-full border-2 border-primary p-1 rounded-md">
+                <div class="w-full">
+                    <h1 class="text-left m-0 p-0 text-small font-semibold leading-none"
+                        x-text="sqd_language[language].sqd0" :class="{ 'text-error': sqd0_hasError }"></h1>
+                </div>
 
-            <div class="flex mt-1 space-x-1">
-                {{-- STRONGLY DISAGREE --}}
-                <button class="flex flex-col w-16 h-auto p-0.5 btn"
-                    :class="{
-                        'btn-primary text-base-100': sqd0 === '1',
-                        'btn-primary btn-outline !text-red-700': sqd0 !== '1',
-                        '!btn-error': sqd0 === null && sqd0_hasError === true,
-                    }"
-                    @click="handle_sqd0_click('1')">
-                    <div class="flex flex-col items-center justify-center">
-                        <div class="flex items-center justify-center">
-                            <x-far-angry class="w-7 h-7" />
+                <div class="flex flex-wrap mt-1 justify-center gap-1">
+                    <!-- Button 1 -->
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                        :class="{
+                            'btn-primary': sqd0 === '1',
+                            'btn-default btn-outline': sqd0 !== '1',
+                            '!btn-error': sqd0 === null && sqd0_hasError === true,
+                        }"
+                        @click="handle_sqd0_click('1')">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="flex items-center justify-center">
+                                <x-far-angry class="w-7 h-7 !text-red-700" />
+                            </div>
+                            <div class="flex items-center justify-center ">
+                                <span x-text="sqd_language[language].label_sd" class="text-xs leading-none"></span>
+                            </div>
                         </div>
-                        <div class="flex items-center justify-center ">
-                            <span x-text="sqd_language[language].label_sd" class="text-xxs"></span>
+                    </button>
+                    <!-- Button 2 -->
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                        :class="{
+                            'btn-primary': sqd0 === '2',
+                            'btn-default btn-outline': sqd0 !== '2',
+                            '!btn-error': sqd0 === null && sqd0_hasError === true,
+                        }"
+                        @click="handle_sqd0_click('2')">
+                        <div class="flex flex-col items-center justify-center ">
+                            <div class="flex items-center justify-center mb-2">
+                                <x-far-frown class="w-7 h-7 !text-red-500" />
+                            </div>
+                            <div class="flex items-center justify-center ">
+                                <span x-text="sqd_language[language].label_d" class="text-xs leading-none"></span>
+                            </div>
                         </div>
-                    </div>
-                </button>
-                {{-- DISAGREE --}}
-                <button class="flex flex-col w-16 h-auto p-0.5 btn"
-                    :class="{
-                        'btn-primary text-base-100': sqd0 === '2',
-                        'btn-primary btn-outline !text-red-500': sqd0 !== '2',
-                        '!btn-error': sqd0 === null && sqd0_hasError === true,
-                    }"
-                    @click="handle_sqd0_click('2')">
-                    <div class="flex flex-col items-center justify-center">
-                        <div class="flex items-center justify-center mb-2">
-                            <x-far-frown class="w-7 h-7" />
+                    </button>
+
+                    <!-- Button 3 -->
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                        :class="{
+                            'btn-primary': sqd0 === '3',
+                            'btn-default btn-outline': sqd0 !== '3',
+                            '!btn-error': sqd0 === null && sqd0_hasError === true,
+                        }"
+                        @click="handle_sqd0_click('3')">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="flex items-center justify-center mb-2">
+                                <x-far-meh class="w-7 h-7" />
+                            </div>
+                            <div class="flex items-center justify-center ">
+                                <span x-text="sqd_language[language].label_n" class="text-xs leading-none"></span>
+                            </div>
                         </div>
-                        <div class="flex items-center justify-center ">
-                            <span x-text="sqd_language[language].label_d" class="text-xxs"></span>
+                    </button>
+                    <!-- Button 4 -->
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                        :class="{
+                            'btn-primary': sqd0 === '4',
+                            'btn-default btn-outline': sqd0 !== '4',
+                            '!btn-error': sqd0 === null && sqd0_hasError === true,
+                        }"
+                        @click="handle_sqd0_click('4')">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="flex items-center justify-center mb-2">
+                                <x-far-smile-beam class="w-7 h-7 text-green-500" />
+                            </div>
+                            <div class="flex items-center justify-center ">
+                                <span x-text="sqd_language[language].label_a" class="text-xs leading-none"></span>
+                            </div>
                         </div>
-                    </div>
-                </button>
-                {{-- 3 --}}
-                <button class="flex flex-col w-16 h-auto p-0.5 btn"
-                    :class="{
-                        'btn-primary text-base-100': sqd0 === '3',
-                        'btn-primary btn-outline !text-primary': sqd0 !== '3',
-                        '!btn-error': sqd0 === null && sqd0_hasError === true,
-                    }"
-                    @click="handle_sqd0_click('3')">
-                    <div class="flex flex-col items-center justify-center">
-                        <div class="flex items-center justify-center mb-2">
-                            <x-far-meh class="w-7 h-7" />
+                    </button>
+                    <!-- Button 5 -->
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                        :class="{
+                            'btn-primary text-base-100': sqd0 === '5',
+                            'btn-default btn-outline ': sqd0 !== '5',
+                            '!btn-error': sqd0 === null && sqd0_hasError === true,
+                        }"
+                        @click="handle_sqd0_click('5')">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="flex items-center justify-center">
+                                <x-far-grin-stars class="w-7 h-7 text-green-700" />
+                            </div>
+                            <div class="flex items-center justify-center">
+                                <span x-text="sqd_language[language].label_sa" class="text-xs leading-none"></span>
+                            </div>
                         </div>
-                        <div class="flex items-center justify-center ">
-                            <span x-text="sqd_language[language].label_n" class="text-xxs"></span>
+                    </button>
+                    <!-- Button 6 -->
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                        :class="{
+                            'btn-primary text-gray-100': sqd0 === '6',
+                            'btn-default btn-outline': sqd0 !== '6',
+                            '!btn-error': sqd0 === null && sqd0_hasError === true,
+                        }"
+                        @click="handle_sqd0_click('6')">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="flex items-center justify-center mb-2">
+                                <x-far-question-circle class="w-7 h-7" />
+                            </div>
+                            <div class="flex items-center justify-center">
+                                <span x-text="sqd_language[language].label_na" class="text-xs leading-none"></span>
+                            </div>
                         </div>
-                    </div>
-                </button>
-                {{-- 4 --}}
-                <button class="flex flex-col w-16 h-auto p-0.5 btn"
-                    :class="{
-                        'btn-primary text-base-100': sqd0 === '4',
-                        'btn-primary btn-outline !text-green-500': sqd0 !== '4',
-                        '!btn-error': sqd0 === null && sqd0_hasError === true,
-                    }"
-                    @click="handle_sqd0_click('4')">
-                    <div class="flex flex-col items-center justify-center">
-                        <div class="flex items-center justify-center mb-2">
-                            <x-far-smile-beam class="w-7 h-7" />
-                        </div>
-                        <div class="flex items-center justify-center ">
-                            <span x-text="sqd_language[language].label_a" class="text-xxs"></span>
-                        </div>
-                    </div>
-                </button>
-                {{-- STRONGLY AGREE 5 --}}
-                <button class="flex flex-col w-16 h-auto p-0.5 btn"
-                    :class="{
-                        'btn-primary text-base-100': sqd0 === '5',
-                        'btn-primary btn-outline !text-green-700': sqd0 !== '5',
-                        '!btn-error': sqd0 === null && sqd0_hasError === true,
-                    }"
-                    @click="handle_sqd0_click('5')">
-                    <div class="flex flex-col items-center justify-center">
-                        <div class="flex items-center justify-center">
-                            <x-far-grin-stars class="w-7 h-7" />
-                        </div>
-                        <div class="flex items-center justify-center">
-                            <span x-text="sqd_language[language].label_sa" class="text-xxs"></span>
-                        </div>
-                    </div>
-                </button>
-                {{-- N/A --}}
-                <button class="flex flex-col w-16 h-auto p-0.5 btn"
-                    :class="{
-                        'btn-primary text-gray-100': sqd0 === '6',
-                        'btn-primary btn-outline': sqd0 !== '6',
-                        '!btn-error': sqd0 === null && sqd0_hasError === true,
-                    }"
-                    @click="handle_sqd0_click('6')">
-                    <div class="flex flex-col items-center justify-center">
-                        <div class="flex items-center justify-center mb-2">
-                            <x-far-question-circle class="w-7 h-7" />
-                        </div>
-                        <div class="flex items-center justify-center">
-                            <span x-text="sqd_language[language].label_na" class="text-xxs"></span>
-                        </div>
-                    </div>
-                </button>
+                    </button>
+                </div>
             </div>
             {{-- END SQD0 --}}
 
+            {{-- SQD1 --}}
+            <div class="flex flex-col items-center w-full border-2 border-primary mt-1 p-1 rounded-md">
+                <div class="w-full">
+                    <h1 class="text-left m-0 p-0 text-small font-semibold leading-none"
+                        x-text="sqd_language[language].sqd1" :class="{ 'text-error': sqd1_hasError }"></h1>
+                </div>
 
+                <div class="flex flex-wrap mt-1 justify-center gap-1">
+                    <!-- Button 1 -->
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                        :class="{
+                            'btn-primary': sqd1 === '1',
+                            'btn-default btn-outline': sqd1 !== '1',
+                            '!btn-error': sqd1 === null && sqd1_hasError === true,
+                        }"
+                        @click="handle_sqd1_click('1')">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="flex items-center justify-center">
+                                <x-far-angry class="w-7 h-7 !text-red-700" />
+                            </div>
+                            <div class="flex items-center justify-center ">
+                                <span x-text="sqd_language[language].label_sd" class="text-xs leading-none"></span>
+                            </div>
+                        </div>
+                    </button>
+                    <!-- Button 2 -->
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                        :class="{
+                            'btn-primary': sqd1 === '2',
+                            'btn-default btn-outline': sqd1 !== '2',
+                            '!btn-error': sqd1 === null && sqd1_hasError === true,
+                        }"
+                        @click="handle_sqd1_click('2')">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="flex items-center justify-center mb-2">
+                                <x-far-frown class="w-7 h-7 !text-red-500" />
+                            </div>
+                            <div class="flex items-center justify-center ">
+                                <span x-text="sqd_language[language].label_d" class="text-xs leading-none"></span>
+                            </div>
+                        </div>
+                    </button>
 
+                    <!-- Button 3 -->
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                        :class="{
+                            'btn-primary': sqd1 === '3',
+                            'btn-default btn-outline': sqd1 !== '3',
+                            '!btn-error': sqd1 === null && sqd1_hasError === true,
+                        }"
+                        @click="handle_sqd1_click('3')">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="flex items-center justify-center mb-2">
+                                <x-far-meh class="w-7 h-7" />
+                            </div>
+                            <div class="flex items-center justify-center ">
+                                <span x-text="sqd_language[language].label_n" class="text-xs leading-none"></span>
+                            </div>
+                        </div>
+                    </button>
+                    <!-- Button 4 -->
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                        :class="{
+                            'btn-primary': sqd1 === '4',
+                            'btn-default btn-outline': sqd1 !== '4',
+                            '!btn-error': sqd1 === null && sqd1_hasError === true,
+                        }"
+                        @click="handle_sqd1_click('4')">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="flex items-center justify-center mb-2">
+                                <x-far-smile-beam class="w-7 h-7 text-green-500" />
+                            </div>
+                            <div class="flex items-center justify-center ">
+                                <span x-text="sqd_language[language].label_a" class="text-xs leading-none"></span>
+                            </div>
+                        </div>
+                    </button>
+                    <!-- Button 5 -->
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                        :class="{
+                            'btn-primary text-base-100': sqd1 === '5',
+                            'btn-default btn-outline ': sqd1 !== '5',
+                            '!btn-error': sqd1 === null && sqd1_hasError === true,
+                        }"
+                        @click="handle_sqd1_click('5')">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="flex items-center justify-center">
+                                <x-far-grin-stars class="w-7 h-7 text-green-700" />
+                            </div>
+                            <div class="flex items-center justify-center">
+                                <span x-text="sqd_language[language].label_sa" class="text-xs leading-none"></span>
+                            </div>
+                        </div>
+                    </button>
+                    <!-- Button 6 -->
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                        :class="{
+                            'btn-primary text-gray-100': sqd1 === '6',
+                            'btn-default btn-outline': sqd1 !== '6',
+                            '!btn-error': sqd1 === null && sqd1_hasError === true,
+                        }"
+                        @click="handle_sqd1_click('6')">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="flex items-center justify-center mb-2">
+                                <x-far-question-circle class="w-7 h-7" />
+                            </div>
+                            <div class="flex items-center justify-center">
+                                <span x-text="sqd_language[language].label_na" class="text-xs leading-none"></span>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+            </div>
+            {{-- END SQD1 --}}
 
+            {{-- SQD2 --}}
+            <div class="flex flex-col items-center w-full border-2 border-primary mt-1 p-1 rounded-md">
+                <div class="w-full">
+                    <h1 class="text-left m-0 p-0 text-small font-semibold leading-none"
+                        x-text="sqd_language[language].sqd2" :class="{ 'text-error': sqd2_hasError }"></h1>
+                </div>
 
+                <div class="flex flex-wrap mt-1 justify-center gap-1">
+                    <!-- Button 1 -->
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                        :class="{
+                            'btn-primary': sqd2 === '1',
+                            'btn-default btn-outline': sqd2 !== '1',
+                            '!btn-error': sqd2 === null && sqd2_hasError === true,
+                        }"
+                        @click="handle_sqd2_click('1')">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="flex items-center justify-center">
+                                <x-far-angry class="w-7 h-7 !text-red-700" />
+                            </div>
+                            <div class="flex items-center justify-center ">
+                                <span x-text="sqd_language[language].label_sd" class="text-xs leading-none"></span>
+                            </div>
+                        </div>
+                    </button>
+                    <!-- Button 2 -->
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                        :class="{
+                            'btn-primary': sqd2 === '2',
+                            'btn-default btn-outline': sqd2 !== '2',
+                            '!btn-error': sqd2 === null && sqd2_hasError === true,
+                        }"
+                        @click="handle_sqd2_click('2')">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="flex items-center justify-center mb-2">
+                                <x-far-frown class="w-7 h-7 !text-red-500" />
+                            </div>
+                            <div class="flex items-center justify-center ">
+                                <span x-text="sqd_language[language].label_d" class="text-xs leading-none"></span>
+                            </div>
+                        </div>
+                    </button>
 
+                    <!-- Button 3 -->
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                        :class="{
+                            'btn-primary': sqd2 === '3',
+                            'btn-default btn-outline': sqd2 !== '3',
+                            '!btn-error': sqd2 === null && sqd2_hasError === true,
+                        }"
+                        @click="handle_sqd2_click('3')">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="flex items-center justify-center mb-2">
+                                <x-far-meh class="w-7 h-7" />
+                            </div>
+                            <div class="flex items-center justify-center ">
+                                <span x-text="sqd_language[language].label_n" class="text-xs leading-none"></span>
+                            </div>
+                        </div>
+                    </button>
+                    <!-- Button 4 -->
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                        :class="{
+                            'btn-primary': sqd2 === '4',
+                            'btn-default btn-outline': sqd2 !== '4',
+                            '!btn-error': sqd2 === null && sqd2_hasError === true,
+                        }"
+                        @click="handle_sqd2_click('4')">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="flex items-center justify-center mb-2">
+                                <x-far-smile-beam class="w-7 h-7 text-green-500" />
+                            </div>
+                            <div class="flex items-center justify-center ">
+                                <span x-text="sqd_language[language].label_a" class="text-xs leading-none"></span>
+                            </div>
+                        </div>
+                    </button>
+                    <!-- Button 5 -->
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                        :class="{
+                            'btn-primary text-base-100': sqd2 === '5',
+                            'btn-default btn-outline ': sqd2 !== '5',
+                            '!btn-error': sqd2 === null && sqd2_hasError === true,
+                        }"
+                        @click="handle_sqd2_click('5')">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="flex items-center justify-center">
+                                <x-far-grin-stars class="w-7 h-7 text-green-700" />
+                            </div>
+                            <div class="flex items-center justify-center">
+                                <span x-text="sqd_language[language].label_sa" class="text-xs leading-none"></span>
+                            </div>
+                        </div>
+                    </button>
+                    <!-- Button 6 -->
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                        :class="{
+                            'btn-primary text-gray-100': sqd2 === '6',
+                            'btn-default btn-outline': sqd2 !== '6',
+                            '!btn-error': sqd2 === null && sqd2_hasError === true,
+                        }"
+                        @click="handle_sqd2_click('6')">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="flex items-center justify-center mb-2">
+                                <x-far-question-circle class="w-7 h-7" />
+                            </div>
+                            <div class="flex items-center justify-center">
+                                <span x-text="sqd_language[language].label_na" class="text-xs leading-none"></span>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+            </div>
+            {{-- END SQD2 --}}
 
+            {{-- SQD3 --}}
+            <div class="flex flex-col items-center w-full border-2 border-primary mt-1 p-1 rounded-md">
+                <div class="w-full">
+                    <h1 class="text-left m-0 p-0 text-small font-semibold leading-none"
+                        x-text="sqd_language[language].sqd3" :class="{ 'text-error': sqd3_hasError }"></h1>
+                </div>
 
+                <div class="flex flex-wrap mt-1 justify-center gap-1">
+                    <!-- Button 1 -->
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                        :class="{
+                            'btn-primary': sqd3 === '1',
+                            'btn-default btn-outline': sqd3 !== '1',
+                            '!btn-error': sqd3 === null && sqd3_hasError === true,
+                        }"
+                        @click="handle_sqd3_click('1')">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="flex items-center justify-center">
+                                <x-far-angry class="w-7 h-7 !text-red-700" />
+                            </div>
+                            <div class="flex items-center justify-center ">
+                                <span x-text="sqd_language[language].label_sd" class="text-xs leading-none"></span>
+                            </div>
+                        </div>
+                    </button>
+                    <!-- Button 2 -->
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                        :class="{
+                            'btn-primary': sqd3 === '2',
+                            'btn-default btn-outline': sqd3 !== '2',
+                            '!btn-error': sqd3 === null && sqd3_hasError === true,
+                        }"
+                        @click="handle_sqd3_click('2')">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="flex items-center justify-center mb-2">
+                                <x-far-frown class="w-7 h-7 !text-red-500" />
+                            </div>
+                            <div class="flex items-center justify-center ">
+                                <span x-text="sqd_language[language].label_d" class="text-xs leading-none"></span>
+                            </div>
+                        </div>
+                    </button>
+
+                    <!-- Button 3 -->
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                        :class="{
+                            'btn-primary': sqd3 === '3',
+                            'btn-default btn-outline': sqd3 !== '3',
+                            '!btn-error': sqd3 === null && sqd3_hasError === true,
+                        }"
+                        @click="handle_sqd3_click('3')">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="flex items-center justify-center mb-2">
+                                <x-far-meh class="w-7 h-7" />
+                            </div>
+                            <div class="flex items-center justify-center ">
+                                <span x-text="sqd_language[language].label_n" class="text-xs leading-none"></span>
+                            </div>
+                        </div>
+                    </button>
+                    <!-- Button 4 -->
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                        :class="{
+                            'btn-primary': sqd3 === '4',
+                            'btn-default btn-outline': sqd3 !== '4',
+                            '!btn-error': sqd3 === null && sqd3_hasError === true,
+                        }"
+                        @click="handle_sqd3_click('4')">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="flex items-center justify-center mb-2">
+                                <x-far-smile-beam class="w-7 h-7 text-green-500" />
+                            </div>
+                            <div class="flex items-center justify-center ">
+                                <span x-text="sqd_language[language].label_a" class="text-xs leading-none"></span>
+                            </div>
+                        </div>
+                    </button>
+                    <!-- Button 5 -->
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                        :class="{
+                            'btn-primary text-base-100': sqd3 === '5',
+                            'btn-default btn-outline ': sqd3 !== '5',
+                            '!btn-error': sqd3 === null && sqd3_hasError === true,
+                        }"
+                        @click="handle_sqd3_click('5')">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="flex items-center justify-center">
+                                <x-far-grin-stars class="w-7 h-7 text-green-700" />
+                            </div>
+                            <div class="flex items-center justify-center">
+                                <span x-text="sqd_language[language].label_sa" class="text-xs leading-none"></span>
+                            </div>
+                        </div>
+                    </button>
+                    <!-- Button 6 -->
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                        :class="{
+                            'btn-primary text-gray-100': sqd3 === '6',
+                            'btn-default btn-outline': sqd3 !== '6',
+                            '!btn-error': sqd3 === null && sqd3_hasError === true,
+                        }"
+                        @click="handle_sqd3_click('6')">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="flex items-center justify-center mb-2">
+                                <x-far-question-circle class="w-7 h-7" />
+                            </div>
+                            <div class="flex items-center justify-center">
+                                <span x-text="sqd_language[language].label_na" class="text-xs leading-none"></span>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+            </div>
+            {{-- END SQD3 --}}
+
+            {{-- SQD4 --}}
+            <div class="flex flex-col items-center w-full border-2 border-primary mt-1 p-1 rounded-md">
+                <div class="w-full">
+                    <h1 class="text-left m-0 p-0 text-small font-semibold leading-none"
+                        x-text="sqd_language[language].sqd4" :class="{ 'text-error': sqd4_hasError }"></h1>
+                </div>
+
+                <div class="flex flex-wrap mt-1 justify-center gap-1">
+                    <!-- Button 1 -->
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                        :class="{
+                            'btn-primary': sqd4 === '1',
+                            'btn-default btn-outline': sqd4 !== '1',
+                            '!btn-error': sqd4 === null && sqd4_hasError === true,
+                        }"
+                        @click="handle_sqd4_click('1')">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="flex items-center justify-center">
+                                <x-far-angry class="w-7 h-7 !text-red-700" />
+                            </div>
+                            <div class="flex items-center justify-center ">
+                                <span x-text="sqd_language[language].label_sd" class="text-xs leading-none"></span>
+                            </div>
+                        </div>
+                    </button>
+                    <!-- Button 2 -->
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                        :class="{
+                            'btn-primary': sqd4 === '2',
+                            'btn-default btn-outline': sqd4 !== '2',
+                            '!btn-error': sqd4 === null && sqd4_hasError === true,
+                        }"
+                        @click="handle_sqd4_click('2')">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="flex items-center justify-center mb-2">
+                                <x-far-frown class="w-7 h-7 !text-red-500 " />
+                            </div>
+                            <div class="flex items-center justify-center ">
+                                <span x-text="sqd_language[language].label_d" class="text-xs leading-none"></span>
+                            </div>
+                        </div>
+                    </button>
+
+                    <!-- Button 3 -->
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                        :class="{
+                            'btn-primary': sqd4 === '3',
+                            'btn-default btn-outline': sqd4 !== '3',
+                            '!btn-error': sqd4 === null && sqd4_hasError === true,
+                        }"
+                        @click="handle_sqd4_click('3')">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="flex items-center justify-center mb-2">
+                                <x-far-meh class="w-7 h-7" />
+                            </div>
+                            <div class="flex items-center justify-center ">
+                                <span x-text="sqd_language[language].label_n" class="text-xs leading-none"></span>
+                            </div>
+                        </div>
+                    </button>
+                    <!-- Button 4 -->
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                        :class="{
+                            'btn-primary': sqd4 === '4',
+                            'btn-default btn-outline': sqd4 !== '4',
+                            '!btn-error': sqd4 === null && sqd4_hasError === true,
+                        }"
+                        @click="handle_sqd4_click('4')">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="flex items-center justify-center mb-2">
+                                <x-far-smile-beam class="w-7 h-7 text-green-500" />
+                            </div>
+                            <div class="flex items-center justify-center ">
+                                <span x-text="sqd_language[language].label_a" class="text-xs leading-none"></span>
+                            </div>
+                        </div>
+                    </button>
+                    <!-- Button 5 -->
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                        :class="{
+                            'btn-primary text-base-100': sqd4 === '5',
+                            'btn-default btn-outline ': sqd4 !== '5',
+                            '!btn-error': sqd4 === null && sqd4_hasError === true,
+                        }"
+                        @click="handle_sqd4_click('5')">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="flex items-center justify-center">
+                                <x-far-grin-stars class="w-7 h-7 text-green-700" />
+                            </div>
+                            <div class="flex items-center justify-center">
+                                <span x-text="sqd_language[language].label_sa" class="text-xs leading-none"></span>
+                            </div>
+                        </div>
+                    </button>
+                    <!-- Button 6 -->
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                        :class="{
+                            'btn-primary text-gray-100': sqd4 === '6',
+                            'btn-default btn-outline': sqd4 !== '6',
+                            '!btn-error': sqd4 === null && sqd4_hasError === true,
+                        }"
+                        @click="handle_sqd4_click('6')">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="flex items-center justify-center mb-2">
+                                <x-far-question-circle class="w-7 h-7" />
+                            </div>
+                            <div class="flex items-center justify-center">
+                                <span x-text="sqd_language[language].label_na" class="text-xs leading-none"></span>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+            </div>
+            {{-- END SQD4 --}}
+
+            {{-- SQD5 --}}
+            <div class="flex flex-col items-center w-full border-2 border-primary mt-1 p-1 rounded-md">
+                <div class="w-full">
+                    <h1 class="text-left m-0 p-0 text-small font-semibold leading-none"
+                        x-text="sqd_language[language].sqd5" :class="{ 'text-error': sqd5_hasError }"></h1>
+                </div>
+
+                <div class="flex flex-wrap mt-1 justify-center gap-1">
+                    <!-- Button 1 -->
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                        :class="{
+                            'btn-primary': sqd5 === '1',
+                            'btn-default btn-outline': sqd5 !== '1',
+                            '!btn-error': sqd5 === null && sqd5_hasError === true,
+                        }"
+                        @click="handle_sqd5_click('1')">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="flex items-center justify-center">
+                                <x-far-angry class="w-7 h-7 !text-red-700" />
+                            </div>
+                            <div class="flex items-center justify-center ">
+                                <span x-text="sqd_language[language].label_sd" class="text-xs leading-none"></span>
+                            </div>
+                        </div>
+                    </button>
+                    <!-- Button 2 -->
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                        :class="{
+                            'btn-primary': sqd5 === '2',
+                            'btn-default btn-outline': sqd5 !== '2',
+                            '!btn-error': sqd5 === null && sqd5_hasError === true,
+                        }"
+                        @click="handle_sqd5_click('2')">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="flex items-center justify-center mb-2">
+                                <x-far-frown class="w-7 h-7 !text-red-500 " />
+                            </div>
+                            <div class="flex items-center justify-center ">
+                                <span x-text="sqd_language[language].label_d" class="text-xs leading-none"></span>
+                            </div>
+                        </div>
+                    </button>
+
+                    <!-- Button 3 -->
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                        :class="{
+                            'btn-primary': sqd5 === '3',
+                            'btn-default btn-outline': sqd5 !== '3',
+                            '!btn-error': sqd5 === null && sqd5_hasError === true,
+                        }"
+                        @click="handle_sqd5_click('3')">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="flex items-center justify-center mb-2">
+                                <x-far-meh class="w-7 h-7" />
+                            </div>
+                            <div class="flex items-center justify-center ">
+                                <span x-text="sqd_language[language].label_n" class="text-xs leading-none"></span>
+                            </div>
+                        </div>
+                    </button>
+                    <!-- Button 4 -->
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                        :class="{
+                            'btn-primary': sqd5 === '4',
+                            'btn-default btn-outline': sqd5 !== '4',
+                            '!btn-error': sqd5 === null && sqd5_hasError === true,
+                        }"
+                        @click="handle_sqd5_click('4')">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="flex items-center justify-center mb-2">
+                                <x-far-smile-beam class="w-7 h-7 text-green-500" />
+                            </div>
+                            <div class="flex items-center justify-center ">
+                                <span x-text="sqd_language[language].label_a" class="text-xs leading-none"></span>
+                            </div>
+                        </div>
+                    </button>
+                    <!-- Button 5 -->
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                        :class="{
+                            'btn-primary text-base-100': sqd5 === '5',
+                            'btn-default btn-outline ': sqd5 !== '5',
+                            '!btn-error': sqd5 === null && sqd5_hasError === true,
+                        }"
+                        @click="handle_sqd5_click('5')">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="flex items-center justify-center">
+                                <x-far-grin-stars class="w-7 h-7 text-green-700" />
+                            </div>
+                            <div class="flex items-center justify-center">
+                                <span x-text="sqd_language[language].label_sa" class="text-xs leading-none"></span>
+                            </div>
+                        </div>
+                    </button>
+                    <!-- Button 6 -->
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                        :class="{
+                            'btn-primary text-gray-100': sqd5 === '6',
+                            'btn-default btn-outline': sqd5 !== '6',
+                            '!btn-error': sqd5 === null && sqd5_hasError === true,
+                        }"
+                        @click="handle_sqd5_click('6')">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="flex items-center justify-center mb-2">
+                                <x-far-question-circle class="w-7 h-7" />
+                            </div>
+                            <div class="flex items-center justify-center">
+                                <span x-text="sqd_language[language].label_na" class="text-xs leading-none"></span>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+            </div>
+            {{-- END SQD5 --}}
+
+            {{-- SQD6 --}}
+            <div class="flex flex-col items-center w-full border-2 border-primary mt-1 p-1 rounded-md">
+                <div class="w-full">
+                    <h1 class="text-left m-0 p-0 text-small font-semibold leading-none"
+                        x-text="sqd_language[language].sqd6" :class="{ 'text-error': sqd6_hasError }"></h1>
+                </div>
+
+                <div class="flex flex-wrap mt-1 justify-center gap-1">
+                    <!-- Button 1 -->
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                        :class="{
+                            'btn-primary': sqd6 === '1',
+                            'btn-default btn-outline': sqd6 !== '1',
+                            '!btn-error': sqd6 === null && sqd6_hasError === true,
+                        }"
+                        @click="handle_sqd6_click('1')">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="flex items-center justify-center">
+                                <x-far-angry class="w-7 h-7 !text-red-700" />
+                            </div>
+                            <div class="flex items-center justify-center ">
+                                <span x-text="sqd_language[language].label_sd" class="text-xs leading-none"></span>
+                            </div>
+                        </div>
+                    </button>
+                    <!-- Button 2 -->
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                        :class="{
+                            'btn-primary': sqd6 === '2',
+                            'btn-default btn-outline': sqd6 !== '2',
+                            '!btn-error': sqd6 === null && sqd6_hasError === true,
+                        }"
+                        @click="handle_sqd6_click('2')">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="flex items-center justify-center mb-2">
+                                <x-far-frown class="w-7 h-7 !text-red-500 " />
+                            </div>
+                            <div class="flex items-center justify-center ">
+                                <span x-text="sqd_language[language].label_d" class="text-xs leading-none"></span>
+                            </div>
+                        </div>
+                    </button>
+
+                    <!-- Button 3 -->
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                        :class="{
+                            'btn-primary': sqd6 === '3',
+                            'btn-default btn-outline': sqd6 !== '3',
+                            '!btn-error': sqd6 === null && sqd6_hasError === true,
+                        }"
+                        @click="handle_sqd6_click('3')">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="flex items-center justify-center mb-2">
+                                <x-far-meh class="w-7 h-7" />
+                            </div>
+                            <div class="flex items-center justify-center ">
+                                <span x-text="sqd_language[language].label_n" class="text-xs leading-none"></span>
+                            </div>
+                        </div>
+                    </button>
+                    <!-- Button 4 -->
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                        :class="{
+                            'btn-primary': sqd6 === '4',
+                            'btn-default btn-outline': sqd6 !== '4',
+                            '!btn-error': sqd6 === null && sqd6_hasError === true,
+                        }"
+                        @click="handle_sqd6_click('4')">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="flex items-center justify-center mb-2">
+                                <x-far-smile-beam class="w-7 h-7 text-green-500" />
+                            </div>
+                            <div class="flex items-center justify-center ">
+                                <span x-text="sqd_language[language].label_a" class="text-xs leading-none"></span>
+                            </div>
+                        </div>
+                    </button>
+                    <!-- Button 5 -->
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                        :class="{
+                            'btn-primary text-base-100': sqd6 === '5',
+                            'btn-default btn-outline ': sqd6 !== '5',
+                            '!btn-error': sqd6 === null && sqd6_hasError === true,
+                        }"
+                        @click="handle_sqd6_click('5')">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="flex items-center justify-center">
+                                <x-far-grin-stars class="w-7 h-7 text-green-700" />
+                            </div>
+                            <div class="flex items-center justify-center">
+                                <span x-text="sqd_language[language].label_sa" class="text-xs leading-none"></span>
+                            </div>
+                        </div>
+                    </button>
+                    <!-- Button 6 -->
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                        :class="{
+                            'btn-primary text-gray-100': sqd6 === '6',
+                            'btn-default btn-outline': sqd6 !== '6',
+                            '!btn-error': sqd6 === null && sqd6_hasError === true,
+                        }"
+                        @click="handle_sqd6_click('6')">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="flex items-center justify-center mb-2">
+                                <x-far-question-circle class="w-7 h-7" />
+                            </div>
+                            <div class="flex items-center justify-center">
+                                <span x-text="sqd_language[language].label_na" class="text-xs leading-none"></span>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+            </div>
+            {{-- END SQD6 --}}
+
+            {{-- SQD7 --}}
+            <div class="flex flex-col items-center w-full border-2 border-primary mt-1 p-1 rounded-md">
+                <div class="w-full">
+                    <h1 class="text-left m-0 p-0 text-small font-semibold leading-none"
+                        x-text="sqd_language[language].sqd7" :class="{ 'text-error': sqd7_hasError }"></h1>
+                </div>
+
+                <div class="flex flex-wrap mt-1 justify-center gap-1">
+                    <!-- Button 1 -->
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                        :class="{
+                            'btn-primary': sqd7 === '1',
+                            'btn-default btn-outline': sqd7 !== '1',
+                            '!btn-error': sqd7 === null && sqd7_hasError === true,
+                        }"
+                        @click="handle_sqd7_click('1')">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="flex items-center justify-center">
+                                <x-far-angry class="w-7 h-7 !text-red-700" />
+                            </div>
+                            <div class="flex items-center justify-center ">
+                                <span x-text="sqd_language[language].label_sd" class="text-xs leading-none"></span>
+                            </div>
+                        </div>
+                    </button>
+                    <!-- Button 2 -->
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                        :class="{
+                            'btn-primary': sqd7 === '2',
+                            'btn-default btn-outline': sqd7 !== '2',
+                            '!btn-error': sqd7 === null && sqd7_hasError === true,
+                        }"
+                        @click="handle_sqd7_click('2')">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="flex items-center justify-center mb-2">
+                                <x-far-frown class="w-7 h-7 !text-red-500 " />
+                            </div>
+                            <div class="flex items-center justify-center ">
+                                <span x-text="sqd_language[language].label_d" class="text-xs leading-none"></span>
+                            </div>
+                        </div>
+                    </button>
+
+                    <!-- Button 3 -->
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                        :class="{
+                            'btn-primary': sqd7 === '3',
+                            'btn-default btn-outline': sqd7 !== '3',
+                            '!btn-error': sqd7 === null && sqd7_hasError === true,
+                        }"
+                        @click="handle_sqd7_click('3')">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="flex items-center justify-center mb-2">
+                                <x-far-meh class="w-7 h-7" />
+                            </div>
+                            <div class="flex items-center justify-center ">
+                                <span x-text="sqd_language[language].label_n" class="text-xs leading-none"></span>
+                            </div>
+                        </div>
+                    </button>
+                    <!-- Button 4 -->
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                        :class="{
+                            'btn-primary': sqd7 === '4',
+                            'btn-default btn-outline': sqd7 !== '4',
+                            '!btn-error': sqd7 === null && sqd7_hasError === true,
+                        }"
+                        @click="handle_sqd7_click('4')">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="flex items-center justify-center mb-2">
+                                <x-far-smile-beam class="w-7 h-7 text-green-500" />
+                            </div>
+                            <div class="flex items-center justify-center ">
+                                <span x-text="sqd_language[language].label_a" class="text-xs leading-none"></span>
+                            </div>
+                        </div>
+                    </button>
+                    <!-- Button 5 -->
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                        :class="{
+                            'btn-primary text-base-100': sqd7 === '5',
+                            'btn-default btn-outline ': sqd7 !== '5',
+                            '!btn-error': sqd7 === null && sqd7_hasError === true,
+                        }"
+                        @click="handle_sqd7_click('5')">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="flex items-center justify-center">
+                                <x-far-grin-stars class="w-7 h-7 text-green-700" />
+                            </div>
+                            <div class="flex items-center justify-center">
+                                <span x-text="sqd_language[language].label_sa" class="text-xs leading-none"></span>
+                            </div>
+                        </div>
+                    </button>
+                    <!-- Button 6 -->
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                        :class="{
+                            'btn-primary text-gray-100': sqd7 === '6',
+                            'btn-default btn-outline': sqd7 !== '6',
+                            '!btn-error': sqd7 === null && sqd7_hasError === true,
+                        }"
+                        @click="handle_sqd7_click('6')">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="flex items-center justify-center mb-2">
+                                <x-far-question-circle class="w-7 h-7" />
+                            </div>
+                            <div class="flex items-center justify-center">
+                                <span x-text="sqd_language[language].label_na" class="text-xs leading-none"></span>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+            </div>
+            {{-- END SQD7 --}}
+
+            {{-- SQD8 --}}
+            <div class="flex flex-col items-center w-full border-2 border-primary mt-1 p-1 rounded-md">
+                <div class="w-full">
+                    <h1 class="text-left m-0 p-0 text-small font-semibold leading-none"
+                        x-text="sqd_language[language].sqd8" :class="{ 'text-error': sqd8_hasError }"></h1>
+                </div>
+
+                <div class="flex flex-wrap mt-1 justify-center gap-1">
+                    <!-- Button 1 -->
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                        :class="{
+                            'btn-primary': sqd8 === '1',
+                            'btn-default btn-outline': sqd8 !== '1',
+                            '!btn-error': sqd8 === null && sqd8_hasError === true,
+                        }"
+                        @click="handle_sqd8_click('1')">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="flex items-center justify-center">
+                                <x-far-angry class="w-7 h-7 !text-red-700" />
+                            </div>
+                            <div class="flex items-center justify-center ">
+                                <span x-text="sqd_language[language].label_sd" class="text-xs leading-none"></span>
+                            </div>
+                        </div>
+                    </button>
+                    <!-- Button 2 -->
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                        :class="{
+                            'btn-primary': sqd8 === '2',
+                            'btn-default btn-outline': sqd8 !== '2',
+                            '!btn-error': sqd8 === null && sqd8_hasError === true,
+                        }"
+                        @click="handle_sqd8_click('2')">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="flex items-center justify-center mb-2">
+                                <x-far-frown class="w-7 h-7 !text-red-500 " />
+                            </div>
+                            <div class="flex items-center justify-center ">
+                                <span x-text="sqd_language[language].label_d" class="text-xs leading-none"></span>
+                            </div>
+                        </div>
+                    </button>
+
+                    <!-- Button 3 -->
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                        :class="{
+                            'btn-primary': sqd8 === '3',
+                            'btn-default btn-outline': sqd8 !== '3',
+                            '!btn-error': sqd8 === null && sqd8_hasError === true,
+                        }"
+                        @click="handle_sqd8_click('3')">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="flex items-center justify-center mb-2">
+                                <x-far-meh class="w-7 h-7" />
+                            </div>
+                            <div class="flex items-center justify-center ">
+                                <span x-text="sqd_language[language].label_n" class="text-xs leading-none"></span>
+                            </div>
+                        </div>
+                    </button>
+                    <!-- Button 4 -->
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                        :class="{
+                            'btn-primary': sqd8 === '4',
+                            'btn-default btn-outline': sqd8 !== '4',
+                            '!btn-error': sqd8 === null && sqd8_hasError === true,
+                        }"
+                        @click="handle_sqd8_click('4')">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="flex items-center justify-center mb-2">
+                                <x-far-smile-beam class="w-7 h-7 text-green-500" />
+                            </div>
+                            <div class="flex items-center justify-center ">
+                                <span x-text="sqd_language[language].label_a" class="text-xs leading-none"></span>
+                            </div>
+                        </div>
+                    </button>
+                    <!-- Button 5 -->
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                        :class="{
+                            'btn-primary text-base-100': sqd8 === '5',
+                            'btn-default btn-outline ': sqd8 !== '5',
+                            '!btn-error': sqd8 === null && sqd8_hasError === true,
+                        }"
+                        @click="handle_sqd8_click('5')">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="flex items-center justify-center">
+                                <x-far-grin-stars class="w-7 h-7 text-green-700" />
+                            </div>
+                            <div class="flex items-center justify-center">
+                                <span x-text="sqd_language[language].label_sa" class="text-xs leading-none"></span>
+                            </div>
+                        </div>
+                    </button>
+                    <!-- Button 6 -->
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                        :class="{
+                            'btn-primary text-gray-100': sqd8 === '6',
+                            'btn-default btn-outline': sqd8 !== '6',
+                            '!btn-error': sqd8 === null && sqd8_hasError === true,
+                        }"
+                        @click="handle_sqd8_click('6')">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="flex items-center justify-center mb-2">
+                                <x-far-question-circle class="w-7 h-7" />
+                            </div>
+                            <div class="flex items-center justify-center">
+                                <span x-text="sqd_language[language].label_na" class="text-xs leading-none"></span>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+            </div>
+            {{-- END SQD8 --}}
 
         </div>
     </div>
-
     {{-- END STEP4 --}}
+
+
 
     <hr class="my-5" />
 

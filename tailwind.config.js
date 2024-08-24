@@ -24,6 +24,7 @@ export default {
             },
             height: {
                 "1/3-screen": "33.333333%",
+                xxs: "0.625rem", // 10px
             },
         },
     },

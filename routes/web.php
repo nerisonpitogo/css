@@ -27,7 +27,7 @@ Route::group(['middleware' => 'auth'], function () {
     Volt::route('/sqds', 'sqd.sqds')->name('sqds');
 });
 
-Volt::route('/form/{type}/{with_sub}/{office_id}', 'csm-form')->name('csmform');
+Volt::route('/form/{is_onsite}/{with_sub}/{office_id}', 'csm-form')->name('csmform');
 
 // remigrate database
 Route::get('/remigrate', function () {

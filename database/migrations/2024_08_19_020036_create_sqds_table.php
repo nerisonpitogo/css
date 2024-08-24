@@ -411,11 +411,11 @@ return new class extends Migration
                 'office_transacted' => 'Pili-a ang opisina nga imong gi bisita.',
                 'service_availed_header' => 'Pilia ang serbisyo nga imong nadawat.',
 
-                'label_sd' => 'Kusog nga Dili Uyon',
+                'label_sd' => 'Subra nga Dili Uyon',
                 'label_d' => 'Dili Uyon',
                 'label_n' => 'Neutral',
                 'label_a' => 'Uyon',
-                'label_sa' => 'Kusog nga Uyon',
+                'label_sa' => 'Subra nga Uyon',
                 'label_na' => 'Dili Aplikable',
 
                 'service_availed' => 'Serbisyong Nadawat',
@@ -481,11 +481,11 @@ return new class extends Migration
                 'office_transacted' => 'Pili-a ang opisina nga imong gi bisita.',
                 'service_availed_header' => 'Pilia ang serbisyo nga imong nadawat.',
 
-                'label_sd' => 'Kusog nga Dili Uyon',
+                'label_sd' => 'Subra nga Dili Uyon',
                 'label_d' => 'Dili Uyon',
                 'label_n' => 'Neutral',
                 'label_a' => 'Uyon',
-                'label_sa' => 'Kusog nga Uyon',
+                'label_sa' => 'Subra nga Uyon',
                 'label_na' => 'Dili Aplikable',
 
                 'service_availed' => 'Serbisyong Nadawat',
