@@ -953,22 +953,22 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
     {{-- END STEP 3 --}}
 
     {{-- STEP 4 --}}
-    <div class="flex justify-center items-start mx-auto my-auto">
+    <div class="flex items-start justify-center mx-auto my-auto">
         <div x-show="step === 4" class="flex flex-col items-start justify-start max-w-3xl">
 
             <div class="flex items-start justify-start">
-                <span class="mt-4 mb-2 text-lg font-semibold text-left leading-none"
+                <span class="mt-4 mb-2 text-lg font-semibold leading-none text-left"
                     x-text="sqd_language[language].sqd_instruction"></span>
             </div>
 
             {{-- SQD0 --}}
-            <div class="flex flex-col items-center w-full border-2 border-primary p-1 rounded-md">
+            <div class="flex flex-col items-center w-full p-1 border-2 rounded-md border-primary">
                 <div class="w-full">
-                    <h1 class="text-left m-0 p-0 text-small font-semibold leading-none"
+                    <h1 class="p-0 m-0 font-semibold leading-none text-left text-small"
                         x-text="sqd_language[language].sqd0" :class="{ 'text-error': sqd0_hasError }"></h1>
                 </div>
 
-                <div class="flex flex-wrap mt-1 justify-center gap-1">
+                <div class="flex flex-wrap justify-center gap-1 mt-1">
                     <!-- Button 1 -->
                     <button class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
@@ -1031,7 +1031,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         @click="handle_sqd0_click('4')">
                         <div class="flex flex-col items-center justify-center">
                             <div class="flex items-center justify-center mb-2">
-                                <x-far-smile-beam class="w-7 h-7 text-green-500" />
+                                <x-far-smile-beam class="text-green-500 w-7 h-7" />
                             </div>
                             <div class="flex items-center justify-center ">
                                 <span x-text="sqd_language[language].label_a" class="text-xs leading-none"></span>
@@ -1048,7 +1048,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         @click="handle_sqd0_click('5')">
                         <div class="flex flex-col items-center justify-center">
                             <div class="flex items-center justify-center">
-                                <x-far-grin-stars class="w-7 h-7 text-green-700" />
+                                <x-far-grin-stars class="text-green-700 w-7 h-7" />
                             </div>
                             <div class="flex items-center justify-center">
                                 <span x-text="sqd_language[language].label_sa" class="text-xs leading-none"></span>
@@ -1077,13 +1077,13 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
             {{-- END SQD0 --}}
 
             {{-- SQD1 --}}
-            <div class="flex flex-col items-center w-full border-2 border-primary mt-1 p-1 rounded-md">
+            <div class="flex flex-col items-center w-full p-1 mt-1 border-2 rounded-md border-primary">
                 <div class="w-full">
-                    <h1 class="text-left m-0 p-0 text-small font-semibold leading-none"
+                    <h1 class="p-0 m-0 font-semibold leading-none text-left text-small"
                         x-text="sqd_language[language].sqd1" :class="{ 'text-error': sqd1_hasError }"></h1>
                 </div>
 
-                <div class="flex flex-wrap mt-1 justify-center gap-1">
+                <div class="flex flex-wrap justify-center gap-1 mt-1">
                     <!-- Button 1 -->
                     <button class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
@@ -1146,7 +1146,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         @click="handle_sqd1_click('4')">
                         <div class="flex flex-col items-center justify-center">
                             <div class="flex items-center justify-center mb-2">
-                                <x-far-smile-beam class="w-7 h-7 text-green-500" />
+                                <x-far-smile-beam class="text-green-500 w-7 h-7" />
                             </div>
                             <div class="flex items-center justify-center ">
                                 <span x-text="sqd_language[language].label_a" class="text-xs leading-none"></span>
@@ -1163,7 +1163,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         @click="handle_sqd1_click('5')">
                         <div class="flex flex-col items-center justify-center">
                             <div class="flex items-center justify-center">
-                                <x-far-grin-stars class="w-7 h-7 text-green-700" />
+                                <x-far-grin-stars class="text-green-700 w-7 h-7" />
                             </div>
                             <div class="flex items-center justify-center">
                                 <span x-text="sqd_language[language].label_sa" class="text-xs leading-none"></span>
@@ -1192,13 +1192,13 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
             {{-- END SQD1 --}}
 
             {{-- SQD2 --}}
-            <div class="flex flex-col items-center w-full border-2 border-primary mt-1 p-1 rounded-md">
+            <div class="flex flex-col items-center w-full p-1 mt-1 border-2 rounded-md border-primary">
                 <div class="w-full">
-                    <h1 class="text-left m-0 p-0 text-small font-semibold leading-none"
+                    <h1 class="p-0 m-0 font-semibold leading-none text-left text-small"
                         x-text="sqd_language[language].sqd2" :class="{ 'text-error': sqd2_hasError }"></h1>
                 </div>
 
-                <div class="flex flex-wrap mt-1 justify-center gap-1">
+                <div class="flex flex-wrap justify-center gap-1 mt-1">
                     <!-- Button 1 -->
                     <button class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
@@ -1261,7 +1261,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         @click="handle_sqd2_click('4')">
                         <div class="flex flex-col items-center justify-center">
                             <div class="flex items-center justify-center mb-2">
-                                <x-far-smile-beam class="w-7 h-7 text-green-500" />
+                                <x-far-smile-beam class="text-green-500 w-7 h-7" />
                             </div>
                             <div class="flex items-center justify-center ">
                                 <span x-text="sqd_language[language].label_a" class="text-xs leading-none"></span>
@@ -1278,7 +1278,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         @click="handle_sqd2_click('5')">
                         <div class="flex flex-col items-center justify-center">
                             <div class="flex items-center justify-center">
-                                <x-far-grin-stars class="w-7 h-7 text-green-700" />
+                                <x-far-grin-stars class="text-green-700 w-7 h-7" />
                             </div>
                             <div class="flex items-center justify-center">
                                 <span x-text="sqd_language[language].label_sa" class="text-xs leading-none"></span>
@@ -1307,13 +1307,13 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
             {{-- END SQD2 --}}
 
             {{-- SQD3 --}}
-            <div class="flex flex-col items-center w-full border-2 border-primary mt-1 p-1 rounded-md">
+            <div class="flex flex-col items-center w-full p-1 mt-1 border-2 rounded-md border-primary">
                 <div class="w-full">
-                    <h1 class="text-left m-0 p-0 text-small font-semibold leading-none"
+                    <h1 class="p-0 m-0 font-semibold leading-none text-left text-small"
                         x-text="sqd_language[language].sqd3" :class="{ 'text-error': sqd3_hasError }"></h1>
                 </div>
 
-                <div class="flex flex-wrap mt-1 justify-center gap-1">
+                <div class="flex flex-wrap justify-center gap-1 mt-1">
                     <!-- Button 1 -->
                     <button class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
@@ -1376,7 +1376,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         @click="handle_sqd3_click('4')">
                         <div class="flex flex-col items-center justify-center">
                             <div class="flex items-center justify-center mb-2">
-                                <x-far-smile-beam class="w-7 h-7 text-green-500" />
+                                <x-far-smile-beam class="text-green-500 w-7 h-7" />
                             </div>
                             <div class="flex items-center justify-center ">
                                 <span x-text="sqd_language[language].label_a" class="text-xs leading-none"></span>
@@ -1393,7 +1393,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         @click="handle_sqd3_click('5')">
                         <div class="flex flex-col items-center justify-center">
                             <div class="flex items-center justify-center">
-                                <x-far-grin-stars class="w-7 h-7 text-green-700" />
+                                <x-far-grin-stars class="text-green-700 w-7 h-7" />
                             </div>
                             <div class="flex items-center justify-center">
                                 <span x-text="sqd_language[language].label_sa" class="text-xs leading-none"></span>
@@ -1422,13 +1422,13 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
             {{-- END SQD3 --}}
 
             {{-- SQD4 --}}
-            <div class="flex flex-col items-center w-full border-2 border-primary mt-1 p-1 rounded-md">
+            <div class="flex flex-col items-center w-full p-1 mt-1 border-2 rounded-md border-primary">
                 <div class="w-full">
-                    <h1 class="text-left m-0 p-0 text-small font-semibold leading-none"
+                    <h1 class="p-0 m-0 font-semibold leading-none text-left text-small"
                         x-text="sqd_language[language].sqd4" :class="{ 'text-error': sqd4_hasError }"></h1>
                 </div>
 
-                <div class="flex flex-wrap mt-1 justify-center gap-1">
+                <div class="flex flex-wrap justify-center gap-1 mt-1">
                     <!-- Button 1 -->
                     <button class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
@@ -1491,7 +1491,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         @click="handle_sqd4_click('4')">
                         <div class="flex flex-col items-center justify-center">
                             <div class="flex items-center justify-center mb-2">
-                                <x-far-smile-beam class="w-7 h-7 text-green-500" />
+                                <x-far-smile-beam class="text-green-500 w-7 h-7" />
                             </div>
                             <div class="flex items-center justify-center ">
                                 <span x-text="sqd_language[language].label_a" class="text-xs leading-none"></span>
@@ -1508,7 +1508,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         @click="handle_sqd4_click('5')">
                         <div class="flex flex-col items-center justify-center">
                             <div class="flex items-center justify-center">
-                                <x-far-grin-stars class="w-7 h-7 text-green-700" />
+                                <x-far-grin-stars class="text-green-700 w-7 h-7" />
                             </div>
                             <div class="flex items-center justify-center">
                                 <span x-text="sqd_language[language].label_sa" class="text-xs leading-none"></span>
@@ -1537,13 +1537,13 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
             {{-- END SQD4 --}}
 
             {{-- SQD5 --}}
-            <div class="flex flex-col items-center w-full border-2 border-primary mt-1 p-1 rounded-md">
+            <div class="flex flex-col items-center w-full p-1 mt-1 border-2 rounded-md border-primary">
                 <div class="w-full">
-                    <h1 class="text-left m-0 p-0 text-small font-semibold leading-none"
+                    <h1 class="p-0 m-0 font-semibold leading-none text-left text-small"
                         x-text="sqd_language[language].sqd5" :class="{ 'text-error': sqd5_hasError }"></h1>
                 </div>
 
-                <div class="flex flex-wrap mt-1 justify-center gap-1">
+                <div class="flex flex-wrap justify-center gap-1 mt-1">
                     <!-- Button 1 -->
                     <button class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
@@ -1606,7 +1606,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         @click="handle_sqd5_click('4')">
                         <div class="flex flex-col items-center justify-center">
                             <div class="flex items-center justify-center mb-2">
-                                <x-far-smile-beam class="w-7 h-7 text-green-500" />
+                                <x-far-smile-beam class="text-green-500 w-7 h-7" />
                             </div>
                             <div class="flex items-center justify-center ">
                                 <span x-text="sqd_language[language].label_a" class="text-xs leading-none"></span>
@@ -1623,7 +1623,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         @click="handle_sqd5_click('5')">
                         <div class="flex flex-col items-center justify-center">
                             <div class="flex items-center justify-center">
-                                <x-far-grin-stars class="w-7 h-7 text-green-700" />
+                                <x-far-grin-stars class="text-green-700 w-7 h-7" />
                             </div>
                             <div class="flex items-center justify-center">
                                 <span x-text="sqd_language[language].label_sa" class="text-xs leading-none"></span>
@@ -1652,13 +1652,13 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
             {{-- END SQD5 --}}
 
             {{-- SQD6 --}}
-            <div class="flex flex-col items-center w-full border-2 border-primary mt-1 p-1 rounded-md">
+            <div class="flex flex-col items-center w-full p-1 mt-1 border-2 rounded-md border-primary">
                 <div class="w-full">
-                    <h1 class="text-left m-0 p-0 text-small font-semibold leading-none"
+                    <h1 class="p-0 m-0 font-semibold leading-none text-left text-small"
                         x-text="sqd_language[language].sqd6" :class="{ 'text-error': sqd6_hasError }"></h1>
                 </div>
 
-                <div class="flex flex-wrap mt-1 justify-center gap-1">
+                <div class="flex flex-wrap justify-center gap-1 mt-1">
                     <!-- Button 1 -->
                     <button class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
@@ -1721,7 +1721,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         @click="handle_sqd6_click('4')">
                         <div class="flex flex-col items-center justify-center">
                             <div class="flex items-center justify-center mb-2">
-                                <x-far-smile-beam class="w-7 h-7 text-green-500" />
+                                <x-far-smile-beam class="text-green-500 w-7 h-7" />
                             </div>
                             <div class="flex items-center justify-center ">
                                 <span x-text="sqd_language[language].label_a" class="text-xs leading-none"></span>
@@ -1738,7 +1738,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         @click="handle_sqd6_click('5')">
                         <div class="flex flex-col items-center justify-center">
                             <div class="flex items-center justify-center">
-                                <x-far-grin-stars class="w-7 h-7 text-green-700" />
+                                <x-far-grin-stars class="text-green-700 w-7 h-7" />
                             </div>
                             <div class="flex items-center justify-center">
                                 <span x-text="sqd_language[language].label_sa" class="text-xs leading-none"></span>
@@ -1767,13 +1767,13 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
             {{-- END SQD6 --}}
 
             {{-- SQD7 --}}
-            <div class="flex flex-col items-center w-full border-2 border-primary mt-1 p-1 rounded-md">
+            <div class="flex flex-col items-center w-full p-1 mt-1 border-2 rounded-md border-primary">
                 <div class="w-full">
-                    <h1 class="text-left m-0 p-0 text-small font-semibold leading-none"
+                    <h1 class="p-0 m-0 font-semibold leading-none text-left text-small"
                         x-text="sqd_language[language].sqd7" :class="{ 'text-error': sqd7_hasError }"></h1>
                 </div>
 
-                <div class="flex flex-wrap mt-1 justify-center gap-1">
+                <div class="flex flex-wrap justify-center gap-1 mt-1">
                     <!-- Button 1 -->
                     <button class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
@@ -1836,7 +1836,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         @click="handle_sqd7_click('4')">
                         <div class="flex flex-col items-center justify-center">
                             <div class="flex items-center justify-center mb-2">
-                                <x-far-smile-beam class="w-7 h-7 text-green-500" />
+                                <x-far-smile-beam class="text-green-500 w-7 h-7" />
                             </div>
                             <div class="flex items-center justify-center ">
                                 <span x-text="sqd_language[language].label_a" class="text-xs leading-none"></span>
@@ -1853,7 +1853,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         @click="handle_sqd7_click('5')">
                         <div class="flex flex-col items-center justify-center">
                             <div class="flex items-center justify-center">
-                                <x-far-grin-stars class="w-7 h-7 text-green-700" />
+                                <x-far-grin-stars class="text-green-700 w-7 h-7" />
                             </div>
                             <div class="flex items-center justify-center">
                                 <span x-text="sqd_language[language].label_sa" class="text-xs leading-none"></span>
@@ -1882,13 +1882,13 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
             {{-- END SQD7 --}}
 
             {{-- SQD8 --}}
-            <div class="flex flex-col items-center w-full border-2 border-primary mt-1 p-1 rounded-md">
+            <div class="flex flex-col items-center w-full p-1 mt-1 border-2 rounded-md border-primary">
                 <div class="w-full">
-                    <h1 class="text-left m-0 p-0 text-small font-semibold leading-none"
+                    <h1 class="p-0 m-0 font-semibold leading-none text-left text-small"
                         x-text="sqd_language[language].sqd8" :class="{ 'text-error': sqd8_hasError }"></h1>
                 </div>
 
-                <div class="flex flex-wrap mt-1 justify-center gap-1">
+                <div class="flex flex-wrap justify-center gap-1 mt-1">
                     <!-- Button 1 -->
                     <button class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
@@ -1951,7 +1951,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         @click="handle_sqd8_click('4')">
                         <div class="flex flex-col items-center justify-center">
                             <div class="flex items-center justify-center mb-2">
-                                <x-far-smile-beam class="w-7 h-7 text-green-500" />
+                                <x-far-smile-beam class="text-green-500 w-7 h-7" />
                             </div>
                             <div class="flex items-center justify-center ">
                                 <span x-text="sqd_language[language].label_a" class="text-xs leading-none"></span>
@@ -1968,7 +1968,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         @click="handle_sqd8_click('5')">
                         <div class="flex flex-col items-center justify-center">
                             <div class="flex items-center justify-center">
-                                <x-far-grin-stars class="w-7 h-7 text-green-700" />
+                                <x-far-grin-stars class="text-green-700 w-7 h-7" />
                             </div>
                             <div class="flex items-center justify-center">
                                 <span x-text="sqd_language[language].label_sa" class="text-xs leading-none"></span>
