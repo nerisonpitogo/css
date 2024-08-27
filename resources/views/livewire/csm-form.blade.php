@@ -6,7 +6,7 @@ use App\Models\Office;
 use App\Models\Sqd\sqd;
 
 new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component {
-    public int $step = 4;
+    public int $step = 5;
     public string $language = 'english';
 
     public $errorFields = [];
@@ -55,6 +55,11 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
     public $sqd7_hasError = false;
     public $sqd8;
     public $sqd8_hasError = false;
+
+    // STEP 5
+    public $suggestion;
+    public $email;
+    public $disagree = [];
 
     public $errorMessage = '';
 
@@ -215,6 +220,11 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
     sqd7_hasError: @entangle('sqd7_hasError'),
     sqd8: @entangle('sqd8'),
     sqd8_hasError: @entangle('sqd8_hasError'),
+
+    //STEP5
+    suggestion: @entangle('suggestion'),
+    email: @entangle('email'),
+    disagree: @entangle('disagree'),
 
 
 
@@ -485,102 +495,165 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                 this.sqd0_hasError = true;
                 if (!this.errorFields.includes('SQD0')) {
                     this.errorFields.push('SQD0');
+                    this.disagree.push('SQD0');
                 }
             } else {
                 this.sqd0_hasError = false;
                 this.errorFields = this.errorFields.filter(field => field !== 'SQD0');
+                this.disagree = this.disagree.filter(field => field !== 'SQD0');
             }
 
-            if (this.sqd0 === null) {
-                this.sqd0_hasError = true;
-                if (!this.errorFields.includes('SQD0')) {
-                    this.errorFields.push('SQD0');
-                }
-            } else {
-                this.sqd0_hasError = false;
-                this.errorFields = this.errorFields.filter(field => field !== 'SQD0');
-            }
+            //if (this.sqd0 === null) {
+            //    this.sqd0_hasError = true;
+            //    if (!this.errorFields.includes('SQD0')) {
+            //        this.errorFields.push('SQD0');
+            //    }
+            //} else {
+            //    this.sqd0_hasError = false;
+            //    this.errorFields = this.errorFields.filter(field => field !== 'SQD0');
+            // }
 
             if (this.sqd1 === null) {
                 this.sqd1_hasError = true;
                 if (!this.errorFields.includes('SQD1')) {
                     this.errorFields.push('SQD1');
+
                 }
             } else {
                 this.sqd1_hasError = false;
                 this.errorFields = this.errorFields.filter(field => field !== 'SQD1');
+
             }
 
             if (this.sqd2 === null) {
                 this.sqd2_hasError = true;
                 if (!this.errorFields.includes('SQD2')) {
                     this.errorFields.push('SQD2');
+
                 }
             } else {
                 this.sqd2_hasError = false;
                 this.errorFields = this.errorFields.filter(field => field !== 'SQD2');
+
             }
 
             if (this.sqd3 === null) {
                 this.sqd3_hasError = true;
                 if (!this.errorFields.includes('SQD3')) {
                     this.errorFields.push('SQD3');
+
                 }
             } else {
                 this.sqd3_hasError = false;
                 this.errorFields = this.errorFields.filter(field => field !== 'SQD3');
+
             }
 
             if (this.sqd4 === null) {
                 this.sqd4_hasError = true;
                 if (!this.errorFields.includes('SQD4')) {
                     this.errorFields.push('SQD4');
+
                 }
             } else {
                 this.sqd4_hasError = false;
                 this.errorFields = this.errorFields.filter(field => field !== 'SQD4');
+
             }
 
             if (this.sqd5 === null) {
                 this.sqd5_hasError = true;
                 if (!this.errorFields.includes('SQD5')) {
                     this.errorFields.push('SQD5');
+
                 }
             } else {
                 this.sqd5_hasError = false;
                 this.errorFields = this.errorFields.filter(field => field !== 'SQD5');
+
             }
 
             if (this.sqd6 === null) {
                 this.sqd6_hasError = true;
                 if (!this.errorFields.includes('SQD6')) {
                     this.errorFields.push('SQD6');
+
                 }
             } else {
                 this.sqd6_hasError = false;
                 this.errorFields = this.errorFields.filter(field => field !== 'SQD6');
+
             }
 
             if (this.sqd7 === null) {
                 this.sqd7_hasError = true;
                 if (!this.errorFields.includes('SQD7')) {
                     this.errorFields.push('SQD7');
+
                 }
             } else {
                 this.sqd7_hasError = false;
                 this.errorFields = this.errorFields.filter(field => field !== 'SQD7');
+
             }
 
             if (this.sqd8 === null) {
                 this.sqd8_hasError = true;
                 if (!this.errorFields.includes('SQD8')) {
                     this.errorFields.push('SQD8');
+
                 }
             } else {
                 this.sqd8_hasError = false;
                 this.errorFields = this.errorFields.filter(field => field !== 'SQD8');
+
             }
 
+
+
+
+        } else if (this.step === 5) {
+
+            //empty the disagree array
+            this.disagree = [];
+            //check from sqd0 to sqd8 if there are strong disagree or disagree if so add to disagree
+            if (this.sqd0 === '1' || this.sqd0 === '2') {
+                this.disagree.push('SQD0');
+            }
+            if (this.sqd1 === '1' || this.sqd1 === '2') {
+                this.disagree.push('SQD1');
+            }
+            if (this.sqd2 === '1' || this.sqd2 === '2') {
+                this.disagree.push('SQD2');
+            }
+            if (this.sqd3 === '1' || this.sqd3 === '2') {
+                this.disagree.push('SQD3');
+            }
+            if (this.sqd4 === '1' || this.sqd4 === '2') {
+                this.disagree.push('SQD4');
+            }
+            if (this.sqd5 === '1' || this.sqd5 === '2') {
+                this.disagree.push('SQD5');
+            }
+            if (this.sqd6 === '1' || this.sqd6 === '2') {
+                this.disagree.push('SQD6');
+            }
+            if (this.sqd7 === '1' || this.sqd7 === '2') {
+                this.disagree.push('SQD7');
+            }
+            if (this.sqd8 === '1' || this.sqd8 === '2') {
+                this.disagree.push('SQD8');
+            }
+
+            //check if there are disagree if so require to provide suggestion
+            if (this.disagree.length > 0 && !this.suggestion) {
+                //get all the disagree fields separe with comma
+                let disagreeFields = this.disagree.join(', ');
+                this.errorMessage = this.sqd_language[this.language].sqd_error_message + ' ' + disagreeFields;
+                return;
+            }
+
+            alert('test');
         }
 
 
@@ -2000,6 +2073,33 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
     </div>
     {{-- END STEP4 --}}
 
+
+    {{-- STEP 5 --}}
+    <div class="flex flex-col items-center w-full">
+        <div x-show="step === 5" class="flex flex-col w-full max-w-3xl">
+            <div class="mt-4 col">
+                <h1 class="text-lg font-semibold">
+                    {{ $sqd_language[$language]['suggestion'] }}</h1>
+            </div>
+
+            <div class="items-center w-full max-w-lg col">
+                <textarea wire:model='suggestion' placeholder="Leave empty if not necessary." rows="3"
+                    class="items-center w-full textarea textarea-bordered textarea-lg"></textarea>
+            </div>
+
+            <div class="items-start justify-start mt-4 col text-start">
+                <h1 class="items-start justify-start text-lg font-semibold text-start">
+                    {{ $sqd_language[$language]['email_address'] }}</h1>
+            </div>
+
+            <div class="w-full max-w-lg col">
+                <input type="text" wire:model='email' placeholder="Email Address"
+                    class="w-full input input-bordered input-lg" />
+            </div>
+        </div>
+    </div>
+
+    {{-- END STEP 5 --}}
 
 
     <hr class="my-5" />

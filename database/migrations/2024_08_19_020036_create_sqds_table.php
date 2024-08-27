@@ -103,6 +103,8 @@ return new class extends Migration
             // previous string
             $table->string('previous');
 
+            $table->string('sqd_error_message');
+
             $table->timestamps();
         });
 
@@ -170,10 +172,12 @@ return new class extends Migration
                 'cc3_4' => 'N/A',
 
                 'suggestion' => 'Suggestions on how we can further improve our services (optional)',
-                'email_address' => 'Email Address (optional)',
+                'email_address' => 'Email address or any contact number (optional)',
 
                 'next' => 'Next >>>',
                 'previous' => '<<< Prev',
+
+                'sqd_error_message' => 'Please provide us with feedback on why you disagree with',
             ]
         );
 
@@ -241,11 +245,13 @@ return new class extends Migration
                 'cc3_4' => 'N/A',
 
                 'suggestion' => 'Suggestions on how we can further improve our services (optional)',
-                'email_address' => 'Email Address (optional)',
+                'email_address' => 'Email address or any contact number (optional)',
 
 
                 'next' => 'Next >>>',
                 'previous' => '<<< Prev',
+
+                'sqd_error_message' => 'Please provide us with feedback on why you disagree with',
             ]
         );
 
@@ -312,11 +318,13 @@ return new class extends Migration
                 'cc3_4' => 'N/A',
 
                 'suggestion' => 'Mga suhestiyon kung paano pa mapapabuti ang aming mga serbisyo (opsyonal)',
-                'email_address' => 'Email Address (opsyonal)',
+                'email_address' => 'Email address o kontak (opsyonal)',
 
 
                 'next' => 'Sunod >>>',
                 'previous' => '<<< Balik',
+
+                'sqd_error_message' => 'Pakibigay po sa amin ang inyong feedback kung bakit hindi kayo sang-ayon sa',
             ]
         );
 
@@ -383,10 +391,12 @@ return new class extends Migration
                 'cc3_4' => 'N/A',
 
                 'suggestion' => 'Mga suhestiyon kung paano pa mapapabuti ang aming mga serbisyo (opsyonal)',
-                'email_address' => 'Email Address (opsyonal)',
+                'email_address' => 'Email Address o kontak (opsyonal)',
 
                 'next' => 'Sunod >>>',
                 'previous' => '<<< Balik',
+
+                'sqd_error_message' => 'Pakibigay po sa amin ang inyong feedback kung bakit hindi kayo sang-ayon sa',
             ]
         );
 
@@ -453,10 +463,12 @@ return new class extends Migration
                 'cc3_4' => 'N/A',
 
                 'suggestion' => 'Mga sugyot kung unsaon pa mapalambo ang among serbisyo (opsyonal)',
-                'email_address' => 'Email Address (opsyonal)',
+                'email_address' => 'Email Address o kontak (opsyonal)',
 
                 'next' => 'Sunod >>>',
                 'previous' => '<<< Balik',
+
+                'sqd_error_message' => 'Palihog hatagi kami og feedback nganong dili ka uyon sa',
             ]
         );
 
@@ -523,10 +535,12 @@ return new class extends Migration
                 'cc3_4' => 'N/A',
 
                 'suggestion' => 'Mga sugyot kung unsaon pa mapalambo ang among serbisyo (opsyonal)',
-                'email_address' => 'Email Address (opsyonal)',
+                'email_address' => 'Email Address o kontak (opsyonal)',
 
                 'next' => 'Sunod >>>',
                 'previous' => '<<< Balik',
+
+                'sqd_error_message' => 'Palihog hatagi kami og feedback nganong dili ka uyon sa',
             ]
         );
     }
