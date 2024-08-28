@@ -93,6 +93,8 @@ return new class extends Migration
             $table->text('cc3_3');
             $table->text('cc3_4');
 
+
+
             // suggestion
             $table->text('suggestion');
             // email_address
@@ -104,6 +106,14 @@ return new class extends Migration
             $table->string('previous');
 
             $table->string('sqd_error_message');
+            $table->string('summary_header');
+
+
+            $table->string('cc_awareness');
+            $table->string('cc_visibility');
+            $table->string('cc_helpfulness');
+
+
 
             $table->timestamps();
         });
@@ -115,7 +125,7 @@ return new class extends Migration
                 'language' => 'english',
                 'is_onsite' => true,
                 'header' => 'This Client Satisfcation Measurement (CSM) tracks the customer experience of government offices. Your feedback on your recently concluded transaction will help this office provide a better service. Personal information shared will be kept confidential and you always have the option to not answer this form.',
-                'client_type' => 'Select Client Type',
+                'client_type' => 'Client Type',
                 'citizen' => 'Citizen',
                 'business' => 'Business',
                 'government' => 'Government (Employee or another agency)',
@@ -124,9 +134,9 @@ return new class extends Migration
                 'male' => 'Male',
                 'female' => 'Female',
                 'age' => 'Age',
-                'region' => 'Region of Residence',
+                'region' => 'Region of Residence or Address',
 
-                'office_transacted' => 'Select Office you have transacted.',
+                'office_transacted' => 'Office you have transacted.',
                 'service_availed_header' => 'Service you have availed.',
 
                 'label_sd' => 'Strongly Disagree',
@@ -178,6 +188,11 @@ return new class extends Migration
                 'previous' => '<<< Prev',
 
                 'sqd_error_message' => 'Please provide us with feedback on why you disagree with',
+
+                'summary_header' => 'Summary of your answers',
+                'cc_awareness' => 'CC Awareness',
+                'cc_visibility' => 'CC Visibility',
+                'cc_helpfulness' => 'CC Helpfulness',
             ]
         );
 
@@ -189,7 +204,7 @@ return new class extends Migration
                 'is_onsite' => false,
 
                 'header' => 'This Client Satisfcation Measurement (CSM) tracks the customer experience of government offices. Your feedback on your recently concluded transaction will help this office provide a better service. Personal information shared will be kept confidential and you always have the option to not answer this form.',
-                'client_type' => 'Select Client Type',
+                'client_type' => 'Client Type',
                 'citizen' => 'Citizen',
                 'business' => 'Business',
                 'government' => 'Government (Employee or another agency)',
@@ -198,9 +213,9 @@ return new class extends Migration
                 'male' => 'Male',
                 'female' => 'Female',
                 'age' => 'Age',
-                'region' => 'Region of Residence',
+                'region' => 'Region of Residence or Address',
 
-                'office_transacted' => 'Select Office you have transacted.',
+                'office_transacted' => 'Office you have transacted.',
                 'service_availed_header' => 'Service you have availed.',
 
                 'label_sd' => 'Strongly Disagree',
@@ -252,6 +267,11 @@ return new class extends Migration
                 'previous' => '<<< Prev',
 
                 'sqd_error_message' => 'Please provide us with feedback on why you disagree with',
+                'summary_header' => 'Summary of your answers',
+                'cc_awareness' => 'CC Awareness',
+                'cc_visibility' => 'CC Visibility',
+                'cc_helpfulness' => 'CC Helpfulness',
+
             ]
         );
 
@@ -262,7 +282,7 @@ return new class extends Migration
                 'language' => 'tagalog',
                 'is_onsite' => true,
                 'header' => 'Ang Client Satisfaction Measurement (CSM) ay naglalayong masubaybayan ang karanasan ng taumbayan hinggil sa kanilang pakikitransaksyon sa mga tanggapan ng gobyerno. Makatutulong ang inyong kasagutan ukol sa inyong naging karanasan sa kakatapos lamang na transaction, upang mas mapabuti at lalong mapahusay ang aming serbisyo publiko. Ang personal na impormasyon na iyong ibabahagi ay mananatiling kumpidensyal. Maaari ring piliin na hindi sagutan ang sarbey na ito.',
-                'client_type' => 'Pumili Uri ng Kliyente',
+                'client_type' => 'Uri ng Kliyente',
                 'citizen' => 'Mamamayan',
                 'business' => 'Negosyo',
                 'government' => 'Gobyerno (Empleyado o Ibang Ahensya)',
@@ -271,9 +291,9 @@ return new class extends Migration
                 'male' => 'Lalaki',
                 'female' => 'Babae',
                 'age' => 'Edad',
-                'region' => 'Rehiyon',
+                'region' => 'Rehiyon o Lugar ng Tirahan',
 
-                'office_transacted' => 'Pumili ng opisina na iyong pinuntahan.',
+                'office_transacted' => 'Opisina na iyong pinuntahan.',
                 'service_availed_header' => 'Pumili ng serbisyong natanggap',
 
                 'label_sd' => 'Lubos na Hindi Sang-ayon',
@@ -325,6 +345,11 @@ return new class extends Migration
                 'previous' => '<<< Balik',
 
                 'sqd_error_message' => 'Pakibigay po sa amin ang inyong feedback kung bakit hindi kayo sang-ayon sa',
+                'summary_header' => 'Buod ng iyong mga sagot',
+                'cc_awareness' => 'Kamulatan ng CC',
+                'cc_visibility' => 'Kakitahan ng CC',
+                'cc_helpfulness' => 'Pagkatulong ng CC',
+
             ]
         );
 
@@ -335,7 +360,7 @@ return new class extends Migration
                 'language' => 'tagalog',
                 'is_onsite' => false,
                 'header' => 'Ang Client Satisfaction Measurement (CSM) ay naglalayong masubaybayan ang karanasan ng taumbayan hinggil sa kanilang pakikitransaksyon sa mga tanggapan ng gobyerno. Makatutulong ang inyong kasagutan ukol sa inyong naging karanasan sa kakatapos lamang na transaction, upang mas mapabuti at lalong mapahusay ang aming serbisyo publiko. Ang personal na impormasyon na iyong ibabahagi ay mananatiling kumpidensyal. Maaari ring piliin na hindi sagutan ang sarbey na ito.',
-                'client_type' => 'Pumili Uri ng Kliyente',
+                'client_type' => 'Uri ng Kliyente',
                 'citizen' => 'Mamamayan',
                 'business' => 'Negosyo',
                 'government' => 'Gobyerno (Empleyado o Ibang Ahensya)',
@@ -344,9 +369,9 @@ return new class extends Migration
                 'male' => 'Lalaki',
                 'female' => 'Babae',
                 'age' => 'Edad',
-                'region' => 'Rehiyon',
+                'region' => 'Rehiyon o Lugar ng Tirahan',
 
-                'office_transacted' => 'Pumili ng opisina na iyong pinuntahan.',
+                'office_transacted' => 'Opisina na iyong pinuntahan.',
                 'service_availed_header' => 'Pumili ng serbisyong natanggap',
 
                 'label_sd' => 'Lubos na Hindi Sang-ayon',
@@ -397,6 +422,10 @@ return new class extends Migration
                 'previous' => '<<< Balik',
 
                 'sqd_error_message' => 'Pakibigay po sa amin ang inyong feedback kung bakit hindi kayo sang-ayon sa',
+                'summary_header' => 'Buod ng iyong mga sagot',
+                'cc_awareness' => 'Kamulatan ng CC',
+                'cc_visibility' => 'Kakitahan ng CC',
+                'cc_helpfulness' => 'Pagkatulong ng CC',
             ]
         );
 
@@ -407,7 +436,7 @@ return new class extends Migration
                 'language' => 'bisaya',
                 'is_onsite' => true,
                 'header' => 'Ang Client Satisfaction Measurement (CSM) nagtinguha nga masubay ang kasinatian sa katawhan bahin sa ilang transaksyon sa mga opisina sa gobyerno. Ang imong tubag bahin sa imong bag-ohay lang nahuman nga transaksyon makatabang aron mapalambo ug mapaayo pa ang among serbisyo publiko. Ang personal nga impormasyon nga imong ipaambit magpabiling kumpidensyal. Mahimo nimo nga dili tubagon ang kini nga sarbey.',
-                'client_type' => 'Pili sa Klase sa Kliyente',
+                'client_type' => 'Klase sa Kliyente',
                 'citizen' => 'Lungsuranon',
                 'business' => 'Negosyo',
                 'government' => 'Gobyerno (Empleyado o Laing Ahensya)',
@@ -416,9 +445,9 @@ return new class extends Migration
                 'male' => 'Lalaki',
                 'female' => 'Babae',
                 'age' => 'Edad',
-                'region' => 'Rehiyon',
+                'region' => 'Rehiyon o Lugar sa Puloy-an',
 
-                'office_transacted' => 'Pili-a ang opisina nga imong gi bisita.',
+                'office_transacted' => 'Opisina nga imong gi bisita.',
                 'service_availed_header' => 'Pilia ang serbisyo nga imong nadawat.',
 
                 'label_sd' => 'Subra nga Dili Uyon',
@@ -469,6 +498,10 @@ return new class extends Migration
                 'previous' => '<<< Balik',
 
                 'sqd_error_message' => 'Palihog hatagi kami og feedback nganong dili ka uyon sa',
+                'summary_header' => 'Kinatibuak-an sa imong mga tubag',
+                'cc_awareness' => 'Pagkahibalo sa CC',
+                'cc_visibility' => 'Pagka makita sa CC',
+                'cc_helpfulness' => 'Pagkatabang sa CC',
             ]
         );
 
@@ -479,7 +512,7 @@ return new class extends Migration
                 'language' => 'bisaya',
                 'is_onsite' => false,
                 'header' => 'Ang Client Satisfaction Measurement (CSM) nagtinguha nga masubay ang kasinatian sa katawhan bahin sa ilang transaksyon sa mga opisina sa gobyerno. Ang imong tubag bahin sa imong bag-ohay lang nahuman nga transaksyon makatabang aron mapalambo ug mapaayo pa ang among serbisyo publiko. Ang personal nga impormasyon nga imong ipaambit magpabiling kumpidensyal. Mahimo nimo nga dili tubagon ang kini nga sarbey.',
-                'client_type' => 'Pili sa Klase sa Kliyente',
+                'client_type' => 'Klase sa Kliyente',
                 'citizen' => 'Lungsuranon',
                 'business' => 'Negosyo',
                 'government' => 'Gobyerno (Empleyado o Laing Ahensya)',
@@ -488,7 +521,7 @@ return new class extends Migration
                 'male' => 'Lalaki',
                 'female' => 'Babae',
                 'age' => 'Edad',
-                'region' => 'Rehiyon',
+                'region' => 'Rehiyon o lugar sa puloy-an',
 
                 'office_transacted' => 'Pili-a ang opisina nga imong gi bisita.',
                 'service_availed_header' => 'Pilia ang serbisyo nga imong nadawat.',
@@ -541,6 +574,13 @@ return new class extends Migration
                 'previous' => '<<< Balik',
 
                 'sqd_error_message' => 'Palihog hatagi kami og feedback nganong dili ka uyon sa',
+                'summary_header' => 'Kinatibuak-an sa imong mga tubag',
+
+                'cc_awareness' => 'Pagkahibalo sa CC',
+                'cc_visibility' => 'Pagka makita sa CC',
+                'cc_helpfulness' => 'Pagkatabang sa CC',
+
+
             ]
         );
     }

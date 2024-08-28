@@ -55,7 +55,7 @@
     </x-mary-main>
 
     {{--  TOAST area --}}
-    <x-mary-toast />
+    <x-mary-toast position="toast-center toast-top" />
 </body>
 
 </html>

@@ -4,9 +4,13 @@ use Livewire\Volt\Component;
 use Livewire\Attributes\{Layout, Title};
 use App\Models\Office;
 use App\Models\Sqd\sqd;
+use Mary\Traits\Toast;
+use Illuminate\Support\Facades\Validator;
 
 new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component {
-    public int $step = 5;
+    use Toast;
+
+    public int $step = 6;
     public string $language = 'english';
 
     public $errorFields = [];
@@ -61,6 +65,14 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
     public $email;
     public $disagree = [];
 
+    // step6
+    public $office_transacted_word = 'wew';
+    public $service_availed_word = 'Foreign Travel Authority Request on Official Time Or Official Business (For Personal Reason)';
+    public $cc1_selected_word = '';
+    public $cc2_selected_word = '';
+    public $cc3_selected_word = '';
+    public $selected_client_type = '';
+
     public $errorMessage = '';
 
     public $is_onsite, $with_sub, $office_id;
@@ -73,6 +85,17 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
         $this->is_onsite = $is_onsite; //1 for onsite 0 for online
         $this->with_sub = $with_sub;
         $this->office_id = $office_id;
+
+        // initialize
+        $this->sqd0 = 2;
+        $this->sqd1 = 2;
+        $this->sqd2 = 2;
+        $this->sqd3 = 2;
+        $this->sqd4 = 2;
+        $this->sqd5 = 2;
+        $this->sqd6 = 2;
+        $this->sqd7 = 2;
+        $this->sqd8 = 2;
     }
 
     public function with(): array
@@ -121,7 +144,8 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
 
         // Add services of the current office
         foreach ($office->services as $service) {
-            $services_array[$office->id][] = [$service->id, $service->service->service_name];
+            // $services_array[$office->id][] = [$service->id, $service->service->service_name];
+            $services_array[$office->id][] = [$service->id, $service->service->service_name, $office->name];
         }
 
         // Recursively add services of the child offices
@@ -137,7 +161,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
     private function getServices(Office $office, $services_array = [])
     {
         foreach ($office->services as $service) {
-            $services_array[] = [$service->id, $service->service->service_name];
+            $services_array[] = [$service->id, $service->service->service_name, $office->name];
         }
 
         // Recursively add services of the child offices
@@ -167,6 +191,50 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
     public function changeLanguage($language)
     {
         $this->language = $language;
+    }
+
+    public function save_feedback()
+    {
+        try {
+            $this->validate(
+                [
+                    'clientType' => 'required',
+                    'clientSex' => 'required',
+                    'clientAge' => 'nullable',
+                    'clientRegion' => 'nullable',
+                    'serViceAvailed' => 'required',
+                    'cc1' => 'required',
+                    'cc2' => 'nullable',
+                    'cc3' => 'nullable',
+                    'sqd0' => 'nullable',
+                    'sqd1' => 'nullable',
+                    'sqd2' => 'nullable',
+                    'sqd3' => 'nullable',
+                    'sqd4' => 'nullable',
+                    'sqd5' => 'nullable',
+                    'sqd6' => 'nullable',
+                    'sqd7' => 'nullable',
+                    'sqd8' => 'nullable',
+                    'suggestion' => 'required',
+                    'email' => 'required|email',
+                ],
+                $this->messages(),
+            );
+
+            // If validation passes, proceed with form submission logic
+            dd('WEW');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Handle validation failure
+            $this->warning($e->getMessage());
+            return;
+        }
+    }
+
+    protected function messages()
+    {
+        return [
+            'serViceAvailed.required' => 'The service availed field is required.',
+        ];
     }
 };
 ?>
@@ -226,7 +294,13 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
     email: @entangle('email'),
     disagree: @entangle('disagree'),
 
-
+    //STEP6
+    office_transacted_word: @entangle('office_transacted_word'),
+    service_availed_word: @entangle('service_availed_word'),
+    cc1_selected_word: @entangle('cc1_selected_word'),
+    cc2_selected_word: @entangle('cc2_selected_word'),
+    cc3_selected_word: @entangle('cc3_selected_word'),
+    selected_client_type: @entangle('selected_client_type'),
 
     errorFields: @entangle('errorFields'),
 
@@ -318,6 +392,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
     handle_cc1_click(cc1) {
         this.cc1 = cc1;
         this.cc1_hasError = false;
+        this.cc1_selected_word = this.sqd_language[this.language]['cc1_' + cc1];
 
         if (cc1 === '4') {
             this.cc2 = null;
@@ -332,14 +407,12 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
             }
 
         }
-
-
     },
 
     handle_cc2_click(cc2) {
         this.cc2 = cc2;
         this.cc2_hasError = false;
-
+        this.cc2_selected_word = this.sqd_language[this.language]['cc2_' + cc2];
         if (this.errorFields.includes('CC2')) {
             this.errorFields = this.errorFields.filter(field => field !== 'CC2');
         }
@@ -349,14 +422,16 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
     handle_cc3_click(cc3) {
         this.cc3 = cc3;
         this.cc3_hasError = false;
-
+        this.cc3_selected_word = this.sqd_language[this.language]['cc3_' + cc3];
         if (this.errorFields.includes('CC3')) {
             this.errorFields = this.errorFields.filter(field => field !== 'CC3');
         }
     },
 
 
-    handleCLickService(serviceId) {
+    handleCLickService(serviceId, serviceName, officeName) {
+        this.service_availed_word = serviceName;
+        this.office_transacted_word = officeName;
         this.serViceAvailed = serviceId;
         this.hasErrorServiceAvailed = false;
         this.errorFields = this.errorFields.filter(field => field !== 'Service Availed');
@@ -409,6 +484,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
     handleClientTypeClick(clientType) {
         this.clientType = clientType;
         this.hasErrorClientType = false;
+        this.selected_client_type = this.sqd_language[this.language][clientType];
         this.errorFields = this.errorFields.filter(field => field !== 'Client Type');
     },
 
@@ -653,7 +729,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                 return;
             }
 
-            alert('test');
+
         }
 
 
@@ -687,9 +763,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
             <x-mary-step step="3" text="" />
             <x-mary-step step="4" text="" />
             <x-mary-step step="5" text="" />
-            <x-mary-step step="6" text="" />
-            <x-mary-step step="7" text="" />
-            <x-mary-step step="8" text="" data-content="✓" step-classes="!step-success" />
+            <x-mary-step step="6" text="" data-content="✓" step-classes="!step-success" />
         </x-mary-steps>
     </div>
 
@@ -832,7 +906,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                             <h1 class="text-sm card-title" x-text="sqd_language[language].service_availed_header">
                             </h1>
                             <template x-for="service in servicesArrayAll">
-                                <button @click="handleCLickService(service[0])"
+                                <button @click="handleCLickService(service[0],service[1],service[2])"
                                     class="items-center justify-start w-full h-auto p-1 text-left btn btn-sm"
                                     :class="{
                                         'btn-primary ': serViceAvailed === service[0],
@@ -2101,6 +2175,53 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
 
     {{-- END STEP 5 --}}
 
+    {{-- STEP 6 --}}
+    <div class="flex items-center justify-center w-full">
+        <div x-show="step === 6" class="flex flex-col w-full max-w-2xl p-4 shadow-md bg-base-200rounded-lg">
+            <div class="flex items-center justify-center mb-4">
+                <span class="text-lg font-semibold" x-text="sqd_language[language].summary_header"></span>
+            </div>
+
+            <x-summary-item label="" alpine_value='client_type' value="selected_client_type" />
+            <x-summary-item label="{{ $sqd_language[$language]['sex'] }}" value="clientSex" />
+            <x-summary-item label="{{ $sqd_language[$language]['age'] }}" value="clientAge" />
+            <x-summary-item label="{{ $sqd_language[$language]['region'] }}" value="clientRegion" />
+            <x-summary-item label="{{ $sqd_language[$language]['office_transacted'] }}"
+                value="office_transacted_word" />
+            <x-summary-item label="{{ $sqd_language[$language]['service_availed_header'] }}"
+                value="service_availed_word" />
+
+            <x-summary-item label="" alpine_value='cc_awareness' value="cc1_selected_word" />
+
+            <div x-show="cc1 !== '4'">
+                <x-summary-item label="Citizen's Charter 2 (CC2)" value="cc2_selected_word" />
+                <x-summary-item label="Citizen's Charter 3 (CC3)" value="cc3_selected_word" />
+            </div>
+
+            <x-summary-item-sqd :sqd="0" :sqd_language="$sqd_language" :language="$language" />
+            <x-summary-item-sqd :sqd="1" :sqd_language="$sqd_language" :language="$language" />
+            <x-summary-item-sqd :sqd="2" :sqd_language="$sqd_language" :language="$language" />
+            <x-summary-item-sqd :sqd="3" :sqd_language="$sqd_language" :language="$language" />
+            <x-summary-item-sqd :sqd="4" :sqd_language="$sqd_language" :language="$language" />
+            <x-summary-item-sqd :sqd="5" :sqd_language="$sqd_language" :language="$language" />
+            <x-summary-item-sqd :sqd="6" :sqd_language="$sqd_language" :language="$language" />
+            <x-summary-item-sqd :sqd="7" :sqd_language="$sqd_language" :language="$language" />
+            <x-summary-item-sqd :sqd="8" :sqd_language="$sqd_language" :language="$language" />
+
+            <x-summary-item label="Citizen's Charter 1 (CC1)" alpine_value="cc_awareness"
+                value="cc1_selected_word" />
+            <x-summary-item label="Citizen's Charter 2 (CC2)" alpine_value="cc_visibility"
+                value="cc2_selected_word" />
+            <x-summary-item label="Citizen's Charter 3 (CC3)" alpine_value="cc_helpfulness"
+                value="cc3_selected_word" />
+            <x-summary-item label="" alpine_value="suggestion" value="suggestion" />
+            <x-summary-item label="Email or Contact" alpine_value="email_address" value="email" />
+
+        </div>
+    </div>
+
+    {{-- END STEP 6 --}}
+
 
     <hr class="my-5" />
 
@@ -2113,8 +2234,13 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
             <x-mary-button class="mr-2 btn btn-primary" x-show="step > 1" @click="handlePreviousClick()">
                 <span x-text="sqd_language[language].previous"></span>
             </x-mary-button>
-            <x-mary-button class="btn btn-primary" x-show="step < 8" @click="handleNextClick()">
+            <x-mary-button class="btn btn-primary" x-show="step < 6" @click="handleNextClick()">
                 <span x-text="sqd_language[language].next"></span>
+            </x-mary-button>
+            <x-mary-button icon='o-check' spinner class="btn btn-success" x-show="step === 6"
+                wire:click='save_feedback'>
+                <span wire:loading.remove>Save</span>
+                <span wire:loading>Saving</span>
             </x-mary-button>
         </div>
     </div>
