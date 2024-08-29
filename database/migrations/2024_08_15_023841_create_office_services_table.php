@@ -32,9 +32,6 @@ return new class extends Migration
             $table->boolean('has_sqd8')->default(true);
             $table->boolean('allow_na')->default(true);
 
-
-
-
             $table->foreignId('created_by')->constrained('users');
             // updated_by
             $table->foreignId('updated_by')->constrained('users');

@@ -18,15 +18,56 @@ class OfficeServiceForm extends Form
     #[Validate('required|numeric')]
     public $service_id;
 
-    #[Validate('required|numeric')]
-    public $has_cc = 1;
+    #[Validate('nullable|boolean')]
+    public $is_simple = false;
+
+    #[Validate('nullable|boolean')]
+    public $has_sqd0 = true;
+
+    #[Validate('nullable|boolean')]
+    public $has_sqd1 = true;
+
+    #[Validate('nullable|boolean')]
+    public $has_sqd2 = true;
+
+    #[Validate('nullable|boolean')]
+    public $has_sqd3 = true;
+
+    #[Validate('nullable|boolean')]
+    public $has_sqd4 = true;
+
+    #[Validate('nullable|boolean')]
+    public $has_sqd5 = true;
+
+    #[Validate('nullable|boolean')]
+    public $has_sqd6 = true;
+
+    #[Validate('nullable|boolean')]
+    public $has_sqd7 = true;
+
+    #[Validate('nullable|boolean')]
+    public $has_sqd8 = true;
+
+    #[Validate('nullable|boolean')]
+    public $allow_na = true;
+
 
 
     public function setOfficeService($officeservice)
     {
         $this->officeservice = $officeservice;
         $this->service_id = $officeservice->service_id;
-        $this->has_cc = $officeservice->has_cc;
+        $this->is_simple = $officeservice->is_simple ? true : false;
+        $this->has_sqd0 = $officeservice->has_sqd0 ? true : false;
+        $this->has_sqd1 = $officeservice->has_sqd1 ? true : false;
+        $this->has_sqd2 = $officeservice->has_sqd2 ? true : false;
+        $this->has_sqd3 = $officeservice->has_sqd3 ? true : false;
+        $this->has_sqd4 = $officeservice->has_sqd4 ? true : false;
+        $this->has_sqd5 = $officeservice->has_sqd5 ? true : false;
+        $this->has_sqd6 = $officeservice->has_sqd6 ? true : false;
+        $this->has_sqd7 = $officeservice->has_sqd7 ? true : false;
+        $this->has_sqd8 = $officeservice->has_sqd8 ? true : false;
+        $this->allow_na = $officeservice->allow_na ? true : false;
     }
 
     public function store()
@@ -36,7 +77,18 @@ class OfficeServiceForm extends Form
         $data = [
             'office_id' => $this->office_id,
             'service_id' => $this->service_id,
-            'has_cc' => $this->has_cc,
+            'is_simple' => $this->is_simple,
+            'has_sqd0' => $this->has_sqd0,
+            'has_sqd1' => $this->has_sqd1,
+            'has_sqd2' => $this->has_sqd2,
+            'has_sqd3' => $this->has_sqd3,
+            'has_sqd4' => $this->has_sqd4,
+            'has_sqd5' => $this->has_sqd5,
+            'has_sqd6' => $this->has_sqd6,
+            'has_sqd7' => $this->has_sqd7,
+            'has_sqd8' => $this->has_sqd8,
+            'allow_na' => $this->allow_na,
+
             'created_by' => Auth::id(),
             'updated_by' => Auth::id(),
         ];
@@ -49,10 +101,22 @@ class OfficeServiceForm extends Form
     {
         $this->validate();
 
+
+
         $data = [
             'office_id' => $this->office_id,
             'service_id' => $this->service_id,
-            'has_cc' => $this->has_cc,
+            'is_simple' => $this->is_simple,
+            'has_sqd0' => $this->has_sqd0,
+            'has_sqd1' => $this->has_sqd1,
+            'has_sqd2' => $this->has_sqd2,
+            'has_sqd3' => $this->has_sqd3,
+            'has_sqd4' => $this->has_sqd4,
+            'has_sqd5' => $this->has_sqd5,
+            'has_sqd6' => $this->has_sqd6,
+            'has_sqd7' => $this->has_sqd7,
+            'has_sqd8' => $this->has_sqd8,
+            'allow_na' => $this->allow_na,
             'updated_by' => Auth::id(),
         ];
 

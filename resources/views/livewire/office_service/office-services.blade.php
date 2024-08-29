@@ -15,6 +15,7 @@ new #[Title('Office Services')] class extends Component {
     public $sortBy = ['column' => 'id', 'direction' => 'desc'];
     public $search = '';
     public $modalOfficeService = false;
+    public array $expanded = [];
 
     public OfficeServiceForm $form;
 
@@ -31,7 +32,8 @@ new #[Title('Office Services')] class extends Component {
 
         $this->form->office_id = $office_id->id;
 
-        $this->libServices = LibService::all()
+        $this->libServices = LibService::orderBy('service_name')
+            ->get()
             ->map(function ($service) {
                 return [
                     'id' => $service->id,
@@ -50,6 +52,17 @@ new #[Title('Office Services')] class extends Component {
             ['key' => 'counter', 'label' => '#', 'sortable' => false],
             ['key' => 'service_name', 'label' => 'Service'],
             ['key' => 'service_description', 'label' => 'Description'],
+            ['key' => 'is_simple', 'label' => 'Is Simple?'],
+            // ['key' => 'has_sqd0', 'label' => 'SQD0'],
+            // ['key' => 'has_sqd1', 'label' => 'SQD1'],
+            // ['key' => 'has_sqd2', 'label' => 'SQD2'],
+            // ['key' => 'has_sqd3', 'label' => 'SQD3'],
+            // ['key' => 'has_sqd4', 'label' => 'SQD4'],
+            // ['key' => 'has_sqd5', 'label' => 'SQD5'],
+            // ['key' => 'has_sqd6', 'label' => 'SQD6'],
+            // ['key' => 'has_sqd7', 'label' => 'SQD7'],
+            // ['key' => 'has_sqd8', 'label' => 'SQD8'],
+            // ['key' => 'allow_na', 'label' => 'Allow N/A'],
             // ['key' => 'has_cc', 'label' => 'In Citizen\'s Charter'],
             ['key' => 'actions', 'label' => '', 'sortable' => false],
         ];
@@ -100,12 +113,14 @@ new #[Title('Office Services')] class extends Component {
                 ->where('service_id', $this->form->service_id)
                 ->where('id', '!=', $this->selectedID)
                 ->first();
+
             if ($duplicate) {
                 $this->addError('form.service_id', 'Service already exists in this office');
                 return;
             }
 
             $this->form->update();
+
             $this->success('OfficeService updated successfully');
         }
 
@@ -130,7 +145,7 @@ new #[Title('Office Services')] class extends Component {
     }
 }; ?>
 
-<div>
+<div x-cloak>
     <x-mary-card shadow separator>
         <x-mary-header title="{{ $office->name }}" subtitle="{!! $office->getHierarchyString() !!} | {{ $office->office_level }}">
             <x-slot:middle class="!justify-end">
@@ -152,7 +167,8 @@ new #[Title('Office Services')] class extends Component {
                 <x-mary-loading class="text-primary loading-lg" />
             </div>
 
-            <x-mary-table :headers="$headers" :rows="$officeservices" :sort-by="$sortBy" with-pagination>
+            <x-mary-table :headers="$headers" :rows="$officeservices" :sort-by="$sortBy" with-pagination wire:model="expanded"
+                expandable>
 
                 @php
                     $perPage = $officeservices->perPage();
@@ -162,6 +178,103 @@ new #[Title('Office Services')] class extends Component {
                 @scope('cell_counter', $officeservice, $loop, $indexOffset)
                     {{ $loop->index + 1 + $indexOffset }}
                 @endscope
+                @scope('cell_is_simple', $officeservice)
+                    {{ $officeservice->is_simple ? 'Yes' : 'No' }}
+                @endscope
+
+                @scope('expansion', $officeservice)
+                    <div class="overflow-x-auto">
+                        <table class="table table-xs">
+                            <tbody>
+                                <tr class="bg-base-300">
+                                    <td>SQD0</td>
+                                    <td>SQD1</td>
+                                    <td>SQD2</td>
+                                    <td>SQD3</td>
+                                    <td>SQD4</td>
+                                    <td>SQD5</td>
+                                    <td>SQD6</td>
+                                    <td>SQD7</td>
+                                    <td>SQD8</td>
+                                    <td>N/A</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        @if ($officeservice->has_sqd0)
+                                            <x-mary-icon name="o-check" class="text-success" />
+                                        @else
+                                            <x-mary-icon name="o-x-mark" class="text-error " />
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if ($officeservice->has_sqd1)
+                                            <x-mary-icon name="o-check" class="text-success" />
+                                        @else
+                                            <x-mary-icon name="o-x-mark" class="text-error " />
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if ($officeservice->has_sqd2)
+                                            <x-mary-icon name="o-check" class="text-success" />
+                                        @else
+                                            <x-mary-icon name="o-x-mark" class="text-error " />
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if ($officeservice->has_sqd3)
+                                            <x-mary-icon name="o-check" class="text-success" />
+                                        @else
+                                            <x-mary-icon name="o-x-mark" class="text-error " />
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if ($officeservice->has_sqd4)
+                                            <x-mary-icon name="o-check" class="text-success" />
+                                        @else
+                                            <x-mary-icon name="o-x-mark" class="text-error " />
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if ($officeservice->has_sqd5)
+                                            <x-mary-icon name="o-check" class="text-success" />
+                                        @else
+                                            <x-mary-icon name="o-x-mark" class="text-error " />
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if ($officeservice->has_sqd6)
+                                            <x-mary-icon name="o-check" class="text-success" />
+                                        @else
+                                            <x-mary-icon name="o-x-mark" class="text-error " />
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if ($officeservice->has_sqd7)
+                                            <x-mary-icon name="o-check" class="text-success" />
+                                        @else
+                                            <x-mary-icon name="o-x-mark" class="text-error " />
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if ($officeservice->has_sqd8)
+                                            <x-mary-icon name="o-check" class="text-success" />
+                                        @else
+                                            <x-mary-icon name="o-x-mark" class="text-error " />
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if ($officeservice->allow_na)
+                                            <x-mary-icon name="o-check" class="text-success" />
+                                        @else
+                                            <x-mary-icon name="o-x-mark" class="text-error " />
+                                        @endif
+                                    </td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                @endscope
 
                 {{-- 
                 @scope('cell_has_cc', $officeservice)
@@ -170,13 +283,15 @@ new #[Title('Office Services')] class extends Component {
 
 
                 @scope('actions', $officeservice)
-                    <div class="flex items-center">
-                        <x-mary-button tooltip="Edit" spinner='edit({{ $officeservice->id }})' icon="o-pencil-square"
-                            wire:click='edit({{ $officeservice->id }})' class="mr-1 btn-sm btn-primary"></x-mary-button>
-                        <x-mary-button tooltip="Delete" wire:click='delete({{ $officeservice->id }})'
-                            wire:confirm='Are you sure to delete?' spinner="delete({{ $officeservice->id }})" icon="o-trash"
-                            class="btn-sm btn-warning"></x-mary-button>
-                    </div>
+                    @if ($officeservice->office->isDescendantOf(Auth::user()->office_id))
+                        <div class="flex items-center">
+                            <x-mary-button tooltip="Edit" spinner='edit({{ $officeservice->id }})' icon="o-pencil-square"
+                                wire:click='edit({{ $officeservice->id }})' class="mr-1 btn-sm btn-primary"></x-mary-button>
+                            <x-mary-button tooltip="Delete" wire:click='delete({{ $officeservice->id }})'
+                                wire:confirm='Are you sure to delete?' spinner="delete({{ $officeservice->id }})"
+                                icon="o-trash" class="btn-sm btn-warning"></x-mary-button>
+                        </div>
+                    @endif
                 @endscope
 
 
@@ -197,6 +312,22 @@ new #[Title('Office Services')] class extends Component {
             <div class="col">
                 <x-mary-select label="Service" :options="$libServices" wire:model="form.service_id" />
             </div>
+
+            <div class="col">
+                <div class="flex flex-wrap items-center gap-3">
+                    <x-mary-checkbox label="Simple Transaction" wire:model="form.is_simple" />
+                    <x-mary-checkbox label="SQD0" wire:model="form.has_sqd0" />
+                    <x-mary-checkbox label="SQD1" wire:model="form.has_sqd1" />
+                    <x-mary-checkbox label="SQD2" wire:model="form.has_sqd2" />
+                    <x-mary-checkbox label="SQD3" wire:model="form.has_sqd3" />
+                    <x-mary-checkbox label="SQD4" wire:model="form.has_sqd4" />
+                    <x-mary-checkbox label="SQD5" wire:model="form.has_sqd5" />
+                    <x-mary-checkbox label="SQD6" wire:model="form.has_sqd6" />
+                    <x-mary-checkbox label="SQD7" wire:model="form.has_sqd7" />
+                    <x-mary-checkbox label="SQD8" wire:model="form.has_sqd8" />
+                    <x-mary-checkbox label="Allow N/A" wire:model="form.allow_na" />
+                </div>
+            </div>
             {{-- <div class="col">
                 @php
                     $ccOptions = [['id' => '1', 'name' => 'Yes'], ['id' => '0', 'name' => 'No']];
@@ -211,5 +342,52 @@ new #[Title('Office Services')] class extends Component {
                 wire:click='saveOfficeService' spinner='saveOfficeService' />
         </x-slot:actions>
     </x-mary-modal>
+
+    <div class="grid grid-cols-1 gap-2 mt-2 lg:grid-cols-2">
+
+        <div class="col">
+            <x-mary-card class="" title="Onsite - Office Specific"
+                subtitle="Use this link for services provided onsite. Only services under the {{ $office->name }} will be displayed."
+                shadow separator>
+                <span class="text-blue-500">{{ url('/form/1/0/' . $office->id) }}</span>
+            </x-mary-card>
+        </div>
+
+        <div class="col">
+            <x-mary-card class="" title="Onsite - With Sub Offices"
+                subtitle="Use this link for services provided onsite. Only services under the {{ $office->name }} will be displayed."
+                shadow separator>
+                <span class="text-blue-500">{{ url('/form/1/1/' . $office->id) }}</span>
+            </x-mary-card>
+        </div>
+
+        <div class="col">
+            <x-mary-card class="" title="Online - Office Specific"
+                subtitle="Use this link for services provided online. Only services under the {{ $office->name }} will be displayed."
+                shadow separator>
+                <span class="text-blue-500">{{ url('/form/0/0/' . $office->id) }}</span>
+            </x-mary-card>
+        </div>
+
+        <div class="col">
+            <x-mary-card class="" title="Online - With Sub Offices"
+                subtitle="Use this link for services provided online. Only services under the {{ $office->name }} will be displayed."
+                shadow separator>
+                <span class="text-blue-500">{{ url('/form/0/1/' . $office->id) }}</span>
+            </x-mary-card>
+        </div>
+
+    </div>
+
+    <div class="grid grid-cols-1 gap-2 mt-2">
+
+        <x-mary-card class="" title="Form Header Image"
+            subtitle="This Image will appear at the top of the online form." shadow separator>
+
+            <livewire:office-header-image-upload :office="$office" />
+        </x-mary-card>
+
+
+    </div>
 
 </div>

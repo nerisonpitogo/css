@@ -10,16 +10,16 @@ use Illuminate\Support\Facades\Validator;
 new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component {
     use Toast;
 
-    public int $step = 6;
+    public int $step = 1;
     public string $language = 'english';
 
     public $errorFields = [];
 
     // STEP1
-    public $clientType = 'citizen';
-    public $clientSex = 'male';
-    public $clientAge = '40';
-    public $clientRegion = 'Caraga';
+    public $clientType = '';
+    public $clientSex = '';
+    public $clientAge = '';
+    public $clientRegion = '';
 
     public $hasErrorClientType = false;
     public $hasErrorSex = false;
@@ -66,12 +66,24 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
     public $disagree = [];
 
     // step6
-    public $office_transacted_word = 'wew';
-    public $service_availed_word = 'Foreign Travel Authority Request on Official Time Or Official Business (For Personal Reason)';
+    public $office_transacted_word = '';
+    public $service_availed_word = '';
     public $cc1_selected_word = '';
     public $cc2_selected_word = '';
     public $cc3_selected_word = '';
     public $selected_client_type = '';
+
+    // addition
+    public $has_sqd0;
+    public $has_sqd1;
+    public $has_sqd2;
+    public $has_sqd3;
+    public $has_sqd4;
+    public $has_sqd5;
+    public $has_sqd6;
+    public $has_sqd7;
+    public $has_sqd8;
+    public $allow_na;
 
     public $errorMessage = '';
 
@@ -80,22 +92,26 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
     public $servicesArrayByOffice = [];
     public $servicesArrayAll = [];
 
+    public $office;
+
     public function mount($is_onsite, $with_sub, $office_id)
     {
         $this->is_onsite = $is_onsite; //1 for onsite 0 for online
         $this->with_sub = $with_sub;
         $this->office_id = $office_id;
 
+        $this->office = Office::findOrFail($office_id);
+
         // initialize
-        $this->sqd0 = 2;
-        $this->sqd1 = 2;
-        $this->sqd2 = 2;
-        $this->sqd3 = 2;
-        $this->sqd4 = 2;
-        $this->sqd5 = 2;
-        $this->sqd6 = 2;
-        $this->sqd7 = 2;
-        $this->sqd8 = 2;
+        // $this->sqd0 = 2;
+        // $this->sqd1 = 2;
+        // $this->sqd2 = 2;
+        // $this->sqd3 = 2;
+        // $this->sqd4 = 2;
+        // $this->sqd5 = 2;
+        // $this->sqd6 = 2;
+        // $this->sqd7 = 2;
+        // $this->sqd8 = 2;
     }
 
     public function with(): array
@@ -145,7 +161,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
         // Add services of the current office
         foreach ($office->services as $service) {
             // $services_array[$office->id][] = [$service->id, $service->service->service_name];
-            $services_array[$office->id][] = [$service->id, $service->service->service_name, $office->name];
+            $services_array[$office->id][] = [$service->id, $service->service->service_name, $office->name, $service->has_sqd0, $service->has_sqd1, $service->has_sqd2, $service->has_sqd3, $service->has_sqd4, $service->has_sqd5, $service->has_sqd6, $service->has_sqd7, $service->has_sqd8, $service->allow_na];
         }
 
         // Recursively add services of the child offices
@@ -161,7 +177,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
     private function getServices(Office $office, $services_array = [])
     {
         foreach ($office->services as $service) {
-            $services_array[] = [$service->id, $service->service->service_name, $office->name];
+            $services_array[] = [$service->id, $service->service->service_name, $office->name, $service->has_sqd0, $service->has_sqd1, $service->has_sqd2, $service->has_sqd3, $service->has_sqd4, $service->has_sqd5, $service->has_sqd6, $service->has_sqd7, $service->has_sqd8, $service->allow_na];
         }
 
         // Recursively add services of the child offices
@@ -302,6 +318,19 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
     cc3_selected_word: @entangle('cc3_selected_word'),
     selected_client_type: @entangle('selected_client_type'),
 
+    //addition
+    has_sqd0: @entangle('has_sqd0'),
+    has_sqd1: @entangle('has_sqd1'),
+    has_sqd2: @entangle('has_sqd2'),
+    has_sqd3: @entangle('has_sqd3'),
+    has_sqd4: @entangle('has_sqd4'),
+    has_sqd5: @entangle('has_sqd5'),
+    has_sqd6: @entangle('has_sqd6'),
+    has_sqd7: @entangle('has_sqd7'),
+    has_sqd8: @entangle('has_sqd8'),
+    allow_na: @entangle('allow_na'),
+
+
     errorFields: @entangle('errorFields'),
 
     errorMessage: @entangle('errorMessage'),
@@ -429,12 +458,25 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
     },
 
 
-    handleCLickService(serviceId, serviceName, officeName) {
+    handleCLickService(serviceId, serviceName, officeName, has_sqd0, has_sqd1, has_sqd2, has_sqd3, has_sqd4, has_sqd5, has_sqd6, has_sqd7, has_sqd8, allow_na) {
         this.service_availed_word = serviceName;
         this.office_transacted_word = officeName;
         this.serViceAvailed = serviceId;
         this.hasErrorServiceAvailed = false;
         this.errorFields = this.errorFields.filter(field => field !== 'Service Availed');
+
+        this.has_sqd0 = has_sqd0;
+        this.has_sqd1 = has_sqd1;
+        this.has_sqd2 = has_sqd2;
+        this.has_sqd3 = has_sqd3;
+        this.has_sqd4 = has_sqd4;
+        this.has_sqd5 = has_sqd5;
+        this.has_sqd6 = has_sqd6;
+        this.has_sqd7 = has_sqd7;
+        this.has_sqd8 = has_sqd8;
+        this.allow_na = allow_na;
+
+
     },
 
 
@@ -757,6 +799,12 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
 }" x-cloak>
 
     <div class="flex items-center justify-center w-full max-w-full overflow-x-auto">
+        @if (isset($office->header_image))
+            <img class="max-w-2xl img-fluid" src="{{ asset('storage/header_images/' . $office->header_image) }}"
+                alt="Office Header Image">
+        @endif
+    </div>
+    <div class="flex items-center justify-center w-full max-w-full overflow-x-auto">
         <x-mary-steps wire:model="step" steps-color="step-primary">
             <x-mary-step step="1" text="" />
             <x-mary-step step="2" text="" />
@@ -906,7 +954,22 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                             <h1 class="text-sm card-title" x-text="sqd_language[language].service_availed_header">
                             </h1>
                             <template x-for="service in servicesArrayAll">
-                                <button @click="handleCLickService(service[0],service[1],service[2])"
+                                <button
+                                    @click="handleCLickService(
+                                                service[0],
+                                                service[1],
+                                                service[2],
+                                                service[3], 
+                                                service[4],
+                                                service[5],
+                                                service[6],
+                                                service[7],
+                                                service[8],
+                                                service[9],
+                                                service[10],
+                                                service[11],
+                                                service[12]
+                                                )"
                                     class="items-center justify-start w-full h-auto p-1 text-left btn btn-sm"
                                     :class="{
                                         'btn-primary ': serViceAvailed === service[0],
@@ -1203,7 +1266,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         </div>
                     </button>
                     <!-- Button 6 -->
-                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                    <button x-show="allow_na" class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
                             'btn-primary text-gray-100': sqd0 === '6',
                             'btn-default btn-outline': sqd0 !== '6',
@@ -1318,7 +1381,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         </div>
                     </button>
                     <!-- Button 6 -->
-                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                    <button x-show="allow_na" class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
                             'btn-primary text-gray-100': sqd1 === '6',
                             'btn-default btn-outline': sqd1 !== '6',
@@ -1433,7 +1496,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         </div>
                     </button>
                     <!-- Button 6 -->
-                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                    <button x-show="allow_na" class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
                             'btn-primary text-gray-100': sqd2 === '6',
                             'btn-default btn-outline': sqd2 !== '6',
@@ -1548,7 +1611,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         </div>
                     </button>
                     <!-- Button 6 -->
-                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                    <button x-show="allow_na" class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
                             'btn-primary text-gray-100': sqd3 === '6',
                             'btn-default btn-outline': sqd3 !== '6',
@@ -1663,7 +1726,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         </div>
                     </button>
                     <!-- Button 6 -->
-                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                    <button x-show="allow_na" class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
                             'btn-primary text-gray-100': sqd4 === '6',
                             'btn-default btn-outline': sqd4 !== '6',
@@ -1778,7 +1841,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         </div>
                     </button>
                     <!-- Button 6 -->
-                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                    <button x-show="allow_na" class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
                             'btn-primary text-gray-100': sqd5 === '6',
                             'btn-default btn-outline': sqd5 !== '6',
@@ -1893,7 +1956,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         </div>
                     </button>
                     <!-- Button 6 -->
-                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                    <button x-show="allow_na" class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
                             'btn-primary text-gray-100': sqd6 === '6',
                             'btn-default btn-outline': sqd6 !== '6',
@@ -2008,7 +2071,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         </div>
                     </button>
                     <!-- Button 6 -->
-                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                    <button x-show="allow_na" class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
                             'btn-primary text-gray-100': sqd7 === '6',
                             'btn-default btn-outline': sqd7 !== '6',
@@ -2123,7 +2186,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         </div>
                     </button>
                     <!-- Button 6 -->
-                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
+                    <button x-show="allow_na" class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
                             'btn-primary text-gray-100': sqd8 === '6',
                             'btn-default btn-outline': sqd8 !== '6',
@@ -2191,12 +2254,18 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
             <x-summary-item label="{{ $sqd_language[$language]['service_availed_header'] }}"
                 value="service_availed_word" />
 
-            <x-summary-item label="" alpine_value='cc_awareness' value="cc1_selected_word" />
+            <x-summary-item label="Citizen's Charter 1 (CC1)" alpine_value="cc_awareness"
+                value="cc1_selected_word" />
 
             <div x-show="cc1 !== '4'">
-                <x-summary-item label="Citizen's Charter 2 (CC2)" value="cc2_selected_word" />
-                <x-summary-item label="Citizen's Charter 3 (CC3)" value="cc3_selected_word" />
+
+                <x-summary-item label="Citizen's Charter 2 (CC2)" alpine_value="cc_visibility"
+                    value="cc2_selected_word" />
+                <x-summary-item label="Citizen's Charter 3 (CC3)" alpine_value="cc_helpfulness"
+                    value="cc3_selected_word" />
             </div>
+
+
 
             <x-summary-item-sqd :sqd="0" :sqd_language="$sqd_language" :language="$language" />
             <x-summary-item-sqd :sqd="1" :sqd_language="$sqd_language" :language="$language" />
@@ -2208,12 +2277,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
             <x-summary-item-sqd :sqd="7" :sqd_language="$sqd_language" :language="$language" />
             <x-summary-item-sqd :sqd="8" :sqd_language="$sqd_language" :language="$language" />
 
-            <x-summary-item label="Citizen's Charter 1 (CC1)" alpine_value="cc_awareness"
-                value="cc1_selected_word" />
-            <x-summary-item label="Citizen's Charter 2 (CC2)" alpine_value="cc_visibility"
-                value="cc2_selected_word" />
-            <x-summary-item label="Citizen's Charter 3 (CC3)" alpine_value="cc_helpfulness"
-                value="cc3_selected_word" />
+
             <x-summary-item label="" alpine_value="suggestion" value="suggestion" />
             <x-summary-item label="Email or Contact" alpine_value="email_address" value="email" />
 
@@ -2242,6 +2306,9 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                 <span wire:loading.remove>Save</span>
                 <span wire:loading>Saving</span>
             </x-mary-button>
+        </div>
+        <div class="flex">
+            <x-mary-theme-toggle darkTheme="dark" lightTheme="light" class="btn btn-circle btn-ghost" />
         </div>
     </div>
 </div>

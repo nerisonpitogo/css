@@ -21,25 +21,7 @@
 <body class="font-sans antialiased">
 
     {{-- The navbar with `sticky` and `full-width` --}}
-    <x-mary-nav class="bg-base-200">
 
-        <x-slot:brand>
-            {{-- Drawer toggle for "main-drawer" --}}
-            <label for="main-drawer" class="mr-3 lg:hidden">
-                <x-mary-icon name="o-bars-3" class="cursor-pointer" />
-            </label>
-
-            {{-- Brand --}}
-            <img src="https://laravel.com/img/logomark.min.svg" alt="logo" class="h-12" />
-        </x-slot:brand>
-
-        {{-- Right side actions --}}
-        <x-slot:actions>
-            <x-mary-theme-toggle darkTheme="dark" lightTheme="light" class="btn btn-circle btn-ghost" />
-            {{-- <x-mary-button label="Messages" icon="o-envelope" link="###" class="btn-ghost btn-sm" responsive />
-            <x-mary-button label="Notifications" icon="o-bell" link="###" class="btn-ghost btn-sm" responsive /> --}}
-        </x-slot:actions>
-    </x-mary-nav>
 
     {{-- The main content with `full-width` --}}
     <x-mary-main with-nav>

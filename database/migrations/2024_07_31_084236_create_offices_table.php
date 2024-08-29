@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('short_name')->nullable();
             $table->string('office_level')->nullable();
             $table->foreignId('parent_id')->nullable()->constrained('offices');
+            // header_image
+            $table->string('header_image')->nullable();
             $table->timestamps();
         });
     }
