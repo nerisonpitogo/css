@@ -72,7 +72,6 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
     public $cc2_selected_word = '';
     public $cc3_selected_word = '';
     public $selected_client_type = '';
-    public $selected_sex = '';
 
     // addition
     public $has_sqd0;
@@ -238,8 +237,8 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                     'sqd6' => 'nullable',
                     'sqd7' => 'nullable',
                     'sqd8' => 'nullable',
-                    'suggestion' => 'nullable',
-                    'email' => 'nullable|email',
+                    'suggestion' => 'required',
+                    'email' => 'required|email',
                 ],
                 $this->messages(),
             );
@@ -324,8 +323,6 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
     cc2_selected_word: @entangle('cc2_selected_word'),
     cc3_selected_word: @entangle('cc3_selected_word'),
     selected_client_type: @entangle('selected_client_type'),
-    selected_sex: @entangle('selected_sex'),
-
 
     //addition
     has_sqd0: @entangle('has_sqd0'),
@@ -542,7 +539,6 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
     handleClientSexClick(clientSex) {
         this.clientSex = clientSex;
         this.hasErrorSex = false;
-        this.selected_sex = this.sqd_language[this.language][clientSex];
         this.errorFields = this.errorFields.filter(field => field !== 'Sex');
     },
 
@@ -619,33 +615,117 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                 }
             }
         } else if (this.step === 4) {
-            const fields = ['sqd0', 'sqd1', 'sqd2', 'sqd3', 'sqd4', 'sqd5', 'sqd6', 'sqd7', 'sqd8'];
-
-            fields.forEach(field => {
-                if (this[field] === null) {
-
-                    if (this[`has_${field}`]) {
-                        this[`${field}_hasError`] = true;
-                        if (!this.errorFields.includes(field.toUpperCase())) {
-                            this.errorFields.push(field.toUpperCase());
-                            {{-- if (field === 'sqd0') {
-                            this.disagree.push(field.toUpperCase());
-                        } --}}
-                        }
-                    } else {
-                        this[`${field}`] = '6';
-                    }
-
-
-
-                } else {
-                    this[`${field}_hasError`] = false;
-                    this.errorFields = this.errorFields.filter(errorField => errorField !== field.toUpperCase());
-                    {{-- if (field === 'sqd0') {
-                        this.disagree = this.disagree.filter(disagreeField => disagreeField !== field.toUpperCase());
-                    } --}}
+            if (this.sqd0 === null) {
+                this.sqd0_hasError = true;
+                if (!this.errorFields.includes('SQD0')) {
+                    this.errorFields.push('SQD0');
+                    this.disagree.push('SQD0');
                 }
-            });
+            } else {
+                this.sqd0_hasError = false;
+                this.errorFields = this.errorFields.filter(field => field !== 'SQD0');
+                this.disagree = this.disagree.filter(field => field !== 'SQD0');
+            }
+
+            if (this.sqd1 === null) {
+                this.sqd1_hasError = true;
+                if (!this.errorFields.includes('SQD1')) {
+                    this.errorFields.push('SQD1');
+
+                }
+            } else {
+                this.sqd1_hasError = false;
+                this.errorFields = this.errorFields.filter(field => field !== 'SQD1');
+
+            }
+
+            if (this.sqd2 === null) {
+                this.sqd2_hasError = true;
+                if (!this.errorFields.includes('SQD2')) {
+                    this.errorFields.push('SQD2');
+
+                }
+            } else {
+                this.sqd2_hasError = false;
+                this.errorFields = this.errorFields.filter(field => field !== 'SQD2');
+
+            }
+
+            if (this.sqd3 === null) {
+                this.sqd3_hasError = true;
+                if (!this.errorFields.includes('SQD3')) {
+                    this.errorFields.push('SQD3');
+
+                }
+            } else {
+                this.sqd3_hasError = false;
+                this.errorFields = this.errorFields.filter(field => field !== 'SQD3');
+
+            }
+
+            if (this.sqd4 === null) {
+                this.sqd4_hasError = true;
+                if (!this.errorFields.includes('SQD4')) {
+                    this.errorFields.push('SQD4');
+
+                }
+            } else {
+                this.sqd4_hasError = false;
+                this.errorFields = this.errorFields.filter(field => field !== 'SQD4');
+
+            }
+
+            if (this.sqd5 === null) {
+                this.sqd5_hasError = true;
+                if (!this.errorFields.includes('SQD5')) {
+                    this.errorFields.push('SQD5');
+
+                }
+            } else {
+                this.sqd5_hasError = false;
+                this.errorFields = this.errorFields.filter(field => field !== 'SQD5');
+
+            }
+
+            if (this.sqd6 === null) {
+                this.sqd6_hasError = true;
+                if (!this.errorFields.includes('SQD6')) {
+                    this.errorFields.push('SQD6');
+
+                }
+            } else {
+                this.sqd6_hasError = false;
+                this.errorFields = this.errorFields.filter(field => field !== 'SQD6');
+
+            }
+
+            if (this.sqd7 === null) {
+                this.sqd7_hasError = true;
+                if (!this.errorFields.includes('SQD7')) {
+                    this.errorFields.push('SQD7');
+
+                }
+            } else {
+                this.sqd7_hasError = false;
+                this.errorFields = this.errorFields.filter(field => field !== 'SQD7');
+
+            }
+
+            if (this.sqd8 === null) {
+                this.sqd8_hasError = true;
+                if (!this.errorFields.includes('SQD8')) {
+                    this.errorFields.push('SQD8');
+
+                }
+            } else {
+                this.sqd8_hasError = false;
+                this.errorFields = this.errorFields.filter(field => field !== 'SQD8');
+
+            }
+
+
+
+
         } else if (this.step === 5) {
 
             //empty the disagree array
@@ -2170,11 +2250,13 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
             </div>
 
             <x-summary-item label="" alpine_value='client_type' value="selected_client_type" />
-            <x-summary-item label="" alpine_value='sex' value="selected_sex" />
-            <x-summary-item label="" alpine_value='age' value="clientAge" />
-            <x-summary-item label="" alpine_value='region' value="clientRegion" />
-            <x-summary-item label="" alpine_value='office_transacted' value="office_transacted_word" />
-            <x-summary-item label="" alpine_value='service_availed' value="service_availed_word" />
+            <x-summary-item label="{{ $sqd_language[$language]['sex'] }}" value="clientSex" />
+            <x-summary-item label="{{ $sqd_language[$language]['age'] }}" value="clientAge" />
+            <x-summary-item label="{{ $sqd_language[$language]['region'] }}" value="clientRegion" />
+            <x-summary-item label="{{ $sqd_language[$language]['office_transacted'] }}"
+                value="office_transacted_word" />
+            <x-summary-item label="{{ $sqd_language[$language]['service_availed_header'] }}"
+                value="service_availed_word" />
 
             <x-summary-item label="Citizen's Charter 1 (CC1)" alpine_value="cc_awareness"
                 value="cc1_selected_word" />
@@ -2187,15 +2269,17 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                     value="cc3_selected_word" />
             </div>
 
-            <x-summary-item-sqd x-show='has_sqd0' value="0" label="" alpine_value="sqd0" />
-            <x-summary-item-sqd x-show='has_sqd1' value="1" label="" alpine_value="sqd1" />
-            <x-summary-item-sqd x-show='has_sqd2' value="2" label="" alpine_value="sqd2" />
-            <x-summary-item-sqd x-show='has_sqd3' value="3" label="" alpine_value="sqd3" />
-            <x-summary-item-sqd x-show='has_sqd4' value="4" label="" alpine_value="sqd4" />
-            <x-summary-item-sqd x-show='has_sqd5' value="5" label="" alpine_value="sqd5" />
-            <x-summary-item-sqd x-show='has_sqd6' value="6" label="" alpine_value="sqd6" />
-            <x-summary-item-sqd x-show='has_sqd7' value="7" label="" alpine_value="sqd7" />
-            <x-summary-item-sqd x-show='has_sqd8' value="8" label="" alpine_value="sqd8" />
+
+
+            <x-summary-item-sqd :sqd="0" :sqd_language="$sqd_language" :language="$language" />
+            <x-summary-item-sqd :sqd="1" :sqd_language="$sqd_language" :language="$language" />
+            <x-summary-item-sqd :sqd="2" :sqd_language="$sqd_language" :language="$language" />
+            <x-summary-item-sqd :sqd="3" :sqd_language="$sqd_language" :language="$language" />
+            <x-summary-item-sqd :sqd="4" :sqd_language="$sqd_language" :language="$language" />
+            <x-summary-item-sqd :sqd="5" :sqd_language="$sqd_language" :language="$language" />
+            <x-summary-item-sqd :sqd="6" :sqd_language="$sqd_language" :language="$language" />
+            <x-summary-item-sqd :sqd="7" :sqd_language="$sqd_language" :language="$language" />
+            <x-summary-item-sqd :sqd="8" :sqd_language="$sqd_language" :language="$language" />
 
 
             <x-summary-item label="" alpine_value="suggestion" value="suggestion" />

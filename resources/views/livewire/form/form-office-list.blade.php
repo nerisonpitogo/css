@@ -4,13 +4,14 @@ use Livewire\Volt\Component;
 
 new class extends Component {
     public $office;
-
-    public $officeName;
-    public $shortName;
-    public $officeLevel;
+    // public $officeName;
+    // public $shortName;
+    // public $officeLevel;
+    public $with_sub;
 }; ?>
 
 <div class="ml-4 border-l-2 border-base-300">
+
     @if ($office->services->isNotEmpty())
         <button class="items-start justify-start w-full h-auto p-2 mt-1 text-left btn btn-sm"
             :class="{
@@ -27,11 +28,16 @@ new class extends Component {
             <div class="p-3 mt-2 text-sm badge badge-neutral">{{ $office->name }}</div>
         @endif
     @endif
-    @if ($office->children && $office->children->isNotEmpty())
 
-        @foreach ($office->children as $child)
-            <livewire:form.form-office-list :office="$child" :key="$child->id" @office_deleted="$refresh" />
-        @endforeach
+    @if ($with_sub)
+        @if ($office->children && $office->children->isNotEmpty())
 
+            @foreach ($office->children as $child)
+                <livewire:form.form-office-list :with_sub="$with_sub" :office="$child" :key="$child->id"
+                    @office_deleted="$refresh" />
+            @endforeach
+
+        @endif
     @endif
+
 </div>
