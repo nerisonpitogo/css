@@ -4,6 +4,7 @@ use Livewire\Volt\Component;
 use Livewire\Attributes\{Layout, Title};
 use App\Models\Office;
 use App\Models\Sqd\sqd;
+use App\Models\Feedback;
 use Mary\Traits\Toast;
 use Illuminate\Support\Facades\Validator;
 
@@ -16,10 +17,10 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
     public $errorFields = [];
 
     // STEP1
-    public $clientType = '';
-    public $clientSex = '';
-    public $clientAge = '';
-    public $clientRegion = '';
+    public $clientType;
+    public $clientSex;
+    public $clientAge;
+    public $clientRegion;
 
     public $hasErrorClientType = false;
     public $hasErrorSex = false;
@@ -222,30 +223,65 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
             $this->validate(
                 [
                     'clientType' => 'required',
-                    'clientSex' => 'required',
-                    'clientAge' => 'nullable',
+                    'clientSex' => 'required|in:male,female',
+                    'clientAge' => 'nullable|integer|min:10|max:120',
                     'clientRegion' => 'nullable',
                     'serViceAvailed' => 'required',
                     'cc1' => 'required',
                     'cc2' => 'nullable',
                     'cc3' => 'nullable',
-                    'sqd0' => 'nullable',
-                    'sqd1' => 'nullable',
-                    'sqd2' => 'nullable',
-                    'sqd3' => 'nullable',
-                    'sqd4' => 'nullable',
-                    'sqd5' => 'nullable',
-                    'sqd6' => 'nullable',
-                    'sqd7' => 'nullable',
-                    'sqd8' => 'nullable',
+                    'sqd0' => 'required|between:1,6',
+                    'sqd1' => 'required|between:1,6',
+                    'sqd2' => 'required|between:1,6',
+                    'sqd3' => 'required|between:1,6',
+                    'sqd4' => 'required|between:1,6',
+                    'sqd5' => 'required|between:1,6',
+                    'sqd6' => 'required|between:1,6',
+                    'sqd7' => 'required|between:1,6',
+                    'sqd8' => 'required|between:1,6',
                     'suggestion' => 'nullable',
-                    'email' => 'nullable|email',
+                    'email' => 'nullable',
                 ],
                 $this->messages(),
             );
 
-            // If validation passes, proceed with form submission logic
-            dd('WEW');
+            // insert OfficeService
+            $insert = new Feedback();
+            $insert->client_type = $this->clientType;
+            $insert->sex = $this->clientSex;
+            $insert->age = $this->clientAge;
+            $insert->region = $this->clientRegion;
+            $insert->office_service_id = $this->serViceAvailed;
+            $insert->cc1 = $this->cc1;
+            $insert->cc2 = $this->cc2;
+            $insert->cc3 = $this->cc3;
+            $insert->sqd0 = $this->sqd0;
+            $insert->sqd1 = $this->sqd1;
+            $insert->sqd2 = $this->sqd2;
+            $insert->sqd3 = $this->sqd3;
+            $insert->sqd4 = $this->sqd4;
+            $insert->sqd5 = $this->sqd5;
+            $insert->sqd6 = $this->sqd6;
+            $insert->sqd7 = $this->sqd7;
+            $insert->sqd8 = $this->sqd8;
+            $insert->suggestions = $this->suggestion;
+            $insert->email = $this->email;
+            $insert->save();
+
+            // $this->success('Thank you for your feedback!!!');
+            $this->toast(
+                type: 'success',
+                title: 'Thank you for your feedback!',
+                description: 'This will help us gain insights to serve you better.', // optional (text)
+                position: 'toast-middle toast-center', // optional (daisyUI classes)
+                icon: 'o-information-circle', // Optional (any icon)
+                css: 'alert-success', // Optional (daisyUI classes)
+                timeout: 5000, // optional (ms)
+                redirectTo: null, // optional (uri)
+            );
+
+            // reset everything
+            $this->reset('step', 'language', 'clientType', 'clientSex', 'clientAge', 'clientRegion', 'serViceAvailedOffice', 'serViceAvailed', 'cc1', 'cc2', 'cc3', 'sqd0', 'sqd1', 'sqd2', 'sqd3', 'sqd4', 'sqd5', 'sqd6', 'sqd7', 'sqd8', 'suggestion', 'email');
         } catch (\Illuminate\Validation\ValidationException $e) {
             // Handle validation failure
             $this->warning($e->getMessage());
@@ -827,8 +863,8 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                 <span class="mt-4 mb-2 text-lg font-semibold" x-text="sqd_language[language].age"
                     :class="{ 'text-error': hasErrorAge }"></span>
             </div>
-            <input @keyup="handleAgeChange" type="number" min="10" max="100" placeholder="How old are you?"
-                class="w-full text-xl text-center lg:w-1/2 input input-bordered input-xl"
+            <input wire:model='clientAge' @keyup="handleAgeChange" type="number" min="10" max="100"
+                placeholder="How old are you?" class="w-full text-xl text-center lg:w-1/2 input input-bordered input-xl"
                 :class="{ 'input-error': hasErrorAge }" />
             {{-- END AGE --}}
             {{-- REGION --}}
@@ -836,7 +872,8 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                 <span class="mt-4 mb-2 text-lg font-semibold" x-text="sqd_language[language].region"
                     :class="{ 'text-error': hasErrorRegion }"></span>
             </div>
-            <input @keyup="handleRegionChange" type="text" placeholder="Region or your Address"
+            <input wire:model='clientRegion' @keyup="handleRegionChange" type="text"
+                placeholder="Region or your Address"
                 class="w-full text-xl text-center lg:w-1/2 input input-bordered input-xl"
                 :class="{ 'input-error': hasErrorRegion }" />
             {{-- END REGION --}}
@@ -852,7 +889,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                     x-text="sqd_language[language].service_availed"></span>
             </div>
 
-            <div class="grid grid-cols-2">
+            <div class="grid grid-cols-1 sm:grid-cols-2">
                 <div class="overflow-y-auto col max-h-96">
                     <div class="card">
                         <div class="card-body">

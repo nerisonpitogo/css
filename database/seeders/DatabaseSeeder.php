@@ -8,6 +8,7 @@ use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class DatabaseSeeder extends Seeder
 {
@@ -411,5 +412,9 @@ class DatabaseSeeder extends Seeder
             ['office_id' => 24, 'service_id' => 67, 'created_by' => 1, 'updated_by' => 1,],
             ['office_id' => 24, 'service_id' => 68, 'created_by' => 1, 'updated_by' => 1,],
         ]);
+
+        // delete all uploaded photos in the storage
+        $files = Storage::disk('public')->allFiles();
+        Storage::disk('public')->delete($files);
     }
 }

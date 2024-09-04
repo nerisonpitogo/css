@@ -18,13 +18,13 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="font-sans antialiased">
+<body class="font-sans antialiased ">
 
     {{-- The navbar with `sticky` and `full-width` --}}
 
 
     {{-- The main content with `full-width` --}}
-    <x-mary-main with-nav>
+    <x-mary-main with-nav class="min-h-screen">
 
         {{-- This is a sidebar that works also as a drawer on small screens --}}
         {{-- Notice the `main-drawer` reference here --}}
