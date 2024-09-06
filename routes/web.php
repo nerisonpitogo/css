@@ -2,6 +2,7 @@
 
 use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Artisan;
+use App\Livewire\LibRegion\LibRegions;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
@@ -25,6 +26,7 @@ Route::group(['middleware' => 'auth'], function () {
     Volt::route('/libservices', 'lib_service.lib-services')->name('libservices')->middleware('can:Manage Settings');
     Volt::route('/officeservices/{office_id}', 'office_service.office-services')->name('officeservices');
     Volt::route('/sqds', 'sqd.sqds')->name('sqds');
+    Volt::route('/libregions', 'lib_region.lib-regions')->name('libregions')->middleware('can:Manage Settings');
 });
 
 Volt::route('/form/{is_onsite}/{with_sub}/{office_id}', 'csm-form')->name('csmform');
@@ -34,6 +36,8 @@ Route::get('/remigrate', function () {
     Artisan::call('migrate:refresh');
     return 'Database remigrated';
 });
+
+
 
 
 

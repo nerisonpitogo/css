@@ -7,6 +7,8 @@ use Livewire\Attributes\{Title};
 use App\Livewire\Forms\OfficeService\OfficeServiceForm;
 use App\Models\Office;
 use App\Models\LibService\LibService;
+use App\Models\LibRegion\LibRegion;
+use App\Models\OfficeRegion;
 
 new #[Title('Office Services')] class extends Component {
     use WithPagination;
@@ -25,6 +27,7 @@ new #[Title('Office Services')] class extends Component {
     public $libServices;
 
     public $selectedID;
+    public $selectedRegions = [];
 
     public function mount(Office $office_id)
     {
@@ -41,6 +44,26 @@ new #[Title('Office Services')] class extends Component {
                 ];
             })
             ->toArray();
+
+        // populate selectedRegions
+        $regions = LibRegion::all();
+        foreach ($regions as $region) {
+            $officeRegion = OfficeRegion::where('office_id', $office_id->id)
+                ->where('region_id', $region->id)
+                ->first();
+
+            if ($officeRegion) {
+                $this->selectedRegions[$region->id] = [
+                    'is_included' => true,
+                    'is_priority' => $officeRegion->is_priority ? true : false,
+                ];
+            } else {
+                $this->selectedRegions[$region->id] = [
+                    'is_included' => false,
+                    'is_priority' => false,
+                ];
+            }
+        }
 
         // append libservices with id="" name="Select Service"
         array_unshift($this->libServices, ['id' => '', 'name' => 'Select Service']);
@@ -69,6 +92,7 @@ new #[Title('Office Services')] class extends Component {
 
         return [
             'officeservices' => $this->getOfficeServices(),
+            'regions' => Libregion::all(),
             'headers' => $table_headers,
         ];
     }
@@ -142,6 +166,39 @@ new #[Title('Office Services')] class extends Component {
         $this->form->setOfficeService($officeservice);
         $this->transaction = 'edit';
         $this->modalOfficeService = true;
+    }
+
+    public function save()
+    {
+        // dd($this->selectedRegions);
+
+        $regions = LibRegion::all();
+        foreach ($regions as $region) {
+            // OfficeRegion
+            // update or create
+            if (isset($this->selectedRegions[$region->id]['is_included']) && $this->selectedRegions[$region->id]['is_included'] === true) {
+                $officeRegion = OfficeRegion::updateOrCreate(
+                    ['office_id' => $this->office->id, 'region_id' => $region->id],
+                    [
+                        'is_priority' => $this->selectedRegions[$region->id]['is_priority'] ?? false,
+                    ],
+                );
+            }
+        }
+
+        // Filter the selectedRegions to only include regions that are marked as included
+        $includedRegionIds = array_keys(
+            array_filter($this->selectedRegions, function ($region) {
+                return $region['is_included'] === true;
+            }),
+        );
+
+        // Erase all regions that are not included
+        OfficeRegion::where('office_id', $this->office->id)
+            ->whereNotIn('region_id', $includedRegionIds)
+            ->delete();
+
+        $this->success('Regions updated successfully');
     }
 }; ?>
 
@@ -378,14 +435,56 @@ new #[Title('Office Services')] class extends Component {
         </div>
 
     </div>
+    <div class="grid grid-cols-1 gap-2 mt-2 lg:grid-cols-2">
+        <div class="col">
+            <x-mary-card class="" title="Regions"
+                subtitle="This will be the regions that will only appear in the client form. None selected will display all regions. Priority will dispaly at the top most of the list."
+                shadow separator>
 
-    <div class="grid grid-cols-1 gap-2 mt-2">
+                <div class="overflow-x-auto">
+                    <table class="table table-xs">
+                        <thead>
+                            <tr>
+                                <th>Region</th>
+                                <th>Is Included</th>
+                                <th>Is Priority</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($regions as $region)
+                                <tr>
+                                    <td>{{ $region->name }}</td>
+                                    <td>
+                                        <x-mary-checkbox
+                                            wire:model="selectedRegions.{{ $region->id }}.is_included" />
+                                    </td>
+                                    <td>
+                                        <x-mary-checkbox
+                                            wire:model="selectedRegions.{{ $region->id }}.is_priority" />
+                                    </td>
 
-        <x-mary-card class="" title="Form Header Image"
-            subtitle="This Image will appear at the top of the online form." shadow separator>
+                                </tr>
+                            @endforeach
+                            <tr>
+                                <td colspan="4">
+                                    <x-mary-button spinner label="Save" class="btn-primary" wire:click="save" />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
-            <livewire:office-header-image-upload :office="$office" />
-        </x-mary-card>
+            </x-mary-card>
+        </div>
+
+
+
+        <div class="col">
+            <x-mary-card class="" title="Form Header Image"
+                subtitle="This Image will appear at the top of the online form." shadow separator>
+                <livewire:office-header-image-upload :office="$office" />
+            </x-mary-card>
+        </div>
 
 
     </div>

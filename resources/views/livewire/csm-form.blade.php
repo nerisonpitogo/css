@@ -7,6 +7,7 @@ use App\Models\Sqd\sqd;
 use App\Models\Feedback;
 use Mary\Traits\Toast;
 use Illuminate\Support\Facades\Validator;
+use App\Models\OfficeRegion;
 
 new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component {
     use Toast;
@@ -152,7 +153,31 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
         return [
             'sqd_language' => $sqd_language,
             'offices' => $offices,
+            'regions' => $this->getRegions(),
         ];
+    }
+
+    private function getRegions()
+    {
+        $regions = OfficeRegion::where('office_id', $this->office_id)
+            ->orderBy('is_priority')
+            ->get();
+        if ($regions->isNotEmpty()) {
+            // return an array with id and region_name
+            $regions_array = [];
+            foreach ($regions as $region) {
+                $regions_array[$region->id] = $region->region->region_name;
+            }
+            return $regions_array;
+        } else {
+            //get from the lib_regions
+            $regions = OfficeRegion::where('office_id', 0)->get();
+            $regions_array = [];
+            foreach ($regions as $region) {
+                $regions_array[$region->id] = $region->region->region_name;
+            }
+            return $regions_array;
+        }
     }
 
     private function getServicesByOffice(Office $office, $services_array = [])

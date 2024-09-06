@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
+use App\Policies\LibRegion\LibRegionPolicy;
+use App\Models\LibRegion\LibRegion;
 class AppServiceProvider extends ServiceProvider
 {
     /**

@@ -83,6 +83,7 @@
                 @endcan
                 @can('Manage Settings')
                     <x-mary-menu-item title="Services Library" icon="o-list-bullet" link="{{ route('libservices') }}" />
+                    <x-mary-menu-item title="Regions" icon="o-map" link="{{ route('libregions') }}" />
 
                     <x-mary-menu-sub title="RBAC" icon="o-cog-6-tooth">
                         <x-mary-menu-item title="Permissions" icon="o-key" link="{{ route('permissions') }}" />

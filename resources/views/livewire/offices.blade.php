@@ -83,12 +83,10 @@ new class extends Component {
 
                 <div class="mt-4">
                     {{ $offices->links() }}
-
                 </div>
             </div>
         </div>
     </div>
-
 
     <x-mary-modal wire:model="modalOfficeShown">
         <x-mary-form wire:submit="saveOffice">
