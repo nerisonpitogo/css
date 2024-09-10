@@ -29,7 +29,7 @@ Route::group(['middleware' => 'auth'], function () {
     Volt::route('/libregions', 'lib_region.lib-regions')->name('libregions')->middleware('can:Manage Settings');
 });
 
-Volt::route('/form/{is_onsite}/{with_sub}/{office_id}', 'csm-form')->name('csmform');
+Volt::route('/form/{is_onsite}/{with_sub}/{is_external}/{office_id}', 'csm-form')->name('csmform');
 
 // remigrate database
 Route::get('/remigrate', function () {

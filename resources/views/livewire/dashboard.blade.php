@@ -2,6 +2,7 @@
 
 use Livewire\Volt\Component;
 use App\Models\Office;
+use Carbon\Carbon;
 
 new class extends Component {
     public $selType = 'this_week';
@@ -23,9 +24,46 @@ new class extends Component {
                 ];
             })
             ->toArray();
+        $this->updateDates();
         $this->selectedOffices[0] = Auth::user()->office_id;
-        // trigger the updatedSelectedOffices method to load child offices
+
         $this->updatedSelectedOffices(Auth::user()->office_id, 0);
+    }
+
+    public function updateDates()
+    {
+        $today = Carbon::today();
+
+        switch ($this->selType) {
+            case 'this_week':
+                $this->dateFrom = $today->startOfWeek()->toDateString();
+                $this->dateTo = $today->endOfWeek()->toDateString();
+                break;
+            case 'last_week':
+                $this->dateFrom = $today->subWeek()->startOfWeek()->toDateString();
+                $this->dateTo = $today->endOfWeek()->toDateString();
+                break;
+            case 'this_month':
+                $this->dateFrom = $today->startOfMonth()->toDateString();
+                $this->dateTo = $today->endOfMonth()->toDateString();
+                break;
+            case 'last_month':
+                $this->dateFrom = $today->subMonth()->startOfMonth()->toDateString();
+                $this->dateTo = $today->endOfMonth()->toDateString();
+                break;
+            case 'today':
+                $this->dateFrom = $today->toDateString();
+                $this->dateTo = $today->toDateString();
+                break;
+            case 'yesterday':
+                $this->dateFrom = $today->subDay()->toDateString();
+                $this->dateTo = $today->toDateString();
+                break;
+            case 'custom':
+                $this->dateFrom = '';
+                $this->dateTo = '';
+                break;
+        }
     }
 
     public function updatedSelectedOffices($value, $key)
@@ -53,78 +91,12 @@ new class extends Component {
     }
 }; ?>
 
-<div x-data="{
-
-    selType: @entangle('selType'),
-    dateFrom: @entangle('dateFrom'),
-    dateTo: @entangle('dateTo'),
-
-    updateDates() {
-        const today = new Date();
-
-        // Get the start and end of the current week
-        const dayOfWeek = today.getDay(); // 0 (Sunday) to 6 (Saturday)
-        const startOfWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - dayOfWeek);
-        const endOfWeek = new Date(startOfWeek);
-        endOfWeek.setDate(startOfWeek.getDate() + 6);
-
-        if (this.selType === 'this_week') {
-            this.dateFrom = this.formatDate(startOfWeek);
-            this.dateTo = this.formatDate(endOfWeek);
-        } else if (this.selType === 'last_week') {
-            startOfWeek.setDate(startOfWeek.getDate() - 7);
-            endOfWeek.setDate(endOfWeek.getDate() - 7);
-            this.dateFrom = this.formatDate(startOfWeek);
-            this.dateTo = this.formatDate(endOfWeek);
-        } else if (this.selType === 'this_month') {
-            // Set start of the current month
-            const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-            // Set end of the current month
-            const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0); // 0 automatically sets the last day of the month
-
-            this.dateFrom = this.formatDate(startOfMonth);
-            this.dateTo = this.formatDate(endOfMonth);
-        } else if (this.selType === 'last_month') {
-            // Set start of the previous month
-            const startOfLastMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1);
-            // Set end of the previous month
-            const endOfLastMonth = new Date(today.getFullYear(), today.getMonth(), 0); // 0 automatically sets the last day of the previous month
-
-            this.dateFrom = this.formatDate(startOfLastMonth);
-            this.dateTo = this.formatDate(endOfLastMonth);
-        }
-        //today
-        else if (this.selType === 'today') {
-            this.dateFrom = this.formatDate(today);
-            this.dateTo = this.formatDate(today);
-        } else if (this.selType === 'yesterday') {
-            const yesterday = new Date(today);
-            yesterday.setDate(yesterday.getDate() - 1);
-            this.dateFrom = this.formatDate(yesterday);
-            this.dateTo = this.formatDate(yesterday);
-        }
-        //custom just empty
-        else if (this.selType === 'custom') {
-            this.dateFrom = '';
-            this.dateTo = '';
-        }
-    },
-
-    formatDate(date) {
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed, so we add 1
-        const day = String(date.getDate()).padStart(2, '0');
-
-        return `${year}-${month}-${day}`;
-    }
-
-}" x-init="updateDates()" x-cloak>
+<div x-cloak>
     <div class="w-full card bg-base-100">
         <div class="card-body">
             <h2 class="text-lg card-title">
                 <div class="grid grid-cols-1">
                     <div class="grid grid-cols-2 gap-2 mb-2 md:grid-cols-4 lg:grid-cols-6">
-
 
                         @php
                             $selections = [['id' => 1, 'name' => 'Yes'], ['id' => 0, 'name' => 'No']];
@@ -162,18 +134,20 @@ new class extends Component {
 
                     <div class="grid grid-cols-2 gap-2 md:grid-cols-4 lg:grid-cols-6">
                         <div class="col">
-                            <x-mary-select @change="updateDates" class="text-sm" label="Type" icon="o-user"
+                            <x-mary-select wire:change='updateDates' class="text-sm" label="Type" icon="o-user"
                                 :options="$users" wire:model="selType" />
                         </div>
                         <div class="col">
-                            <x-mary-datetime class="text-sm" label="Date From" wire:model="dateFrom"
+                            <x-mary-datetime class="text-sm" label="Date From" wire:model.live="dateFrom"
                                 icon="o-calendar" />
                         </div>
                         <div class="col">
-                            <x-mary-datetime class="text-sm" label="Date To" wire:model="dateTo" icon="o-calendar" />
+                            <x-mary-datetime class="text-sm" label="Date To" wire:model.live="dateTo"
+                                icon="o-calendar" />
                         </div>
-                        <div class="items-center mt-7 col">
-                            <x-mary-button class="btn btn-primary" icon="o-funnel" />
+                        <div class="items-center justify-center mt-7 col">
+                            <x-mary-loading loading-lg wire:loading class="mt-3" />
+                            {{-- <x-mary-button wire:loading.remove class="btn btn-primary" icon="o-funnel" /> --}}
                         </div>
                     </div>
                 </div>
@@ -181,4 +155,11 @@ new class extends Component {
 
         </div>
     </div>
+
+    <livewire:dashboard-summary lazy :selType="$selType" :dateFrom="$dateFrom" :dateTo="$dateTo" :includeSubOffice="$includeSubOffice"
+        :$selectedOffices />
+
+    <livewire:dashboard-summary-sqd lazy :selType="$selType" :dateFrom="$dateFrom" :dateTo="$dateTo" :includeSubOffice="$includeSubOffice"
+        :selectedOffices="$selectedOffices" />
+
 </div>

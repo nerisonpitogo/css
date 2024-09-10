@@ -115,6 +115,7 @@ return new class extends Migration
 
 
 
+
             $table->timestamps();
         });
 
@@ -134,7 +135,7 @@ return new class extends Migration
                 'male' => 'Male',
                 'female' => 'Female',
                 'age' => 'Age',
-                'region' => 'Region of Residence or Address',
+                'region' => 'Region of Residence',
 
                 'office_transacted' => 'Office you have transacted.',
                 'service_availed_header' => 'Service you have availed.',
@@ -213,7 +214,7 @@ return new class extends Migration
                 'male' => 'Male',
                 'female' => 'Female',
                 'age' => 'Age',
-                'region' => 'Region of Residence or Address',
+                'region' => 'Region of Residence',
 
                 'office_transacted' => 'Office you have transacted.',
                 'service_availed_header' => 'Service you have availed.',
@@ -291,7 +292,7 @@ return new class extends Migration
                 'male' => 'Lalaki',
                 'female' => 'Babae',
                 'age' => 'Edad',
-                'region' => 'Rehiyon o Lugar ng Tirahan',
+                'region' => 'Rehiyon ng Tirahan',
 
                 'office_transacted' => 'Opisina na iyong pinuntahan.',
                 'service_availed_header' => 'Pumili ng serbisyong natanggap',
@@ -369,7 +370,7 @@ return new class extends Migration
                 'male' => 'Lalaki',
                 'female' => 'Babae',
                 'age' => 'Edad',
-                'region' => 'Rehiyon o Lugar ng Tirahan',
+                'region' => 'Rehiyon ng Tirahan',
 
                 'office_transacted' => 'Opisina na iyong pinuntahan.',
                 'service_availed_header' => 'Pumili ng serbisyong natanggap',
@@ -445,7 +446,7 @@ return new class extends Migration
                 'male' => 'Lalaki',
                 'female' => 'Babae',
                 'age' => 'Edad',
-                'region' => 'Rehiyon o Lugar sa Puloy-an',
+                'region' => 'Rehiyon sa Puloy-an',
 
                 'office_transacted' => 'Opisina nga imong gi bisita.',
                 'service_availed_header' => 'Pilia ang serbisyo nga imong nadawat.',
@@ -521,7 +522,7 @@ return new class extends Migration
                 'male' => 'Lalaki',
                 'female' => 'Babae',
                 'age' => 'Edad',
-                'region' => 'Rehiyon o lugar sa puloy-an',
+                'region' => 'Rehiyon sa puloy-an',
 
                 'office_transacted' => 'Pili-a ang opisina nga imong gi bisita.',
                 'service_availed_header' => 'Pilia ang serbisyo nga imong nadawat.',

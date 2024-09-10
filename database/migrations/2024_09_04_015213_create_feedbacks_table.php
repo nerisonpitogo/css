@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             // client_Type
             $table->string('client_type');
+            // is_external
+            $table->boolean('is_external');
             $table->string('sex');
             $table->integer('age');
             $table->string('region');

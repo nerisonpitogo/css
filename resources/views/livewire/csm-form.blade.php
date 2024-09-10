@@ -8,6 +8,7 @@ use App\Models\Feedback;
 use Mary\Traits\Toast;
 use Illuminate\Support\Facades\Validator;
 use App\Models\OfficeRegion;
+use App\Models\LibRegion\LibRegion;
 
 new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component {
     use Toast;
@@ -22,6 +23,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
     public $clientSex;
     public $clientAge;
     public $clientRegion;
+    public $clientRegionText;
 
     public $hasErrorClientType = false;
     public $hasErrorSex = false;
@@ -96,12 +98,14 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
     public $servicesArrayAll = [];
 
     public $office;
+    public $is_external = 1;
 
-    public function mount($is_onsite, $with_sub, $office_id)
+    public function mount($is_onsite, $with_sub, $is_external, $office_id)
     {
         $this->is_onsite = $is_onsite; //1 for onsite 0 for online
         $this->with_sub = $with_sub;
         $this->office_id = $office_id;
+        $this->is_external = $is_external;
 
         $this->office = Office::findOrFail($office_id);
 
@@ -160,22 +164,39 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
     private function getRegions()
     {
         $regions = OfficeRegion::where('office_id', $this->office_id)
-            ->orderBy('is_priority')
+            ->orderBy('is_priority', 'desc')
             ->get();
+
+        // get the first row and set the region
+        if ($regions->isNotEmpty()) {
+            $this->clientRegion = $regions->first()->region_id;
+            $this->clientRegionText = $regions->first()->region->name;
+        }
+
+        $regions_array = [];
         if ($regions->isNotEmpty()) {
             // return an array with id and region_name
-            $regions_array = [];
+
             foreach ($regions as $region) {
-                $regions_array[$region->id] = $region->region->region_name;
+                // $regions_array[$region->id] = $region->region->region_name;
+                // store in id and name
+                $regions_array[] = [
+                    'id' => $region->region->id,
+                    'name' => $region->region->name,
+                ];
             }
             return $regions_array;
         } else {
             //get from the lib_regions
-            $regions = OfficeRegion::where('office_id', 0)->get();
-            $regions_array = [];
+            $regions = LibRegion::all();
             foreach ($regions as $region) {
-                $regions_array[$region->id] = $region->region->region_name;
+                $regions_array[] = [
+                    'id' => $region->id,
+                    'name' => $region->name,
+                ];
             }
+            $this->clientRegion = $regions->first()->id;
+            $this->clientRegionText = $regions->first()->name;
             return $regions_array;
         }
     }
@@ -250,7 +271,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                     'clientType' => 'required',
                     'clientSex' => 'required|in:male,female',
                     'clientAge' => 'nullable|integer|min:10|max:120',
-                    'clientRegion' => 'nullable',
+                    'clientRegion' => 'required|exists:lib_regions,id',
                     'serViceAvailed' => 'required',
                     'cc1' => 'required',
                     'cc2' => 'nullable',
@@ -291,6 +312,8 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
             $insert->sqd8 = $this->sqd8;
             $insert->suggestions = $this->suggestion;
             $insert->email = $this->email;
+            $insert->is_external = $this->is_external;
+
             $insert->save();
 
             // $this->success('Thank you for your feedback!!!');
@@ -306,7 +329,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
             );
 
             // reset everything
-            $this->reset('step', 'language', 'clientType', 'clientSex', 'clientAge', 'clientRegion', 'serViceAvailedOffice', 'serViceAvailed', 'cc1', 'cc2', 'cc3', 'sqd0', 'sqd1', 'sqd2', 'sqd3', 'sqd4', 'sqd5', 'sqd6', 'sqd7', 'sqd8', 'suggestion', 'email');
+            $this->reset('step', 'language', 'clientType', 'clientSex', 'clientAge', 'clientRegion', 'clientRegionText', 'serViceAvailedOffice', 'serViceAvailed', 'cc1', 'cc2', 'cc3', 'sqd0', 'sqd1', 'sqd2', 'sqd3', 'sqd4', 'sqd5', 'sqd6', 'sqd7', 'sqd8', 'suggestion', 'email');
         } catch (\Illuminate\Validation\ValidationException $e) {
             // Handle validation failure
             $this->warning($e->getMessage());
@@ -333,6 +356,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
     clientSex: @entangle('clientSex'),
     clientAge: @entangle('clientAge'),
     clientRegion: @entangle('clientRegion'),
+    clientRegionText: @entangle('clientRegionText'),
 
     hasErrorClientType: @entangle('hasErrorClientType'),
     hasErrorSex: @entangle('hasErrorSex'),
@@ -559,7 +583,8 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
 
     handleRegionChange(event) {
         let input = event.target.value;
-
+        let selectedOption = event.target.selectedOptions[0];
+        this.clientRegionText = selectedOption.text;
         if (input.length < 1) {
             this.hasErrorRegion = true;
             if (!this.errorFields.includes('Region')) {
@@ -782,14 +807,19 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
         @endif
     </div>
     <div class="flex items-center justify-center w-full max-w-full overflow-x-auto">
-        <x-mary-steps wire:model="step" steps-color="step-primary">
-            <x-mary-step step="1" text="" />
-            <x-mary-step step="2" text="" />
-            <x-mary-step step="3" text="" />
-            <x-mary-step step="4" text="" />
-            <x-mary-step step="5" text="" />
-            <x-mary-step step="6" text="" data-content="✓" step-classes="!step-success" />
-        </x-mary-steps>
+        <div class="grid grid-cols-1 text-center">
+            <h1 class="text-xl">
+                {{ $is_external == 1 ? 'External Client Form' : 'Internal Client Form' }}
+            </h1>
+            <x-mary-steps wire:model="step" steps-color="step-primary">
+                <x-mary-step step="1" text="" />
+                <x-mary-step step="2" text="" />
+                <x-mary-step step="3" text="" />
+                <x-mary-step step="4" text="" />
+                <x-mary-step step="5" text="" />
+                <x-mary-step step="6" text="" data-content="✓" step-classes="!step-success" />
+            </x-mary-steps>
+        </div>
     </div>
 
     {{-- STEP 1 --}}
@@ -888,19 +918,26 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                 <span class="mt-4 mb-2 text-lg font-semibold" x-text="sqd_language[language].age"
                     :class="{ 'text-error': hasErrorAge }"></span>
             </div>
-            <input wire:model='clientAge' @keyup="handleAgeChange" type="number" min="10" max="100"
-                placeholder="How old are you?" class="w-full text-xl text-center lg:w-1/2 input input-bordered input-xl"
-                :class="{ 'input-error': hasErrorAge }" />
+            <div class="flex justify-center w-full align-middle md:w-1/4">
+                <input wire:model='clientAge' @keyup="handleAgeChange" type="number" min="10" max="100"
+                    placeholder="How old are you?"
+                    class="w-full text-xl text-center input input-bordered border-primary input-xl"
+                    :class="{ '!input-error': hasErrorAge }" />
+            </div>
+
             {{-- END AGE --}}
             {{-- REGION --}}
             <div class="flex items-center justify-center">
                 <span class="mt-4 mb-2 text-lg font-semibold" x-text="sqd_language[language].region"
                     :class="{ 'text-error': hasErrorRegion }"></span>
             </div>
-            <input wire:model='clientRegion' @keyup="handleRegionChange" type="text"
+            {{-- <input wire:model='clientRegion' @keyup="handleRegionChange" type="text"
                 placeholder="Region or your Address"
                 class="w-full text-xl text-center lg:w-1/2 input input-bordered input-xl"
-                :class="{ 'input-error': hasErrorRegion }" />
+                :class="{ 'input-error': hasErrorRegion }" /> --}}
+
+            <x-mary-select label="" @change="handleRegionChange" :options="$regions" wire:model="clientRegion" />
+
             {{-- END REGION --}}
         </div>
     </div>
@@ -2234,7 +2271,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
             <x-summary-item label="" alpine_value='client_type' value="selected_client_type" />
             <x-summary-item label="" alpine_value='sex' value="selected_sex" />
             <x-summary-item label="" alpine_value='age' value="clientAge" />
-            <x-summary-item label="" alpine_value='region' value="clientRegion" />
+            <x-summary-item label="" alpine_value='region' value="clientRegionText" />
             <x-summary-item label="" alpine_value='office_transacted' value="office_transacted_word" />
             <x-summary-item label="" alpine_value='service_availed' value="service_availed_word" />
 
