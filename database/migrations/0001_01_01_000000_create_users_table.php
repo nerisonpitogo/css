@@ -52,6 +52,13 @@ return new class extends Migration
             'user_type' => 'admin', // 'admin' or 'user
             'password' => Hash::make('12345678'),
         ]);
+        DB::table('users')->insert([
+            'name' => 'Admin',
+            'email' => 'son2xp2go042@gmail.com',
+            'office_id' => 11, //11 ICT
+            'user_type' => 'admin', // 'admin' or 'user
+            'password' => Hash::make('12345678'),
+        ]);
     }
 
     /**

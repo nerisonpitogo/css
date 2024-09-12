@@ -3,6 +3,7 @@
 use Livewire\Volt\Component;
 use App\Models\Feedback;
 use Livewire\Attributes\Reactive;
+use App\Services\FeedbackService;
 
 new class extends Component {
     #[Reactive]
@@ -29,23 +30,13 @@ new class extends Component {
         $this->includeSubOffice = $includeSubOffice;
     }
 
-    public function loading()
-    {
-        $this->isLoading = true;
-    }
-
-    public function notLoading()
-    {
-        $this->isLoading = false;
-    }
-
-    public function with()
+    public function with(FeedbackService $feedbackService)
     {
         return [
-            'total_responses' => get_total_responses($this->dateFrom, $this->dateTo, end($this->selectedOffices), $this->includeSubOffice),
-            'cc1_awareness_total' => get_cc1_awareness_total($this->dateFrom, $this->dateTo, end($this->selectedOffices), $this->includeSubOffice),
-            'cc2_visibility_total' => get_cc2_visibility_total($this->dateFrom, $this->dateTo, end($this->selectedOffices), $this->includeSubOffice),
-            'cc3_helpfulness_total' => get_cc3_helpfulness_total($this->dateFrom, $this->dateTo, end($this->selectedOffices), $this->includeSubOffice),
+            'total_responses' => $feedbackService->get_total_responses($this->dateFrom, $this->dateTo, end($this->selectedOffices), $this->includeSubOffice),
+            'cc1_awareness_total' => $feedbackService->get_cc1_awareness_total($this->dateFrom, $this->dateTo, end($this->selectedOffices), $this->includeSubOffice),
+            'cc2_visibility_total' => $feedbackService->get_cc2_visibility_total($this->dateFrom, $this->dateTo, end($this->selectedOffices), $this->includeSubOffice),
+            'cc3_helpfulness_total' => $feedbackService->get_cc3_helpfulness_total($this->dateFrom, $this->dateTo, end($this->selectedOffices), $this->includeSubOffice),
         ];
     }
 
