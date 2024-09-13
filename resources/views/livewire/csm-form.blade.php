@@ -296,7 +296,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
             $insert->client_type = $this->clientType;
             $insert->sex = $this->clientSex;
             $insert->age = $this->clientAge;
-            $insert->region = $this->clientRegion;
+            $insert->region_id = $this->clientRegion;
             $insert->office_service_id = $this->serViceAvailed;
             $insert->cc1 = $this->cc1;
             $insert->cc2 = $this->cc2;

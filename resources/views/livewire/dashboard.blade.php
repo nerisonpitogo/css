@@ -162,4 +162,7 @@ new class extends Component {
     <livewire:dashboard-summary-sqd lazy :selType="$selType" :dateFrom="$dateFrom" :dateTo="$dateTo" :includeSubOffice="$includeSubOffice"
         :selectedOffices="$selectedOffices" />
 
+    <livewire:dashboard-summary-age lazy :selType="$selType" :dateFrom="$dateFrom" :dateTo="$dateTo" :includeSubOffice="$includeSubOffice"
+        :selectedOffices="$selectedOffices" />
+
 </div>

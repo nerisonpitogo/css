@@ -20,13 +20,14 @@ new class extends Component {
     #[Reactive]
     public $selectedOffices = [];
 
-    public function mount($selType, $dateFrom, $dateTo, $includeSubOffice)
+    public function mount($selType, $dateFrom, $dateTo, $includeSubOffice, $selectedOffices)
     {
         $this->selType = $selType;
 
         $this->dateFrom = $dateFrom;
         $this->dateTo = $dateTo;
         $this->includeSubOffice = $includeSubOffice;
+        $this->selectedOffices = $selectedOffices;
     }
 
     public function with(FeedbackService $feedbackService)
@@ -178,7 +179,7 @@ new class extends Component {
                     </div>
                     <div
                         class="p-2 text-xl font-bold text-center rounded {{ get_percentage_color($all_sqd_scores['sqd1'][0]) }} bg-base-200">
-                        {{ $all_sqd_scores['sqd1'][0] !== 'N/A' ? $all_sqd_scores['sqd1'][0] . '% [' . $all_sqd_scores['sqd1'][1] . ']' : 'N/A' }}
+                        {{ $all_sqd_scores['sqd1'][0] !== 'N/A' ? number_format($all_sqd_scores['sqd1'][0], 2) . '% [' . $all_sqd_scores['sqd1'][1] . ']' : 'N/A' }}
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-4 mt-1">
@@ -187,7 +188,7 @@ new class extends Component {
                     </div>
                     <div
                         class="p-2 text-xl font-bold text-center rounded {{ get_percentage_color($all_sqd_scores['sqd2'][0]) }} bg-base-200">
-                        {{ $all_sqd_scores['sqd2'][0] !== 'N/A' ? $all_sqd_scores['sqd2'][0] . '% [' . $all_sqd_scores['sqd2'][1] . ']' : 'N/A' }}
+                        {{ $all_sqd_scores['sqd2'][0] !== 'N/A' ? number_format($all_sqd_scores['sqd2'][0], 2) . '% [' . $all_sqd_scores['sqd2'][1] . ']' : 'N/A' }}
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-4 mt-1">
@@ -196,7 +197,7 @@ new class extends Component {
                     </div>
                     <div
                         class="p-2 text-xl font-bold text-center rounded {{ get_percentage_color($all_sqd_scores['sqd3'][0]) }} bg-base-200">
-                        {{ $all_sqd_scores['sqd3'][0] !== 'N/A' ? $all_sqd_scores['sqd3'][0] . '% [' . $all_sqd_scores['sqd3'][1] . ']' : 'N/A' }}
+                        {{ $all_sqd_scores['sqd3'][0] !== 'N/A' ? number_format($all_sqd_scores['sqd3'][0], 2) . '% [' . $all_sqd_scores['sqd3'][1] . ']' : 'N/A' }}
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-4 mt-1">
@@ -205,7 +206,7 @@ new class extends Component {
                     </div>
                     <div
                         class="p-2 text-xl font-bold text-center rounded {{ get_percentage_color($all_sqd_scores['sqd4'][0]) }} bg-base-200">
-                        {{ $all_sqd_scores['sqd4'][0] !== 'N/A' ? $all_sqd_scores['sqd4'][0] . '% [' . $all_sqd_scores['sqd4'][1] . ']' : 'N/A' }}
+                        {{ $all_sqd_scores['sqd4'][0] !== 'N/A' ? number_format($all_sqd_scores['sqd4'][0], 2) . '% [' . $all_sqd_scores['sqd4'][1] . ']' : 'N/A' }}
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-4 mt-1">
@@ -214,7 +215,7 @@ new class extends Component {
                     </div>
                     <div
                         class="p-2 text-xl font-bold text-center rounded {{ get_percentage_color($all_sqd_scores['sqd5'][0]) }} bg-base-200">
-                        {{ $all_sqd_scores['sqd5'][0] !== 'N/A' ? $all_sqd_scores['sqd5'][0] . '% [' . $all_sqd_scores['sqd5'][1] . ']' : 'N/A' }}
+                        {{ $all_sqd_scores['sqd5'][0] !== 'N/A' ? number_format($all_sqd_scores['sqd5'][0], 2) . '% [' . $all_sqd_scores['sqd5'][1] . ']' : 'N/A' }}
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-4 mt-1">
@@ -223,7 +224,7 @@ new class extends Component {
                     </div>
                     <div
                         class="p-2 text-xl font-bold text-center rounded {{ get_percentage_color($all_sqd_scores['sqd6'][0]) }} bg-base-200">
-                        {{ $all_sqd_scores['sqd6'][0] !== 'N/A' ? $all_sqd_scores['sqd6'][0] . '% [' . $all_sqd_scores['sqd6'][1] . ']' : 'N/A' }}
+                        {{ $all_sqd_scores['sqd6'][0] !== 'N/A' ? number_format($all_sqd_scores['sqd6'][0], 2) . '% [' . $all_sqd_scores['sqd6'][1] . ']' : 'N/A' }}
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-4 mt-1">
@@ -232,7 +233,7 @@ new class extends Component {
                     </div>
                     <div
                         class="p-2 text-xl font-bold text-center rounded {{ get_percentage_color($all_sqd_scores['sqd7'][0]) }} bg-base-200">
-                        {{ $all_sqd_scores['sqd7'][0] !== 'N/A' ? $all_sqd_scores['sqd7'][0] . '% [' . $all_sqd_scores['sqd7'][1] . ']' : 'N/A' }}
+                        {{ $all_sqd_scores['sqd7'][0] !== 'N/A' ? number_format($all_sqd_scores['sqd7'][0], 2) . '% [' . $all_sqd_scores['sqd7'][1] . ']' : 'N/A' }}
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-4 mt-1">
@@ -241,7 +242,7 @@ new class extends Component {
                     </div>
                     <div
                         class="p-2 text-xl font-bold text-center rounded {{ get_percentage_color($all_sqd_scores['sqd8'][0]) }} bg-base-200">
-                        {{ $all_sqd_scores['sqd8'][0] !== 'N/A' ? $all_sqd_scores['sqd8'][0] . '% [' . $all_sqd_scores['sqd8'][1] . ']' : 'N/A' }}
+                        {{ $all_sqd_scores['sqd8'][0] !== 'N/A' ? number_format($all_sqd_scores['sqd8'][0], 2) . '% [' . $all_sqd_scores['sqd8'][1] . ']' : 'N/A' }}
                     </div>
                 </div>
 

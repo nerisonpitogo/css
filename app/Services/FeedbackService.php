@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Feedback;
+use App\Models\LibRegion\LibRegion;
 use App\Models\Office;
 use Illuminate\Support\Facades\DB;
 
@@ -350,5 +351,364 @@ class FeedbackService
         } elseif ($rating >= 95) {
             return 'Outstanding';
         }
+    }
+
+
+    // function get_age_bracket($dateFrom, $dateTo, $office, $include_sub_offices)
+    // {
+    //     // return array[value, word]
+    //     $dateFrom = date('Y-m-d 00:00:00', strtotime($dateFrom));
+    //     $dateTo = date('Y-m-d 23:59:59', strtotime($dateTo));
+
+    //     $officeIds = [$office];
+    //     if ($include_sub_offices) {
+    //         $officeIds = get_office_and_sub_offices($office);
+    //     }
+
+    //     $feedbacks_internal = Feedback::join('office_services', 'office_services.id', '=', 'feedbacks.office_service_id')
+    //         ->whereIn('office_services.office_id', $officeIds)
+    //         ->whereBetween('feedbacks.created_at', [$dateFrom, $dateTo])
+    //         ->where('is_external', 0)
+    //         ->select('age')
+    //         ->get();
+    //     $feedbacks_external = Feedback::join('office_services', 'office_services.id', '=', 'feedbacks.office_service_id')
+    //         ->whereIn('office_services.office_id', $officeIds)
+    //         ->whereBetween('feedbacks.created_at', [$dateFrom, $dateTo])
+    //         ->where('is_external', 1)
+    //         ->select('age')
+    //         ->get();
+
+    //     $feedbacks_overall = Feedback::join('office_services', 'office_services.id', '=', 'feedbacks.office_service_id')
+    //         ->whereIn('office_services.office_id', $officeIds)
+    //         ->whereBetween('feedbacks.created_at', [$dateFrom, $dateTo])
+    //         ->select('age')
+    //         ->get();
+
+    //     $age_bracket = [];
+    //     // 19 or lower, 20-34, 35,49, 50-64, 65 or higher
+    //     //count of internal, count of external, bracket name, overall count
+
+    //     $age_bracket[0] = ['external' => 0, 'internal' => 0, 'label' => '19 or lower', 'overall' => 0]; //19 or lower
+    //     $age_bracket[1] = ['external' => 0, 'internal' => 0, 'label' => '20-34', 'overall' => 0]; //20-34
+    //     $age_bracket[2] = ['external' => 0, 'internal' => 0, 'label' => '35-49', 'overall' => 0]; //35-49
+    //     $age_bracket[3] = ['external' => 0, 'internal' => 0, 'label' => '50-64', 'overall' => 0]; //50-64
+    //     $age_bracket[4] = ['external' => 0, 'internal' => 0, 'label' => '65 or higher', 'overall' => 0]; //65 or higher
+
+    //     foreach ($feedbacks_internal as $feedback) {
+    //         if ($feedback->age <= 19) {
+    //             $age_bracket[0]['internal']++;
+    //         } elseif ($feedback->age >= 20 && $feedback->age <= 34) {
+    //             $age_bracket[1]['internal']++;
+    //         } elseif ($feedback->age >= 35 && $feedback->age <= 49) {
+    //             $age_bracket[2]['internal']++;
+    //         } elseif ($feedback->age >= 50 && $feedback->age <= 64) {
+    //             $age_bracket[3]['internal']++;
+    //         } elseif ($feedback->age >= 65) {
+    //             $age_bracket[4]['internal']++;
+    //         }
+    //     }
+
+    //     foreach ($feedbacks_external as $feedback) {
+    //         if ($feedback->age <= 19) {
+    //             $age_bracket[0]['external']++;
+    //         } elseif ($feedback->age >= 20 && $feedback->age <= 34) {
+    //             $age_bracket[1]['external']++;
+    //         } elseif ($feedback->age >= 35 && $feedback->age <= 49) {
+    //             $age_bracket[2]['external']++;
+    //         } elseif ($feedback->age >= 50 && $feedback->age <= 64) {
+    //             $age_bracket[3]['external']++;
+    //         } elseif ($feedback->age >= 65) {
+    //             $age_bracket[4]['external']++;
+    //         }
+    //     }
+
+    //     foreach ($feedbacks_overall as $feedback) {
+    //         if ($feedback->age <= 19) {
+    //             $age_bracket[0]['overall']++;
+    //         } elseif ($feedback->age >= 20 && $feedback->age <= 34) {
+    //             $age_bracket[1]['overall']++;
+    //         } elseif ($feedback->age >= 35 && $feedback->age <= 49) {
+    //             $age_bracket[2]['overall']++;
+    //         } elseif ($feedback->age >= 50 && $feedback->age <= 64) {
+    //             $age_bracket[3]['overall']++;
+    //         } elseif ($feedback->age >= 65) {
+    //             $age_bracket[4]['overall']++;
+    //         }
+    //     }
+
+    //     return $age_bracket;
+    // }
+
+    function get_age_bracket_with_percentage($dateFrom, $dateTo, $office, $include_sub_offices)
+    {
+        // Set the date range
+        $dateFrom = date('Y-m-d 00:00:00', strtotime($dateFrom));
+        $dateTo = date('Y-m-d 23:59:59', strtotime($dateTo));
+
+        // Get the office IDs
+        $officeIds = [$office];
+        if ($include_sub_offices) {
+            $officeIds = get_office_and_sub_offices($office);
+        }
+
+        // Get feedbacks categorized by internal, external, and overall
+        $feedbacks_internal = Feedback::join('office_services', 'office_services.id', '=', 'feedbacks.office_service_id')
+            ->whereIn('office_services.office_id', $officeIds)
+            ->whereBetween('feedbacks.created_at', [$dateFrom, $dateTo])
+            ->where('is_external', 0)
+            ->select('age')
+            ->get();
+
+        $feedbacks_external = Feedback::join('office_services', 'office_services.id', '=', 'feedbacks.office_service_id')
+            ->whereIn('office_services.office_id', $officeIds)
+            ->whereBetween('feedbacks.created_at', [$dateFrom, $dateTo])
+            ->where('is_external', 1)
+            ->select('age')
+            ->get();
+
+        $feedbacks_overall = Feedback::join('office_services', 'office_services.id', '=', 'feedbacks.office_service_id')
+            ->whereIn('office_services.office_id', $officeIds)
+            ->whereBetween('feedbacks.created_at', [$dateFrom, $dateTo])
+            ->select('age')
+            ->get();
+
+        // Initialize age brackets with counts and percentages
+        $age_bracket = [
+            ['external' => 0, 'internal' => 0, 'label' => '19 or lower', 'overall' => 0, 'percentage_internal' => 0, 'percentage_external' => 0, 'percentage_overall' => 0],
+            ['external' => 0, 'internal' => 0, 'label' => '20-34', 'overall' => 0, 'percentage_internal' => 0, 'percentage_external' => 0, 'percentage_overall' => 0],
+            ['external' => 0, 'internal' => 0, 'label' => '35-49', 'overall' => 0, 'percentage_internal' => 0, 'percentage_external' => 0, 'percentage_overall' => 0],
+            ['external' => 0, 'internal' => 0, 'label' => '50-64', 'overall' => 0, 'percentage_internal' => 0, 'percentage_external' => 0, 'percentage_overall' => 0],
+            ['external' => 0, 'internal' => 0, 'label' => '65 or higher', 'overall' => 0, 'percentage_internal' => 0, 'percentage_external' => 0, 'percentage_overall' => 0],
+        ];
+
+        // Count feedbacks in each age bracket for internal feedback
+        foreach ($feedbacks_internal as $feedback) {
+            if ($feedback->age <= 19) {
+                $age_bracket[0]['internal']++;
+            } elseif ($feedback->age >= 20 && $feedback->age <= 34) {
+                $age_bracket[1]['internal']++;
+            } elseif ($feedback->age >= 35 && $feedback->age <= 49) {
+                $age_bracket[2]['internal']++;
+            } elseif ($feedback->age >= 50 && $feedback->age <= 64) {
+                $age_bracket[3]['internal']++;
+            } elseif ($feedback->age >= 65) {
+                $age_bracket[4]['internal']++;
+            }
+        }
+
+        // Count feedbacks in each age bracket for external feedback
+        foreach ($feedbacks_external as $feedback) {
+            if ($feedback->age <= 19) {
+                $age_bracket[0]['external']++;
+            } elseif ($feedback->age >= 20 && $feedback->age <= 34) {
+                $age_bracket[1]['external']++;
+            } elseif ($feedback->age >= 35 && $feedback->age <= 49) {
+                $age_bracket[2]['external']++;
+            } elseif ($feedback->age >= 50 && $feedback->age <= 64) {
+                $age_bracket[3]['external']++;
+            } elseif ($feedback->age >= 65) {
+                $age_bracket[4]['external']++;
+            }
+        }
+
+        // Count feedbacks in each age bracket for overall feedback
+        foreach ($feedbacks_overall as $feedback) {
+            if ($feedback->age <= 19) {
+                $age_bracket[0]['overall']++;
+            } elseif ($feedback->age >= 20 && $feedback->age <= 34) {
+                $age_bracket[1]['overall']++;
+            } elseif ($feedback->age >= 35 && $feedback->age <= 49) {
+                $age_bracket[2]['overall']++;
+            } elseif ($feedback->age >= 50 && $feedback->age <= 64) {
+                $age_bracket[3]['overall']++;
+            } elseif ($feedback->age >= 65) {
+                $age_bracket[4]['overall']++;
+            }
+        }
+
+        // Calculate total feedback counts for internal, external, and overall
+        $total_internal = array_sum(array_column($age_bracket, 'internal'));
+        $total_external = array_sum(array_column($age_bracket, 'external'));
+        $total_overall = array_sum(array_column($age_bracket, 'overall'));
+
+        // Calculate percentage for each bracket
+        foreach ($age_bracket as &$bracket) {
+            if ($total_internal > 0) {
+                $bracket['percentage_internal'] = ($bracket['internal'] / $total_internal) * 100;
+            }
+            if ($total_external > 0) {
+                $bracket['percentage_external'] = ($bracket['external'] / $total_external) * 100;
+            }
+            if ($total_overall > 0) {
+                $bracket['percentage_overall'] = ($bracket['overall'] / $total_overall) * 100;
+            }
+        }
+
+        return $age_bracket;
+    }
+
+    function get_sex_bracket_with_percentage($dateFrom, $dateTo, $office, $include_sub_offices)
+    {
+        // Set the date range
+        $dateFrom = date('Y-m-d 00:00:00', strtotime($dateFrom));
+        $dateTo = date('Y-m-d 23:59:59', strtotime($dateTo));
+
+        // Get the office IDs
+        $officeIds = [$office];
+        if ($include_sub_offices) {
+            $officeIds = get_office_and_sub_offices($office);
+        }
+
+        // Get feedbacks categorized by internal, external, and overall
+        $feedbacks_internal = Feedback::join('office_services', 'office_services.id', '=', 'feedbacks.office_service_id')
+            ->whereIn('office_services.office_id', $officeIds)
+            ->whereBetween('feedbacks.created_at', [$dateFrom, $dateTo])
+            ->where('is_external', 0)
+            ->select('sex')
+            ->get();
+
+        $feedbacks_external = Feedback::join('office_services', 'office_services.id', '=', 'feedbacks.office_service_id')
+            ->whereIn('office_services.office_id', $officeIds)
+            ->whereBetween('feedbacks.created_at', [$dateFrom, $dateTo])
+            ->where('is_external', 1)
+            ->select('sex')
+            ->get();
+
+        $feedbacks_overall = Feedback::join('office_services', 'office_services.id', '=', 'feedbacks.office_service_id')
+            ->whereIn('office_services.office_id', $officeIds)
+            ->whereBetween('feedbacks.created_at', [$dateFrom, $dateTo])
+            ->select('sex')
+            ->get();
+
+        // Initialize counts for male and female feedbacks
+        $sex_bracket = [
+            'male' => ['internal' => 0, 'external' => 0, 'overall' => 0, 'percentage_internal' => 0, 'percentage_external' => 0, 'percentage_overall' => 0],
+            'female' => ['internal' => 0, 'external' => 0, 'overall' => 0, 'percentage_internal' => 0, 'percentage_external' => 0, 'percentage_overall' => 0]
+        ];
+
+        // Count feedbacks categorized by sex for internal feedback
+        foreach ($feedbacks_internal as $feedback) {
+            if ($feedback->sex == 'male') {
+                $sex_bracket['male']['internal']++;
+            } else {
+                $sex_bracket['female']['internal']++;
+            }
+        }
+
+        // Count feedbacks categorized by sex for external feedback
+        foreach ($feedbacks_external as $feedback) {
+            if ($feedback->sex == 'male') {
+                $sex_bracket['male']['external']++;
+            } else {
+                $sex_bracket['female']['external']++;
+            }
+        }
+
+        // Count feedbacks categorized by sex for overall feedback
+        foreach ($feedbacks_overall as $feedback) {
+            if ($feedback->sex == 'male') {
+                $sex_bracket['male']['overall']++;
+            } else {
+                $sex_bracket['female']['overall']++;
+            }
+        }
+
+        // Calculate the percentages
+        $total_internal = $sex_bracket['male']['internal'] + $sex_bracket['female']['internal'];
+        $total_external = $sex_bracket['male']['external'] + $sex_bracket['female']['external'];
+        $total_overall = $sex_bracket['male']['overall'] + $sex_bracket['female']['overall'];
+
+        if ($total_internal > 0) {
+            $sex_bracket['male']['percentage_internal'] = ($sex_bracket['male']['internal'] / $total_internal) * 100;
+            $sex_bracket['female']['percentage_internal'] = ($sex_bracket['female']['internal'] / $total_internal) * 100;
+        }
+
+        if ($total_external > 0) {
+            $sex_bracket['male']['percentage_external'] = ($sex_bracket['male']['external'] / $total_external) * 100;
+            $sex_bracket['female']['percentage_external'] = ($sex_bracket['female']['external'] / $total_external) * 100;
+        }
+
+        if ($total_overall > 0) {
+            $sex_bracket['male']['percentage_overall'] = ($sex_bracket['male']['overall'] / $total_overall) * 100;
+            $sex_bracket['female']['percentage_overall'] = ($sex_bracket['female']['overall'] / $total_overall) * 100;
+        }
+
+        return $sex_bracket;
+    }
+
+
+    function get_region_responses_with_percentage($dateFrom, $dateTo, $office, $include_sub_offices)
+    {
+        // Set the date range
+        $dateFrom = date('Y-m-d 00:00:00', strtotime($dateFrom));
+        $dateTo = date('Y-m-d 23:59:59', strtotime($dateTo));
+
+        // Get the office IDs
+        $officeIds = [$office];
+        if ($include_sub_offices) {
+            $officeIds = get_office_and_sub_offices($office);
+        }
+
+        // Pre-defined region array from the lib_regions table
+        $regions = LibRegion::select('id', 'name')->get();
+
+        // Initialize the region data array with predefined regions
+        $region_data = [];
+        foreach ($regions as $region) {
+            $region_data[$region->id] = [
+                'region_name' => $region->name,
+                'internal' => 0,
+                'external' => 0
+            ];
+        }
+
+        // Get feedbacks categorized by region, internal, and external
+        $feedbacks_internal = Feedback::join('office_services', 'office_services.id', '=', 'feedbacks.office_service_id')
+            ->whereIn('office_services.office_id', $officeIds)
+            ->whereBetween('feedbacks.created_at', [$dateFrom, $dateTo])
+            ->where('is_external', 0)
+            ->select('feedbacks.region_id')
+            ->get();
+
+        $feedbacks_external = Feedback::join('office_services', 'office_services.id', '=', 'feedbacks.office_service_id')
+            ->whereIn('office_services.office_id', $officeIds)
+            ->whereBetween('feedbacks.created_at', [$dateFrom, $dateTo])
+            ->where('is_external', 1)
+            ->select('feedbacks.region_id')
+            ->get();
+
+        // Count feedbacks by region for internal and external feedback
+        foreach ($feedbacks_internal as $feedback) {
+            if (isset($region_data[$feedback->region_id])) {
+                $region_data[$feedback->region_id]['internal']++;
+            }
+        }
+
+        foreach ($feedbacks_external as $feedback) {
+            if (isset($region_data[$feedback->region_id])) {
+                $region_data[$feedback->region_id]['external']++;
+            }
+        }
+
+        // Calculate totals for percentages
+        $total_internal = array_sum(array_column($region_data, 'internal'));
+        $total_external = array_sum(array_column($region_data, 'external'));
+
+        // Calculate the percentages for each region
+        foreach ($region_data as $region_id => &$data) {
+            if ($total_internal > 0) {
+                $data['percentage_internal'] = ($data['internal'] / $total_internal) * 100;
+            } else {
+                $data['percentage_internal'] = 0;
+            }
+
+            if ($total_external > 0) {
+                $data['percentage_external'] = ($data['external'] / $total_external) * 100;
+            } else {
+                $data['percentage_external'] = 0;
+            }
+        }
+
+        return $region_data;
     }
 }

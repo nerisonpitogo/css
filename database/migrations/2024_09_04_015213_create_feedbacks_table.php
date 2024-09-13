@@ -19,7 +19,10 @@ return new class extends Migration
             $table->boolean('is_external');
             $table->string('sex');
             $table->integer('age');
-            $table->string('region');
+            // $table->string('region');
+            // region_id from the lib_regions table
+            $table->foreignId('region_id')->constrained('lib_regions');
+
             $table->unsignedBigInteger('office_service_id');
             $table->foreign('office_service_id')->references('id')->on('office_services');
             // cc1 int
