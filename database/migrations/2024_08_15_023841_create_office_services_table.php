@@ -20,6 +20,11 @@ return new class extends Migration
             // has_cc
             $table->boolean('is_simple')->default(false);
 
+            // is_external
+            $table->boolean('is_external')->default(true);
+            // is_internal
+            $table->boolean('is_internal')->default(true);
+
             // has_sqd0 to has_sqd8
             $table->boolean('has_sqd0')->default(true);
             $table->boolean('has_sqd1')->default(true);

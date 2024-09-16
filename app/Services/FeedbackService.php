@@ -368,13 +368,13 @@ class FeedbackService
     //     $feedbacks_internal = Feedback::join('office_services', 'office_services.id', '=', 'feedbacks.office_service_id')
     //         ->whereIn('office_services.office_id', $officeIds)
     //         ->whereBetween('feedbacks.created_at', [$dateFrom, $dateTo])
-    //         ->where('is_external', 0)
+    //         ->where('feedbacks.is_external', 0)
     //         ->select('age')
     //         ->get();
     //     $feedbacks_external = Feedback::join('office_services', 'office_services.id', '=', 'feedbacks.office_service_id')
     //         ->whereIn('office_services.office_id', $officeIds)
     //         ->whereBetween('feedbacks.created_at', [$dateFrom, $dateTo])
-    //         ->where('is_external', 1)
+    //         ->where('feedbacks.is_external', 1)
     //         ->select('age')
     //         ->get();
 
@@ -455,14 +455,14 @@ class FeedbackService
         $feedbacks_internal = Feedback::join('office_services', 'office_services.id', '=', 'feedbacks.office_service_id')
             ->whereIn('office_services.office_id', $officeIds)
             ->whereBetween('feedbacks.created_at', [$dateFrom, $dateTo])
-            ->where('is_external', 0)
+            ->where('feedbacks.is_external', 0)
             ->select('age')
             ->get();
 
         $feedbacks_external = Feedback::join('office_services', 'office_services.id', '=', 'feedbacks.office_service_id')
             ->whereIn('office_services.office_id', $officeIds)
             ->whereBetween('feedbacks.created_at', [$dateFrom, $dateTo])
-            ->where('is_external', 1)
+            ->where('feedbacks.is_external', 1)
             ->select('age')
             ->get();
 
@@ -563,14 +563,14 @@ class FeedbackService
         $feedbacks_internal = Feedback::join('office_services', 'office_services.id', '=', 'feedbacks.office_service_id')
             ->whereIn('office_services.office_id', $officeIds)
             ->whereBetween('feedbacks.created_at', [$dateFrom, $dateTo])
-            ->where('is_external', 0)
+            ->where('feedbacks.is_external', 0)
             ->select('sex')
             ->get();
 
         $feedbacks_external = Feedback::join('office_services', 'office_services.id', '=', 'feedbacks.office_service_id')
             ->whereIn('office_services.office_id', $officeIds)
             ->whereBetween('feedbacks.created_at', [$dateFrom, $dateTo])
-            ->where('is_external', 1)
+            ->where('feedbacks.is_external', 1)
             ->select('sex')
             ->get();
 
@@ -658,7 +658,11 @@ class FeedbackService
             $region_data[$region->id] = [
                 'region_name' => $region->name,
                 'internal' => 0,
-                'external' => 0
+                'external' => 0,
+                'overall' => 0, // Initialize overall count
+                'percentage_internal' => 0,
+                'percentage_external' => 0,
+                'percentage_overall' => 0 // Initialize overall percentage
             ];
         }
 
@@ -666,14 +670,14 @@ class FeedbackService
         $feedbacks_internal = Feedback::join('office_services', 'office_services.id', '=', 'feedbacks.office_service_id')
             ->whereIn('office_services.office_id', $officeIds)
             ->whereBetween('feedbacks.created_at', [$dateFrom, $dateTo])
-            ->where('is_external', 0)
+            ->where('feedbacks.is_external', 0)
             ->select('feedbacks.region_id')
             ->get();
 
         $feedbacks_external = Feedback::join('office_services', 'office_services.id', '=', 'feedbacks.office_service_id')
             ->whereIn('office_services.office_id', $officeIds)
             ->whereBetween('feedbacks.created_at', [$dateFrom, $dateTo])
-            ->where('is_external', 1)
+            ->where('feedbacks.is_external', 1)
             ->select('feedbacks.region_id')
             ->get();
 
@@ -681,18 +685,21 @@ class FeedbackService
         foreach ($feedbacks_internal as $feedback) {
             if (isset($region_data[$feedback->region_id])) {
                 $region_data[$feedback->region_id]['internal']++;
+                $region_data[$feedback->region_id]['overall']++; // Increment overall count
             }
         }
 
         foreach ($feedbacks_external as $feedback) {
             if (isset($region_data[$feedback->region_id])) {
                 $region_data[$feedback->region_id]['external']++;
+                $region_data[$feedback->region_id]['overall']++; // Increment overall count
             }
         }
 
         // Calculate totals for percentages
         $total_internal = array_sum(array_column($region_data, 'internal'));
         $total_external = array_sum(array_column($region_data, 'external'));
+        $total_overall = array_sum(array_column($region_data, 'overall'));
 
         // Calculate the percentages for each region
         foreach ($region_data as $region_id => &$data) {
@@ -706,6 +713,12 @@ class FeedbackService
                 $data['percentage_external'] = ($data['external'] / $total_external) * 100;
             } else {
                 $data['percentage_external'] = 0;
+            }
+
+            if ($total_overall > 0) {
+                $data['percentage_overall'] = ($data['overall'] / $total_overall) * 100;
+            } else {
+                $data['percentage_overall'] = 0;
             }
         }
 

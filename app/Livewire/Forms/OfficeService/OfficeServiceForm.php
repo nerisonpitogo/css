@@ -37,7 +37,7 @@ class OfficeServiceForm extends Form
     public $has_sqd4 = true;
 
     #[Validate('nullable|boolean')]
-    public $has_sqd5 = true;
+    public $has_sqd5 = false;
 
     #[Validate('nullable|boolean')]
     public $has_sqd6 = true;
@@ -51,6 +51,11 @@ class OfficeServiceForm extends Form
     #[Validate('nullable|boolean')]
     public $allow_na = true;
 
+    #[Validate('nullable|boolean')]
+    public $is_external = false;
+
+    #[Validate('nullable|boolean')]
+    public $is_internal = false;
 
 
     public function setOfficeService($officeservice)
@@ -58,6 +63,9 @@ class OfficeServiceForm extends Form
         $this->officeservice = $officeservice;
         $this->service_id = $officeservice->service_id;
         $this->is_simple = $officeservice->is_simple ? true : false;
+
+        $this->is_internal = $officeservice->is_internal ? true : false;
+        $this->is_external = $officeservice->is_external ? true : false;
         $this->has_sqd0 = $officeservice->has_sqd0 ? true : false;
         $this->has_sqd1 = $officeservice->has_sqd1 ? true : false;
         $this->has_sqd2 = $officeservice->has_sqd2 ? true : false;
@@ -78,6 +86,8 @@ class OfficeServiceForm extends Form
             'office_id' => $this->office_id,
             'service_id' => $this->service_id,
             'is_simple' => $this->is_simple,
+            'is_internal' => $this->is_internal,
+            'is_external' => $this->is_external,
             'has_sqd0' => $this->has_sqd0,
             'has_sqd1' => $this->has_sqd1,
             'has_sqd2' => $this->has_sqd2,
@@ -107,6 +117,8 @@ class OfficeServiceForm extends Form
             'office_id' => $this->office_id,
             'service_id' => $this->service_id,
             'is_simple' => $this->is_simple,
+            'is_internal' => $this->is_internal,
+            'is_external' => $this->is_external,
             'has_sqd0' => $this->has_sqd0,
             'has_sqd1' => $this->has_sqd1,
             'has_sqd2' => $this->has_sqd2,

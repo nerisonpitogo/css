@@ -26,7 +26,10 @@ class OfficeService extends Model
         'has_sqd6',
         'has_sqd7',
         'has_sqd8',
-        'allow_na'
+        'allow_na',
+        'is_external',
+        'is_internal',
+
     ];
 
     public function office()

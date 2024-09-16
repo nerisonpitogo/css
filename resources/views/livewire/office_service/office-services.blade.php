@@ -71,25 +71,7 @@ new #[Title('Office Services')] class extends Component {
 
     public function with(): array
     {
-        $table_headers = [
-            ['key' => 'counter', 'label' => '#', 'sortable' => false],
-            ['key' => 'service_name', 'label' => 'Service'],
-            ['key' => 'service_description', 'label' => 'Description'],
-            ['key' => 'is_simple', 'label' => 'Is Simple?'],
-            // ['key' => 'has_sqd0', 'label' => 'SQD0'],
-            // ['key' => 'has_sqd1', 'label' => 'SQD1'],
-            // ['key' => 'has_sqd2', 'label' => 'SQD2'],
-            // ['key' => 'has_sqd3', 'label' => 'SQD3'],
-            // ['key' => 'has_sqd4', 'label' => 'SQD4'],
-            // ['key' => 'has_sqd5', 'label' => 'SQD5'],
-            // ['key' => 'has_sqd6', 'label' => 'SQD6'],
-            // ['key' => 'has_sqd7', 'label' => 'SQD7'],
-            // ['key' => 'has_sqd8', 'label' => 'SQD8'],
-            // ['key' => 'allow_na', 'label' => 'Allow N/A'],
-            // ['key' => 'has_cc', 'label' => 'In Citizen\'s Charter'],
-            ['key' => 'actions', 'label' => '', 'sortable' => false],
-        ];
-
+        $table_headers = [['key' => 'counter', 'label' => '#', 'sortable' => false], ['key' => 'service_name', 'label' => 'Service'], ['key' => 'service_description', 'label' => 'Description'], ['key' => 'is_simple', 'label' => 'Is Simple?'], ['key' => 'is_external', 'label' => 'External Service'], ['key' => 'is_internal', 'label' => 'Internal Service'], ['key' => 'actions', 'label' => '', 'sortable' => false]];
         return [
             'officeservices' => $this->getOfficeServices(),
             'regions' => Libregion::all(),
@@ -238,6 +220,12 @@ new #[Title('Office Services')] class extends Component {
                 @scope('cell_is_simple', $officeservice)
                     {{ $officeservice->is_simple ? 'Yes' : 'No' }}
                 @endscope
+                @scope('cell_is_internal', $officeservice)
+                    {{ $officeservice->is_internal ? 'Yes' : 'No' }}
+                @endscope
+                @scope('cell_is_external', $officeservice)
+                    {{ $officeservice->is_external ? 'Yes' : 'No' }}
+                @endscope
 
                 @scope('expansion', $officeservice)
                     <div class="overflow-x-auto">
@@ -370,21 +358,47 @@ new #[Title('Office Services')] class extends Component {
                 <x-mary-select label="Service" :options="$libServices" wire:model="form.service_id" />
             </div>
 
-            <div class="col">
-                <div class="flex flex-wrap items-center gap-3">
-                    <x-mary-checkbox label="Simple Transaction" wire:model="form.is_simple" />
-                    <x-mary-checkbox label="SQD0" wire:model="form.has_sqd0" />
-                    <x-mary-checkbox label="SQD1" wire:model="form.has_sqd1" />
-                    <x-mary-checkbox label="SQD2" wire:model="form.has_sqd2" />
-                    <x-mary-checkbox label="SQD3" wire:model="form.has_sqd3" />
-                    <x-mary-checkbox label="SQD4" wire:model="form.has_sqd4" />
-                    <x-mary-checkbox label="SQD5" wire:model="form.has_sqd5" />
-                    <x-mary-checkbox label="SQD6" wire:model="form.has_sqd6" />
-                    <x-mary-checkbox label="SQD7" wire:model="form.has_sqd7" />
-                    <x-mary-checkbox label="SQD8" wire:model="form.has_sqd8" />
+            <div class="mt-2 col">
+                <label class="block text-sm font-medium text-gray-700">Is Simple Transaction</label>
+                <x-mary-checkbox
+                    label="Transactions like small queries and others. Check this if applicable. Most services indicated in the citizen's charter are not simple transactions."
+                    wire:model="form.is_simple" class="mt-1" />
+            </div>
+
+            <div class="mt-2 col">
+                <label>Client Types</label>
+                <div class="flex flex-wrap items-center gap-3 mt-2 col">
+                    <x-mary-checkbox label="External Client" wire:model="form.is_external" />
+                    <x-mary-checkbox label="Internal Client" wire:model="form.is_internal" />
+                </div>
+            </div>
+            {{-- <div class="mt-2 col">
+                <label>SQDs Allowed</label>
+                <div class="flex flex-wrap items-center gap-3 mt-2 col">
+                    <x-mary-checkbox label="SQD0 - Overall Satisfaction" wire:model="form.has_sqd0" />
+                    <x-mary-checkbox label="SQD1 - Responsiveness" wire:model="form.has_sqd1" />
+                    <x-mary-checkbox label="SQD2 - Reliability" wire:model="form.has_sqd2" />
+                    <x-mary-checkbox label="SQD3 - Access and Facilities" wire:model="form.has_sqd3" />
+                    <x-mary-checkbox label="SQD4 - Communication" wire:model="form.has_sqd4" />
+                    <x-mary-checkbox label="SQD5 - Costs" wire:model="form.has_sqd5" />
+                    <x-mary-checkbox label="SQD6 - Integrity" wire:model="form.has_sqd6" />
+                    <x-mary-checkbox label="SQD7 - Assurance" wire:model="form.has_sqd7" />
+                    <x-mary-checkbox label="SQD8 - Outcome" wire:model="form.has_sqd8" />
+                </div>
+            </div> --}}
+            <div class="mt-2 col">
+                <label>Include Costs (Check if the client is required payment to avail this transaction.)</label>
+                <div class="flex flex-wrap items-center gap-3 mt-2 col">
+                    <x-mary-checkbox label="SQD5 - Costs" wire:model="form.has_sqd5" />
+                </div>
+            </div>
+            <div class="mt-2 col">
+                <label>Allow N/A in the selection of the client response.</label>
+                <div class="flex flex-wrap items-center gap-3 mt-2 col">
                     <x-mary-checkbox label="Allow N/A" wire:model="form.allow_na" />
                 </div>
             </div>
+
             {{-- <div class="col">
                 @php
                     $ccOptions = [['id' => '1', 'name' => 'Yes'], ['id' => '0', 'name' => 'No']];

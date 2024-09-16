@@ -125,6 +125,9 @@ new class extends Component {
                                 <td class="px-4 py-2 border border-gray-200">
                                     {{ $data['external'] }} ({{ number_format($data['percentage_external'], 2) }}%)
                                 </td>
+                                <td class="px-4 py-2 border border-gray-200">
+                                    {{ $data['overall'] }} ({{ number_format($data['percentage_overall'], 2) }}%)
+                                </td>
                             </tr>
                         @endforeach
 
