@@ -212,11 +212,11 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
         foreach ($office->services as $service) {
             // $services_array[$office->id][] = [$service->id, $service->service->service_name];
 
-            if ($this->is_external === 1 && $service->is_external === 1) {
+            if ($this->is_external == 1 && $service->is_external == 1) {
                 $services_array[$office->id][] = [$service->id, $service->service->service_name, $office->name, $service->has_sqd0, $service->has_sqd1, $service->has_sqd2, $service->has_sqd3, $service->has_sqd4, $service->has_sqd5, $service->has_sqd6, $service->has_sqd7, $service->has_sqd8, $service->allow_na];
             }
             // for internal
-            if ($this->is_external === 0 && $service->is_internal === 1) {
+            if ($this->is_external == 0 && $service->is_internal == 1) {
                 $services_array[$office->id][] = [$service->id, $service->service->service_name, $office->name, $service->has_sqd0, $service->has_sqd1, $service->has_sqd2, $service->has_sqd3, $service->has_sqd4, $service->has_sqd5, $service->has_sqd6, $service->has_sqd7, $service->has_sqd8, $service->allow_na];
             }
         }
@@ -236,14 +236,18 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
     private function getServices(Office $office, $services_array = [])
     {
         foreach ($office->services as $service) {
-            if ($this->is_external === 1 && $service->is_external === 1) {
-                $services_array[] = [$service->id, $service->service->service_name, $office->name, $service->has_sqd0, $service->has_sqd1, $service->has_sqd2, $service->has_sqd3, $service->has_sqd4, $service->has_sqd5, $service->has_sqd6, $service->has_sqd7, $service->has_sqd8, $service->allow_na];
-            }
-            // for internal
-            if ($this->is_external === 0 && $service->is_internal === 1) {
-                $services_array[] = [$service->id, $service->service->service_name, $office->name, $service->has_sqd0, $service->has_sqd1, $service->has_sqd2, $service->has_sqd3, $service->has_sqd4, $service->has_sqd5, $service->has_sqd6, $service->has_sqd7, $service->has_sqd8, $service->allow_na];
-            }
             // $services_array[] = [$service->id, $service->service->service_name, $office->name, $service->has_sqd0, $service->has_sqd1, $service->has_sqd2, $service->has_sqd3, $service->has_sqd4, $service->has_sqd5, $service->has_sqd6, $service->has_sqd7, $service->has_sqd8, $service->allow_na];
+            // dd($service->is_external);
+            if ($this->is_external == 1 && $service->is_external == 1) {
+                // dd($service->is_external);
+                $services_array[] = [$service->id, $service->service->service_name, $office->name, $service->has_sqd0, $service->has_sqd1, $service->has_sqd2, $service->has_sqd3, $service->has_sqd4, $service->has_sqd5, $service->has_sqd6, $service->has_sqd7, $service->has_sqd8, $service->allow_na];
+            }
+
+            // for internal
+            if ($this->is_external == 0 && $service->is_internal == 1) {
+                $services_array[] = [$service->id, $service->service->service_name, $office->name, $service->has_sqd0, $service->has_sqd1, $service->has_sqd2, $service->has_sqd3, $service->has_sqd4, $service->has_sqd5, $service->has_sqd6, $service->has_sqd7, $service->has_sqd8, $service->allow_na];
+            }
+            //$services_array[] = [$service->id, $service->service->service_name, $office->name, $service->has_sqd0, $service->has_sqd1, $service->has_sqd2, $service->has_sqd3, $service->has_sqd4, $service->has_sqd5, $service->has_sqd6, $service->has_sqd7, $service->has_sqd8, $service->allow_na];
         }
 
         // Recursively add services of the child offices

@@ -147,7 +147,21 @@ new class extends Component {
                         </div>
                         <div class="items-center justify-center mt-7 col">
                             <x-mary-loading loading-lg wire:loading class="mt-3" />
-                            {{-- <x-mary-button wire:loading.remove class="btn btn-primary" icon="o-funnel" /> --}}
+
+
+                            {{-- <x-mary-button wire:loading.remove wire:target='updateDates' label="More Details"
+                                class="btn btn-primary" link="{{ route('more-details', ['selType' => $selType]) }}" /> --}}
+
+                            <a target="_blank" class="btn btn-primary"
+                                href="{{ route('report', [
+                                    'selType' => $selType,
+                                    'dateFrom' => $dateFrom,
+                                    'dateTo' => $dateTo,
+                                    'includeSubOffice' => $includeSubOffice,
+                                    'selectedOffices' => $selectedOffices,
+                                ]) }}">More
+                                Details</a>
+
                         </div>
                     </div>
                 </div>

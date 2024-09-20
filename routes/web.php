@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\ReportController;
 use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Artisan;
 use App\Livewire\LibRegion\LibRegions;
+
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
@@ -27,6 +29,11 @@ Route::group(['middleware' => 'auth'], function () {
     Volt::route('/officeservices/{office_id}', 'office_service.office-services')->name('officeservices');
     Volt::route('/sqds', 'sqd.sqds')->name('sqds');
     Volt::route('/libregions', 'lib_region.lib-regions')->name('libregions')->middleware('can:Manage Settings');
+    // Volt::route('/report', 'report')->name('report');
+
+
+    // reports
+    Route::get('/report', [ReportController::class, 'generate_report'])->name('report');
 });
 
 Volt::route('/form/{is_onsite}/{with_sub}/{is_external}/{office_id}', 'csm-form')->name('csmform');
