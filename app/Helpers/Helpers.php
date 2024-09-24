@@ -224,3 +224,57 @@ if (!function_exists('generate_placeholder')) {
         return  $string . "</div>";
     }
 }
+
+// return the last office_id that is not null
+if (!function_exists('end_office_id')) {
+    function end_office_id($array)
+    {
+        $last = end($array);
+        while ($last === null || $last === '') {
+            $last = prev($array);
+        }
+        return $last;
+    }
+}
+
+// return the last office_id that is not null
+if (!function_exists('get_images')) {
+    function get_images($office_id)
+    {
+        $images = [
+            'form_header_image' => '',
+            'report_header_image' => '',
+            'report_footer_image' => '',
+        ];
+
+        $office = Office::find($office_id);
+        //    if there is at least value in the office header_image, report_header_image, report_footer_image
+        if ($office->header_image || $office->report_header_image || $office->report_footer_image) {
+            $images['form_header_image'] = $office->header_image;
+            $images['report_header_image'] = $office->report_header_image;
+            $images['report_footer_image'] = $office->report_footer_image;
+        } else {
+            $parent = $office->parent;
+            while ($parent) {
+                if ($parent->header_image || $parent->report_header_image || $parent->report_footer_image) {
+                    $images['form_header_image'] = $parent->header_image;
+                    $images['report_header_image'] = $parent->report_header_image;
+                    $images['report_footer_image'] = $parent->report_footer_image;
+                    break;
+                }
+                $parent = $parent->parent;
+            }
+        }
+        return $images;
+    }
+}
+
+if (!function_exists('base64_image')) {
+    function base64_image($path)
+    {
+        $type = pathinfo($path, PATHINFO_EXTENSION);
+        $data = file_get_contents($path);
+        $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+        return $base64;
+    }
+}

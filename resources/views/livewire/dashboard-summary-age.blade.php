@@ -32,9 +32,9 @@ new class extends Component {
 
     public function with(FeedbackService $feedbackService)
     {
-        $age_brackets_with_percentage = $feedbackService->get_age_bracket_with_percentage($this->dateFrom, $this->dateTo, end($this->selectedOffices), $this->includeSubOffice);
-        $sex_bracket_with_percentage = $feedbackService->get_sex_bracket_with_percentage($this->dateFrom, $this->dateTo, end($this->selectedOffices), $this->includeSubOffice);
-        $region_responses_with_percentage = $feedbackService->get_region_responses_with_percentage($this->dateFrom, $this->dateTo, end($this->selectedOffices), $this->includeSubOffice);
+        $age_brackets_with_percentage = $feedbackService->get_age_bracket_with_percentage($this->dateFrom, $this->dateTo, end_office_id($this->selectedOffices), $this->includeSubOffice);
+        $sex_bracket_with_percentage = $feedbackService->get_sex_bracket_with_percentage($this->dateFrom, $this->dateTo, end_office_id($this->selectedOffices), $this->includeSubOffice);
+        $region_responses_with_percentage = $feedbackService->get_region_responses_with_percentage($this->dateFrom, $this->dateTo, end_office_id($this->selectedOffices), $this->includeSubOffice);
 
         return [
             'age_brackets_with_percentage' => $age_brackets_with_percentage,

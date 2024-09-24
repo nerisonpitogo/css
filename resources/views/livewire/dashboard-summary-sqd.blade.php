@@ -54,16 +54,16 @@ new class extends Component {
         $final_rating = $feedbackService->get_score($sqd0_array[1]['count'], $sqd0_array[2]['count'], $sqd0s->sum('count'), $sqd0_array[0]['count']);
         $final_rating_word = $feedbackService->get_rating_in_words($final_rating);
 
-        $sqd1_scores = $feedbackService->get_sqd_score_overall_with_word($this->dateFrom, $this->dateTo, end($this->selectedOffices), $this->includeSubOffice, 'sqd1');
-        $sqd2_scores = $feedbackService->get_sqd_score_overall_with_word($this->dateFrom, $this->dateTo, end($this->selectedOffices), $this->includeSubOffice, 'sqd2');
-        $sqd3_scores = $feedbackService->get_sqd_score_overall_with_word($this->dateFrom, $this->dateTo, end($this->selectedOffices), $this->includeSubOffice, 'sqd3');
-        $sqd4_scores = $feedbackService->get_sqd_score_overall_with_word($this->dateFrom, $this->dateTo, end($this->selectedOffices), $this->includeSubOffice, 'sqd4');
-        $sqd5_scores = $feedbackService->get_sqd_score_overall_with_word($this->dateFrom, $this->dateTo, end($this->selectedOffices), $this->includeSubOffice, 'sqd5');
-        $sqd6_scores = $feedbackService->get_sqd_score_overall_with_word($this->dateFrom, $this->dateTo, end($this->selectedOffices), $this->includeSubOffice, 'sqd6');
-        $sqd7_scores = $feedbackService->get_sqd_score_overall_with_word($this->dateFrom, $this->dateTo, end($this->selectedOffices), $this->includeSubOffice, 'sqd7');
-        $sqd8_scores = $feedbackService->get_sqd_score_overall_with_word($this->dateFrom, $this->dateTo, end($this->selectedOffices), $this->includeSubOffice, 'sqd8');
+        $sqd1_scores = $feedbackService->get_sqd_score_overall_with_word($this->dateFrom, $this->dateTo, end_office_id($this->selectedOffices), $this->includeSubOffice, 'sqd1');
+        $sqd2_scores = $feedbackService->get_sqd_score_overall_with_word($this->dateFrom, $this->dateTo, end_office_id($this->selectedOffices), $this->includeSubOffice, 'sqd2');
+        $sqd3_scores = $feedbackService->get_sqd_score_overall_with_word($this->dateFrom, $this->dateTo, end_office_id($this->selectedOffices), $this->includeSubOffice, 'sqd3');
+        $sqd4_scores = $feedbackService->get_sqd_score_overall_with_word($this->dateFrom, $this->dateTo, end_office_id($this->selectedOffices), $this->includeSubOffice, 'sqd4');
+        $sqd5_scores = $feedbackService->get_sqd_score_overall_with_word($this->dateFrom, $this->dateTo, end_office_id($this->selectedOffices), $this->includeSubOffice, 'sqd5');
+        $sqd6_scores = $feedbackService->get_sqd_score_overall_with_word($this->dateFrom, $this->dateTo, end_office_id($this->selectedOffices), $this->includeSubOffice, 'sqd6');
+        $sqd7_scores = $feedbackService->get_sqd_score_overall_with_word($this->dateFrom, $this->dateTo, end_office_id($this->selectedOffices), $this->includeSubOffice, 'sqd7');
+        $sqd8_scores = $feedbackService->get_sqd_score_overall_with_word($this->dateFrom, $this->dateTo, end_office_id($this->selectedOffices), $this->includeSubOffice, 'sqd8');
 
-        $overall = $feedbackService->get_sqd1_to_sqd8_overall_and_word($this->dateFrom, $this->dateTo, end($this->selectedOffices), $this->includeSubOffice);
+        $overall = $feedbackService->get_sqd1_to_sqd8_overall_and_word($this->dateFrom, $this->dateTo, end_office_id($this->selectedOffices), $this->includeSubOffice);
 
         // dd($overall);
 

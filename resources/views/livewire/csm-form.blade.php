@@ -130,6 +130,8 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
             $sqd_language[$sqd->language] = $sqd;
         }
 
+        $images = get_images($this->office_id);
+
         // for the services
         // Offices
         $offices = Office::orderBy('name');
@@ -158,6 +160,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
             'sqd_language' => $sqd_language,
             'offices' => $offices,
             'regions' => $this->getRegions(),
+            'images' => $images,
         ];
     }
 
@@ -819,9 +822,11 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
 }" x-cloak>
 
     <div class="flex items-center justify-center w-full max-w-full overflow-x-auto">
-        @if (isset($office->header_image))
-            <img class="max-w-2xl img-fluid" src="{{ asset('storage/header_images/' . $office->header_image) }}"
+        @if ($images['form_header_image'])
+            <img class="max-w-2xl img-fluid" src="{{ asset('storage/header_images/' . $images['form_header_image']) }}"
                 alt="Office Header Image">
+        @else
+            <p>No header image available.</p>
         @endif
     </div>
     <div class="flex items-center justify-center w-full max-w-full overflow-x-auto">

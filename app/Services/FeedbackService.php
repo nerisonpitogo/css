@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Feedback;
 use App\Models\LibRegion\LibRegion;
 use App\Models\Office;
+use App\Models\OfficeService\OfficeService;
 use Illuminate\Support\Facades\DB;
 
 class FeedbackService
@@ -723,5 +724,130 @@ class FeedbackService
         }
 
         return $region_data;
+    }
+
+
+
+    function get_external_services_responses($dateFrom, $dateTo, $office, $include_sub_offices)
+    {
+        // Set the date range
+        $dateFrom = date('Y-m-d 00:00:00', strtotime($dateFrom));
+        $dateTo = date('Y-m-d 23:59:59', strtotime($dateTo));
+
+
+        // Get the office IDs
+        $officeIds = [$office];
+        if ($include_sub_offices) {
+            $officeIds = get_office_and_sub_offices($office);
+        }
+
+        $external_services = OfficeService::where('office_services.is_external', 1)
+            ->join('lib_services', 'lib_services.id', '=', 'office_services.service_id')
+            ->leftJoin('feedbacks', function ($join) use ($dateFrom, $dateTo) {
+                $join->on('feedbacks.office_service_id', '=', 'office_services.id')
+                    ->where('feedbacks.is_external', 1)
+                    ->whereBetween('feedbacks.created_at', [$dateFrom, $dateTo]);
+            })
+            ->select(
+                'office_services.service_id',
+                'lib_services.service_name',
+                DB::raw('COUNT(feedbacks.id) as total_responses')
+            )
+            ->whereIn('office_services.office_id', $officeIds)
+            ->groupBy('office_services.service_id', 'lib_services.service_name')
+            ->orderBy('total_responses', 'desc')
+            ->orderBy('lib_services.service_name', 'asc')
+            ->get();
+
+        $external_services_data = [];
+        foreach ($external_services as $service) {
+            $external_services_data[$service->service_id] = [
+                'service_name' => $service->service_name,
+                'total_responses' => $service->total_responses,
+            ];
+        }
+
+        return $external_services_data;
+    }
+
+    function get_internal_services_responses($dateFrom, $dateTo, $office, $include_sub_offices)
+    {
+        // Set the date range
+        $dateFrom = date('Y-m-d 00:00:00', strtotime($dateFrom));
+        $dateTo = date('Y-m-d 23:59:59', strtotime($dateTo));
+
+
+        // Get the office IDs
+        $officeIds = [$office];
+        if ($include_sub_offices) {
+            $officeIds = get_office_and_sub_offices($office);
+        }
+
+        $internal_services = OfficeService::where('office_services.is_internal', 1)
+            ->join('lib_services', 'lib_services.id', '=', 'office_services.service_id')
+            ->leftJoin('feedbacks', function ($join) use ($dateFrom, $dateTo) {
+                $join->on('feedbacks.office_service_id', '=', 'office_services.id')
+                    ->where('feedbacks.is_external', 0)
+                    ->whereBetween('feedbacks.created_at', [$dateFrom, $dateTo]);
+            })
+            ->select(
+                'office_services.service_id',
+                'lib_services.service_name',
+                DB::raw('COUNT(feedbacks.id) as total_responses')
+            )
+            ->whereIn('office_services.office_id', $officeIds)
+            ->groupBy('office_services.service_id', 'lib_services.service_name')
+            ->orderBy('total_responses', 'desc')
+            ->orderBy('lib_services.service_name', 'asc')
+            ->get();
+
+        $internal_services_data = [];
+        foreach ($internal_services as $service) {
+            $internal_services_data[$service->service_id] = [
+                'service_name' => $service->service_name,
+                'total_responses' => $service->total_responses,
+            ];
+        }
+
+        return $internal_services_data;
+    }
+
+    function get_services_with_no_responses($dateFrom, $dateTo, $office, $include_sub_offices)
+    {
+        // Set the date range
+        $dateFrom = date('Y-m-d 00:00:00', strtotime($dateFrom));
+        $dateTo = date('Y-m-d 23:59:59', strtotime($dateTo));
+
+
+        // Get the office IDs
+        $officeIds = [$office];
+        if ($include_sub_offices) {
+            $officeIds = get_office_and_sub_offices($office);
+        }
+
+        $services_with_no_responses = OfficeService::join('lib_services', 'lib_services.id', '=', 'office_services.service_id')
+            ->leftJoin('feedbacks', function ($join) use ($dateFrom, $dateTo) {
+                $join->on('feedbacks.office_service_id', '=', 'office_services.id')
+                    ->whereBetween('feedbacks.created_at', [$dateFrom, $dateTo]);
+            })
+            ->select(
+                'office_services.service_id',
+                'lib_services.service_name',
+                DB::raw('COUNT(feedbacks.id) as total_responses')
+            )
+            ->whereIn('office_services.office_id', $officeIds)
+            ->groupBy('office_services.service_id', 'lib_services.service_name')
+            ->having('total_responses', '=', 0)
+            ->orderBy('lib_services.service_name', 'asc')
+            ->get();
+
+        $services_with_no_responses_data = [];
+        foreach ($services_with_no_responses as $service) {
+            $services_with_no_responses_data[$service->service_id] = [
+                'service_name' => $service->service_name,
+            ];
+        }
+
+        return $services_with_no_responses_data;
     }
 }

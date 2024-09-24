@@ -33,10 +33,10 @@ new class extends Component {
     public function with(FeedbackService $feedbackService)
     {
         return [
-            'total_responses' => $feedbackService->get_total_responses($this->dateFrom, $this->dateTo, end($this->selectedOffices), $this->includeSubOffice),
-            'cc1_awareness_total' => $feedbackService->get_cc1_awareness_total($this->dateFrom, $this->dateTo, end($this->selectedOffices), $this->includeSubOffice),
-            'cc2_visibility_total' => $feedbackService->get_cc2_visibility_total($this->dateFrom, $this->dateTo, end($this->selectedOffices), $this->includeSubOffice),
-            'cc3_helpfulness_total' => $feedbackService->get_cc3_helpfulness_total($this->dateFrom, $this->dateTo, end($this->selectedOffices), $this->includeSubOffice),
+            'total_responses' => $feedbackService->get_total_responses($this->dateFrom, $this->dateTo, end_office_id($this->selectedOffices), $this->includeSubOffice),
+            'cc1_awareness_total' => $feedbackService->get_cc1_awareness_total($this->dateFrom, $this->dateTo, end_office_id($this->selectedOffices), $this->includeSubOffice),
+            'cc2_visibility_total' => $feedbackService->get_cc2_visibility_total($this->dateFrom, $this->dateTo, end_office_id($this->selectedOffices), $this->includeSubOffice),
+            'cc3_helpfulness_total' => $feedbackService->get_cc3_helpfulness_total($this->dateFrom, $this->dateTo, end_office_id($this->selectedOffices), $this->includeSubOffice),
         ];
     }
 
@@ -46,7 +46,7 @@ new class extends Component {
     }
 }; ?>
 
-<div class="mt-2">
+<div class="">
 
     <div wire:loading class="w-full">
         {!! generate_placeholder(4, 1, 'grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-4 -mt-2', 28) !!}

@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Feedback;
 
 class DatabaseSeeder extends Seeder
 {
@@ -414,7 +415,12 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // delete all uploaded photos in the storage
-        $files = Storage::disk('public')->allFiles();
-        Storage::disk('public')->delete($files);
+        // $files = Storage::disk('public')->allFiles();
+        // Storage::disk('public')->delete($files);
+
+
+
+        // run the FeedbackFactory
+        Feedback::factory()->count(500)->create();
     }
 }

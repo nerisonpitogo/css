@@ -546,7 +546,7 @@ new #[Title('Office Services')] class extends Component {
 
 
         <div class="col">
-            <x-mary-card class="" title="Form Header Image"
+            <x-mary-card class="" title="Form Header Images & Report Headers/Footers"
                 subtitle="This Image will appear at the top of the online form." shadow separator>
                 <livewire:office-header-image-upload :office="$office" />
             </x-mary-card>

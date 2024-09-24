@@ -9,7 +9,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Office extends Model
 {
-    protected $fillable = ['name', 'short_name', 'office_level', 'parent_id'];
+    protected $fillable = [
+        'name',
+        'short_name',
+        'office_level',
+        'parent_id',
+        'header_image',
+        'report_header_image',
+        'report_footer_image'
+    ];
 
     public function parent()
     {

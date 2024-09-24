@@ -12,6 +12,8 @@ new class extends Component {
     public $selectedOffices = [];
     public $includeSubOffice = 1;
 
+    public $selectedTab = 'overall';
+
     public function mount()
     {
         // Initialize with top-level offices
@@ -170,13 +172,41 @@ new class extends Component {
         </div>
     </div>
 
-    <livewire:dashboard-summary lazy :selType="$selType" :dateFrom="$dateFrom" :dateTo="$dateTo" :includeSubOffice="$includeSubOffice"
-        :$selectedOffices />
 
-    <livewire:dashboard-summary-sqd lazy :selType="$selType" :dateFrom="$dateFrom" :dateTo="$dateTo" :includeSubOffice="$includeSubOffice"
-        :selectedOffices="$selectedOffices" />
+    <div class="mt-4">
+        <x-mary-tabs class="mt-2" wire:model="selectedTab">
+            <x-mary-tab name="overall" label="Overall" icon="o-chart-bar">
 
-    <livewire:dashboard-summary-age lazy :selType="$selType" :dateFrom="$dateFrom" :dateTo="$dateTo" :includeSubOffice="$includeSubOffice"
-        :selectedOffices="$selectedOffices" />
+                <livewire:dashboard-summary lazy :selType="$selType" :dateFrom="$dateFrom" :dateTo="$dateTo" :includeSubOffice="$includeSubOffice"
+                    :$selectedOffices />
+
+                <livewire:dashboard-summary-sqd lazy :selType="$selType" :dateFrom="$dateFrom" :dateTo="$dateTo"
+                    :includeSubOffice="$includeSubOffice" :selectedOffices="$selectedOffices" />
+
+            </x-mary-tab>
+            <x-mary-tab name="tricks-tab" label="Age/Sex/Region" icon="o-list-bullet">
+
+                <livewire:dashboard-summary-age lazy :selType="$selType" :dateFrom="$dateFrom" :dateTo="$dateTo"
+                    :includeSubOffice="$includeSubOffice" :selectedOffices="$selectedOffices" />
+
+            </x-mary-tab>
+            <x-mary-tab name="musics-tab" label="Services Details" icon="o-list-bullet">
+
+                <livewire:dashboard-summary-services lazy :selType="$selType" :dateFrom="$dateFrom" :dateTo="$dateTo"
+                    :includeSubOffice="$includeSubOffice" :selectedOffices="$selectedOffices" />
+
+            </x-mary-tab>
+        </x-mary-tabs>
+    </div>
+
+
+
+
+
+
+
+
+
+
 
 </div>

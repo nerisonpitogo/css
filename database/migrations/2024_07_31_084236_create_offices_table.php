@@ -20,6 +20,9 @@ return new class extends Migration
             $table->foreignId('parent_id')->nullable()->constrained('offices');
             // header_image
             $table->string('header_image')->nullable();
+            $table->string('report_header_image')->nullable();
+            $table->string('report_footer_image')->nullable();
+
             $table->timestamps();
         });
     }
