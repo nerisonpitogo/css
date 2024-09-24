@@ -61,9 +61,69 @@
 
         <table style="width:100%;margin-top:10px">
             <tr>
+                @php
+                    $percentage =
+                        $data2['total_responses'] > 0
+                            ? ($data2['cc1_awareness_total'] / $data2['total_responses']) * 100
+                            : 0;
+                @endphp
+
                 <td style="width:50%">CC AWARENESS</td>
-                <td style="width:50%">{{ $data2['cc1_awareness_total'] }}</td>
+                <td style="width:50%;color:{{ get_percentage_color_css($percentage) }}">
+                    {{ number_format($percentage, 2) }}%
+                    or {{ $data2['cc1_awareness_total'] }} out of {{ $data2['total_responses'] }} responses
+                </td>
             </tr>
+
+            <tr>
+                @php
+                    $percentage =
+                        $data2['total_responses'] > 0
+                            ? ($data2['cc2_visibility_total'] / $data2['total_responses']) * 100
+                            : 0;
+
+                @endphp
+                <td style="width:50%">CC VISIBILITY</td>
+                <td style="width:50%;color:{{ get_percentage_color_css($percentage) }}">
+                    {{ number_format($percentage, 2) }}%
+                    or {{ $data2['cc2_visibility_total'] }} out of {{ $data2['total_responses'] }} responses
+                </td>
+            </tr>
+
+            <tr>
+                @php
+                    $percentage =
+                        $data2['total_responses'] > 0
+                            ? ($data2['cc3_helpfulness_total'] / $data2['total_responses']) * 100
+                            : 0;
+
+                @endphp
+                <td style="width:50%">CC VISIBILITY</td>
+                <td style="width:50%;color:{{ get_percentage_color_css($percentage) }}">
+                    {{ number_format($percentage, 2) }}%
+                    or {{ $data2['cc3_helpfulness_total'] }} out of {{ $data2['total_responses'] }} responses
+                </td>
+            </tr>
+        </table>
+
+
+        <table style="width:100%;margin-top:10px">
+            <tr>
+                @php
+                    $percentage =
+                        $data2['total_responses'] > 0
+                            ? ($data2['cc1_awareness_total'] / $data2['total_responses']) * 100
+                            : 0;
+                @endphp
+
+                <td style="width:50%">SERVICE SATISFACTION (SQD0)</td>
+                <td style="width:50%;color:{{ get_percentage_color_css($data2['final_rating']) }}">
+                    {{ number_format($data2['final_rating'], 2) }}%
+                    {{ $data2['final_rating_word'] }}
+                </td>
+            </tr>
+
+
         </table>
 
         <!-- Add a page break to start new content on the next page -->

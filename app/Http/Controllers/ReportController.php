@@ -67,39 +67,102 @@ class ReportController extends Controller
         $this->generate_reports_for_office($currentOffice, $viewContent, $data, $images);
 
         // Generate the PDF from the accumulated HTML content
-        $pdf = PDF::loadHTML($viewContent)
+        $pdf = Pdf::loadHTML($viewContent)
             ->setPaper('a4', 'portrait')
             ->setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif']);
 
         return $pdf->stream('report.pdf');
     }
 
+    // private function generate_reports_for_office($office, &$viewContent, $data, $images)
+    // {
+    //     $feedbackService = new FeedbackService();
+
+    //     // check first if the office has officeService
+    //     if ($office->services->count() > 0) {
+    //         $include_sub_office = 0;
+    //         $data2 = [];
+
+    //         $data2['total_responses'] = $feedbackService->get_total_responses($data['dateFrom'], $data['dateTo'], $office->id, $include_sub_office);
+    //         $data2['cc1_awareness_total'] = $feedbackService->get_cc1_awareness_total($data['dateFrom'], $data['dateTo'], $office->id, $include_sub_office);
+    //         $data2['cc2_visibility_total'] = $feedbackService->get_cc2_visibility_total($data['dateFrom'], $data['dateTo'], $office->id, $include_sub_office);
+    //         $data2['cc3_helpfulness_total'] = $feedbackService->get_cc3_helpfulness_total($data['dateFrom'], $data['dateTo'], $office->id, $include_sub_office);
+
+    //         // SQD0
+    //         $sqd0s = $feedbackService->get_sqd_all_grouped_by_answer($this->dateFrom, $this->dateTo, end($this->selectedOffices), $this->includeSubOffice, 'sqd0');
+    //         $sqd0_array = [['rating' => 6, 'count' => 0], ['rating' => 5, 'count' => 0], ['rating' => 4, 'count' => 0], ['rating' => 3, 'count' => 0], ['rating' => 2, 'count' => 0], ['rating' => 1, 'count' => 0]];
+
+    //         foreach ($sqd0s as $sqd) {
+    //             foreach ($sqd0_array as &$item) {
+    //                 if ($item['rating'] == $sqd->sqd0) {
+    //                     $item['count'] = $sqd->count;
+    //                     break;
+    //                 }
+    //             }
+    //         }
+
+    //         $data2['final_rating'] = $feedbackService->get_score($sqd0_array[1]['count'], $sqd0_array[2]['count'], $sqd0s->sum('count'), $sqd0_array[0]['count']);
+    //         $data2['final_rating_word'] = $feedbackService->get_rating_in_words($data2['final_rating']);
+
+
+
+    //         $viewContent .= view('reports.report', compact('images', 'data', 'office', 'include_sub_office', 'data2'))->render();
+    //     }
+    //     //if $office->children is not empty
+    //     if ($office->children->count() > 0) {
+
+    //         $include_sub_office = 1;
+    //         $data2 = [];
+
+    //         $data2['total_responses'] = $feedbackService->get_total_responses($data['dateFrom'], $data['dateTo'], $office->id, $include_sub_office);
+    //         $data2['cc1_awareness_total'] = $feedbackService->get_cc1_awareness_total($data['dateFrom'], $data['dateTo'], $office->id, $include_sub_office);
+    //         $data2['cc2_visibility_total'] = $feedbackService->get_cc2_visibility_total($data['dateFrom'], $data['dateTo'], $office->id, $include_sub_office);
+    //         $data2['cc3_helpfulness_total'] = $feedbackService->get_cc3_helpfulness_total($data['dateFrom'], $data['dateTo'], $office->id, $include_sub_office);
+
+
+    //         // SQD0
+    //         $sqd0s = $feedbackService->get_sqd_all_grouped_by_answer($this->dateFrom, $this->dateTo, end($this->selectedOffices), $this->includeSubOffice, 'sqd0');
+    //         $sqd0_array = [['rating' => 6, 'count' => 0], ['rating' => 5, 'count' => 0], ['rating' => 4, 'count' => 0], ['rating' => 3, 'count' => 0], ['rating' => 2, 'count' => 0], ['rating' => 1, 'count' => 0]];
+
+    //         foreach ($sqd0s as $sqd) {
+    //             foreach ($sqd0_array as &$item) {
+    //                 if ($item['rating'] == $sqd->sqd0) {
+    //                     $item['count'] = $sqd->count;
+    //                     break;
+    //                 }
+    //             }
+    //         }
+
+    //         $data2['final_rating'] = $feedbackService->get_score($sqd0_array[1]['count'], $sqd0_array[2]['count'], $sqd0s->sum('count'), $sqd0_array[0]['count']);
+    //         $data2['final_rating_word'] = $feedbackService->get_rating_in_words($data2['final_rating']);
+
+
+
+    //         $viewContent .= view('reports.report', compact('images', 'data', 'office', 'include_sub_office', 'data2'))->render();
+    //     }
+
+
+
+    //     // Recursively generate reports for sub-offices
+    //     foreach ($office->children as $child) {
+    //         $this->generate_reports_for_office($child, $viewContent, $data, $images);
+    //     }
+    // }
     private function generate_reports_for_office($office, &$viewContent, $data, $images)
     {
         $feedbackService = new FeedbackService();
 
-        // check first if the office has officeService
         if ($office->services->count() > 0) {
             $include_sub_office = 0;
-            $data2 = [];
-
-            $data2['total_responses'] = $feedbackService->get_total_responses($data['dateFrom'], $data['dateTo'], $office->id, $include_sub_office);
-            $data2['cc1_awareness_total'] = $feedbackService->get_cc1_awareness_total($data['dateFrom'], $data['dateTo'], $office->id, $include_sub_office);
-            $data2['cc2_visibility_total'] = $feedbackService->get_cc2_visibility_total($data['dateFrom'], $data['dateTo'], $office->id, $include_sub_office);
-            $data2['cc3_helpfulness_total'] = $feedbackService->get_cc3_helpfulness_total($data['dateFrom'], $data['dateTo'], $office->id, $include_sub_office);
+            $data2 = $this->generateReportData($feedbackService, $data, $office, $include_sub_office);
 
             $viewContent .= view('reports.report', compact('images', 'data', 'office', 'include_sub_office', 'data2'))->render();
         }
-        //if $office->children is not empty
+
+        // if $office->children is not empty
         if ($office->children->count() > 0) {
-
             $include_sub_office = 1;
-            $data2 = [];
-
-            $data2['total_responses'] = $feedbackService->get_total_responses($data['dateFrom'], $data['dateTo'], $office->id, $include_sub_office);
-            $data2['cc1_awareness_total'] = $feedbackService->get_cc1_awareness_total($data['dateFrom'], $data['dateTo'], $office->id, $include_sub_office);
-            $data2['cc2_visibility_total'] = $feedbackService->get_cc2_visibility_total($data['dateFrom'], $data['dateTo'], $office->id, $include_sub_office);
-            $data2['cc3_helpfulness_total'] = $feedbackService->get_cc3_helpfulness_total($data['dateFrom'], $data['dateTo'], $office->id, $include_sub_office);
+            $data2 = $this->generateReportData($feedbackService, $data, $office, $include_sub_office);
 
             $viewContent .= view('reports.report', compact('images', 'data', 'office', 'include_sub_office', 'data2'))->render();
         }
@@ -110,5 +173,33 @@ class ReportController extends Controller
         foreach ($office->children as $child) {
             $this->generate_reports_for_office($child, $viewContent, $data, $images);
         }
+    }
+
+    private function generateReportData($feedbackService, $data, $office, $include_sub_office)
+    {
+        $data2 = [];
+
+        $data2['total_responses'] = $feedbackService->get_total_responses($data['dateFrom'], $data['dateTo'], $office->id, $include_sub_office);
+        $data2['cc1_awareness_total'] = $feedbackService->get_cc1_awareness_total($data['dateFrom'], $data['dateTo'], $office->id, $include_sub_office);
+        $data2['cc2_visibility_total'] = $feedbackService->get_cc2_visibility_total($data['dateFrom'], $data['dateTo'], $office->id, $include_sub_office);
+        $data2['cc3_helpfulness_total'] = $feedbackService->get_cc3_helpfulness_total($data['dateFrom'], $data['dateTo'], $office->id, $include_sub_office);
+
+        // SQD0
+        $sqd0s = $feedbackService->get_sqd_all_grouped_by_answer($data['dateFrom'], $data['dateTo'], $office->id, $include_sub_office, 'sqd0');
+        $sqd0_array = [['rating' => 6, 'count' => 0], ['rating' => 5, 'count' => 0], ['rating' => 4, 'count' => 0], ['rating' => 3, 'count' => 0], ['rating' => 2, 'count' => 0], ['rating' => 1, 'count' => 0]];
+
+        foreach ($sqd0s as $sqd) {
+            foreach ($sqd0_array as &$item) {
+                if ($item['rating'] == $sqd->sqd0) {
+                    $item['count'] = $sqd->count;
+                    break;
+                }
+            }
+        }
+
+        $data2['final_rating'] = $feedbackService->get_score($sqd0_array[1]['count'], $sqd0_array[2]['count'], $sqd0s->sum('count'), $sqd0_array[0]['count']);
+        $data2['final_rating_word'] = $feedbackService->get_rating_in_words($data2['final_rating']);
+
+        return $data2;
     }
 }

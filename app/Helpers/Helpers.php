@@ -206,6 +206,36 @@ if (!function_exists('get_percentage_color')) {
     }
 }
 
+if (!function_exists('get_percentage_color_css')) {
+
+    function get_percentage_color_css($percentage)
+    {
+        // below 60 Poor
+        // 60-79.9 Fair
+        // 80-89.9 Satisfactory
+        // 90-94.9 Very Satisfactory
+        // 95-100 Outstanding
+
+        if ($percentage === "N/A") {
+            return '#000000'; // Default color for "N/A"
+        }
+
+        $color = '#28a745'; // Default color for Outstanding (95-100)
+
+        if ($percentage < 60) {
+            $color = '#dc3545'; // Red for Poor
+        } elseif ($percentage < 80) {
+            $color = '#ffc107'; // Yellow for Fair
+        } elseif ($percentage < 90) {
+            $color = '#6c757d'; // Gray for Satisfactory
+        } elseif ($percentage < 95) {
+            $color = '#007bff'; // Blue for Very Satisfactory
+        }
+
+        return $color;
+    }
+}
+
 if (!function_exists('generate_placeholder')) {
 
     function generate_placeholder($columns, $rows, $class, $height_per_row = 32)
