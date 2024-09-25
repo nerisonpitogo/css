@@ -3,7 +3,7 @@
 use Livewire\Volt\Component;
 use Livewire\Attributes\{Layout, Title};
 use App\Models\Office;
-use App\Models\Sqd\sqd;
+use App\Models\Sqd\Sqd;
 use App\Models\Feedback;
 use Mary\Traits\Toast;
 use Illuminate\Support\Facades\Validator;
