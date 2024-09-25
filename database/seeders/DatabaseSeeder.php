@@ -415,12 +415,12 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // delete all uploaded photos in the storage
-        // $files = Storage::disk('public')->allFiles();
-        // Storage::disk('public')->delete($files);
+        $files = Storage::disk('public')->allFiles();
+        Storage::disk('public')->delete($files);
 
 
 
         // run the FeedbackFactory
-        Feedback::factory()->count(500)->create();
+        Feedback::factory()->count(100)->create();
     }
 }

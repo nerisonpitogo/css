@@ -275,6 +275,11 @@ if (!function_exists('get_images')) {
             'form_header_image' => '',
             'report_header_image' => '',
             'report_footer_image' => '',
+
+            'prepared_by_name' => '',
+            'prepared_by_position' => '',
+            'attested_by_name' => '',
+            'attested_by_position' => '',
         ];
 
         $office = Office::find($office_id);
@@ -283,6 +288,11 @@ if (!function_exists('get_images')) {
             $images['form_header_image'] = $office->header_image;
             $images['report_header_image'] = $office->report_header_image;
             $images['report_footer_image'] = $office->report_footer_image;
+
+            $images['prepared_by_name'] = $office->prepared_by_name;
+            $images['prepared_by_position'] = $office->prepared_by_position;
+            $images['attested_by_name'] = $office->attested_by_name;
+            $images['attested_by_position'] = $office->attested_by_position;
         } else {
             $parent = $office->parent;
             while ($parent) {

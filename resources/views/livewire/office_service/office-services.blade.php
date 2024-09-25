@@ -417,28 +417,40 @@ new #[Title('Office Services')] class extends Component {
     <div class="grid grid-cols-1 gap-2 mt-2 lg:grid-cols-2">
 
         <div class="col">
-            <x-mary-card class="" title="Onsite - Office Specific"
+            <x-mary-card class="" title="Onsite Clients - Office Specific"
                 subtitle="Use this link for services provided onsite. Only services under the {{ $office->name }} will be displayed."
                 shadow separator>
 
                 <div>
                     External Client Form:
-                    <span class="mr-2 text-blue-500">
-                        {{ url('/form/1/0/1/' . $office->id) }}
-                    </span>
+                    @if ($office->hasExternalServices())
+                        <span class="mr-2 text-blue-500">
+                            {{ url('/form/1/0/1/' . $office->id) }}
+                        </span>
+                    @else
+                        <span class="mr-2 text-red-400">
+                            No External Services
+                        </span>
+                    @endif
                 </div>
                 <div>
                     Internal Client Form:
-                    <span class="mr-2 text-blue-500">
-                        {{ url('/form/1/0/0/' . $office->id) }}
-                    </span>
+                    @if ($office->hasInternalServices())
+                        <span class="mr-2 text-blue-500">
+                            {{ url('/form/1/0/0/' . $office->id) }}
+                        </span>
+                    @else
+                        <span class="mr-2 text-red-400">
+                            No Internal Services
+                        </span>
+                    @endif
                 </div>
 
             </x-mary-card>
         </div>
 
         <div class="col">
-            <x-mary-card class="" title="Onsite - With Sub Offices"
+            <x-mary-card class="" title="Onsite Clients - With Sub Offices"
                 subtitle="Use this link for services provided onsite. Only services under the {{ $office->name }} will be displayed."
                 shadow separator>
 
@@ -459,28 +471,40 @@ new #[Title('Office Services')] class extends Component {
         </div>
 
         <div class="col">
-            <x-mary-card class="" title="Online - Office Specific"
+            <x-mary-card class="" title="Online Clients - Office Specific"
                 subtitle="Use this link for services provided online. Only services under the {{ $office->name }} will be displayed."
                 shadow separator>
 
                 <div>
                     External Client Form:
-                    <span class="mr-2 text-blue-500">
-                        {{ url('/form/0/0/1/' . $office->id) }}
-                    </span>
+                    @if ($office->hasExternalServices())
+                        <span class="mr-2 text-blue-500">
+                            {{ url('/form/0/0/1/' . $office->id) }}
+                        </span>
+                    @else
+                        <span class="mr-2 text-red-400">
+                            No External Services
+                        </span>
+                    @endif
                 </div>
                 <div>
                     Internal Client Form:
-                    <span class="mr-2 text-blue-500">
-                        {{ url('/form/0/0/0/' . $office->id) }}
-                    </span>
+                    @if ($office->hasInternalServices())
+                        <span class="mr-2 text-blue-500">
+                            {{ url('/form/0/0/0/' . $office->id) }}
+                        </span>
+                    @else
+                        <span class="mr-2 text-red-400">
+                            No Internal Services
+                        </span>
+                    @endif
                 </div>
 
             </x-mary-card>
         </div>
 
         <div class="col">
-            <x-mary-card class="" title="Online - With Sub Offices"
+            <x-mary-card class="" title="Online Clients - With Sub Offices"
                 subtitle="Use this link for services provided online. Only services under the {{ $office->name }} will be displayed."
                 shadow separator>
 
@@ -495,6 +519,7 @@ new #[Title('Office Services')] class extends Component {
                     <span class="mr-2 text-blue-500">
                         {{ url('/form/0/1/0/' . $office->id) }}
                     </span>
+
                 </div>
 
             </x-mary-card>

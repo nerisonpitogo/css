@@ -232,7 +232,8 @@ class FeedbackService
 
         return [
             $this->get_score_from_array_results($array_results),
-            $this->get_rating_in_words($this->get_score_from_array_results($array_results))
+            $this->get_rating_in_words($this->get_score_from_array_results($array_results)),
+            $array_results
         ];
     }
 
@@ -849,5 +850,30 @@ class FeedbackService
         }
 
         return $services_with_no_responses_data;
+    }
+
+
+    function get_response_comments($dateFrom, $dateTo, $office, $include_sub_offices)
+    {
+        // Set the date range
+        $dateFrom = date('Y-m-d 00:00:00', strtotime($dateFrom));
+        $dateTo = date('Y-m-d 23:59:59', strtotime($dateTo));
+
+
+        // Get the office IDs
+        $officeIds = [$office];
+        if ($include_sub_offices) {
+            $officeIds = get_office_and_sub_offices($office);
+        }
+
+        $comments = Feedback::select('feedbacks.*')
+            ->leftJoin('office_services', 'feedbacks.office_service_id', '=', 'office_services.id')
+            ->whereIn('office_services.office_id', $officeIds)
+            ->whereBetween('feedbacks.created_at', [$dateFrom, $dateTo])
+            ->whereNotNull('suggestions')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return $comments;
     }
 }

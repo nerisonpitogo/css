@@ -42,10 +42,14 @@ return new class extends Migration
             $table->integer('sqd8');
 
             // suggestion
-            $table->string('suggestions')->nullable();
+            $table->longText('suggestions')->nullable();
             // email
             $table->string('email')->nullable();
 
+            // is_reported
+            $table->boolean('is_reported')->default(true);
+            // type 1 for highlighted, 2 for lowlighted, 3 for normal
+            $table->integer('type')->default(3);
 
             $table->timestamps();
         });

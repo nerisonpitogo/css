@@ -184,13 +184,21 @@ new class extends Component {
                     :includeSubOffice="$includeSubOffice" :selectedOffices="$selectedOffices" />
 
             </x-mary-tab>
-            <x-mary-tab name="tricks-tab" label="Age/Sex/Region" icon="o-list-bullet">
+
+            <x-mary-tab name="commnets-tab" label="Comments/Suggestions" icon="o-chat-bubble-bottom-center-text">
+
+                <livewire:dashboard-summary-comments lazy :selType="$selType" :dateFrom="$dateFrom" :dateTo="$dateTo"
+                    :includeSubOffice="$includeSubOffice" :selectedOffices="$selectedOffices" />
+
+            </x-mary-tab>
+
+            <x-mary-tab name="age-tab" label="Age/Sex/Region" icon="o-list-bullet">
 
                 <livewire:dashboard-summary-age lazy :selType="$selType" :dateFrom="$dateFrom" :dateTo="$dateTo"
                     :includeSubOffice="$includeSubOffice" :selectedOffices="$selectedOffices" />
 
             </x-mary-tab>
-            <x-mary-tab name="musics-tab" label="Services Details" icon="o-list-bullet">
+            <x-mary-tab name="services-tab" label="Services Details" icon="o-list-bullet">
 
                 <livewire:dashboard-summary-services lazy :selType="$selType" :dateFrom="$dateFrom" :dateTo="$dateTo"
                     :includeSubOffice="$includeSubOffice" :selectedOffices="$selectedOffices" />

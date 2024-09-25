@@ -16,7 +16,11 @@ class Office extends Model
         'parent_id',
         'header_image',
         'report_header_image',
-        'report_footer_image'
+        'report_footer_image',
+        'prepared_by_name',
+        'prepared_by_position',
+        'attested_by_name',
+        'attested_by_position',
     ];
 
     public function parent()
@@ -80,5 +84,15 @@ class Office extends Model
         }
 
         return false;
+    }
+
+    public function hasExternalServices()
+    {
+        return $this->services->where('is_external', true)->count() > 0;
+    }
+
+    public function hasInternalServices()
+    {
+        return $this->services->where('is_internal', true)->count() > 0;
     }
 }

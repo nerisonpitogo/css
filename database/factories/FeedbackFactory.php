@@ -63,6 +63,8 @@ class FeedbackFactory extends Factory
             'sqd8' => $this->faker->numberBetween(1, 6),
             'suggestions' => $this->faker->optional()->sentence,
             'email' => $this->faker->optional()->safeEmail,
+            'is_reported' => $this->faker->boolean,
+            'type' => $this->faker->numberBetween(1, 3),
             'created_at' => now(),
             'updated_at' => now(),
         ];

@@ -13,9 +13,18 @@ new class extends Component {
     public $report_header_image;
     public $report_footer_image;
 
+    public $prepared_by_name;
+    public $prepared_by_position;
+    public $attested_by_name;
+    public $attested_by_position;
+
     public function mount($office)
     {
         $this->office = $office;
+        $this->prepared_by_name = $office->prepared_by_name;
+        $this->prepared_by_position = $office->prepared_by_position;
+        $this->attested_by_name = $office->attested_by_name;
+        $this->attested_by_position = $office->attested_by_position;
     }
 
     public function save()
@@ -24,6 +33,10 @@ new class extends Component {
             'header_image' => 'nullable|image|max:1024', // 1MB Max
             'report_header_image' => 'nullable|image|max:1024', // 1MB Max
             'report_footer_image' => 'nullable|image|max:1024', // 1MB Max
+            'prepared_by_name' => 'nullable',
+            'prepared_by_position' => 'nullable',
+            'attested_by_name' => 'nullable',
+            'attested_by_position' => 'nullable',
         ]);
 
         $updated = false;
@@ -48,6 +61,13 @@ new class extends Component {
             $this->office->report_footer_image = $this->report_footer_image->hashName();
             $updated = true;
         }
+
+        $this->office->prepared_by_name = $this->prepared_by_name;
+        $this->office->prepared_by_position = $this->prepared_by_position;
+        $this->office->attested_by_name = $this->attested_by_name;
+        $this->office->attested_by_position = $this->attested_by_position;
+        $this->office->save();
+        $updated = true;
 
         if ($updated) {
             $this->office->save();
@@ -87,7 +107,29 @@ new class extends Component {
             <img class="max-w-52 img-fluid"
                 src="{{ isset($office->report_footer_image) ? asset('storage/report_footer_images/' . $office->report_footer_image) : url('/images/image_placeholder.png') }}">
         </x-mary-file>
-        <hr class="mt-5">
+
+        <hr class="mt-5 mb-5">
+
+        <div class="grid grid-cols-2 gap-2">
+            <div class="col">
+                <x-mary-input wire:model='prepared_by_name' label="Prepared by Name" placeholder="" hint="" />
+            </div>
+            <div class="col">
+                <x-mary-input wire:model='prepared_by_position' label="Position" placeholder=""
+                    hint="Separate with | for multiline" />
+            </div>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+            <div class="col">
+                <x-mary-input wire:model='attested_by_name' label="Attested by Name" placeholder="" hint="" />
+            </div>
+            <div class="col">
+                <x-mary-input wire:model='attested_by_position' label="Position" placeholder=""
+                    hint="Separate with | for multiline" />
+            </div>
+        </div>
+
+
         <x-mary-button class="mt-2 btn btn-primary" wire:click="save"
             label="{{ isset($office->header_image) ? 'UPDATE' : 'SAVE' }}" spinner="save" />
     @else

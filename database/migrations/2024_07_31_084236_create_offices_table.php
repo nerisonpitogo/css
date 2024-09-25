@@ -23,6 +23,12 @@ return new class extends Migration
             $table->string('report_header_image')->nullable();
             $table->string('report_footer_image')->nullable();
 
+            // prepared_by_name
+            $table->string('prepared_by_name')->nullable();
+            $table->string('prepared_by_position')->nullable();
+            $table->string('attested_by_name')->nullable();
+            $table->string('attested_by_position')->nullable();
+
             $table->timestamps();
         });
     }
