@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
 
 
         // create permissions
-        $permissions_to_add = ['Manage Users', 'Manage Settings'];
+        $permissions_to_add = ['Manage Users', 'Manage Settings', 'Manage Offices'];
         foreach ($permissions_to_add as $permission) {
             Permission::create([
                 'name' => $permission,
@@ -32,7 +32,7 @@ class DatabaseSeeder extends Seeder
         }
 
         // create roles
-        $roles_to_add = ['Admin'];
+        $roles_to_add = ['Admin', 'Office Admin'];
         foreach ($roles_to_add as $role) {
             Role::create([
                 'name' => $role,
@@ -46,9 +46,16 @@ class DatabaseSeeder extends Seeder
 
         $role->permissions()->sync($permissions->pluck('id'));
 
-        // assign user id 1 to admin
+        // assign all roles to user id 1
         $user = User::find(1);
-        $user->assignRole($role);
+        $roles = Role::all();
+        $user->roles()->sync($roles->pluck('id'));
+
+        // add Manage Offices permission to Office Admin role
+        $role = Role::where('name', 'Office Admin')->first();
+        $permission = Permission::where('name', 'Manage Offices')->first();
+        $role->permissions()->sync($permission->id);
+
 
 
         // THE FOLOWING IS A DEPED MIGRATION DATA IF YOU ARE NOT FROM DEPED, COMMENT OUT THE FOLLOWING CODE
@@ -86,64 +93,64 @@ class DatabaseSeeder extends Seeder
             ['name' => 'Policy Planning and Research Division', 'short_name' => 'PPRD', 'office_level' => 'RO FD', 'parent_id' => 2], //23
             ['name' => 'Quality Assurance Division', 'short_name' => 'QAD', 'office_level' => 'RO FD', 'parent_id' => 2], //24
 
-            // ['name' => 'Agusan del Norte', 'short_name' => 'ADN', 'office_level' => 'SDO', 'parent_id' => 1], //23
-            // ['name' => 'School Governance and Operations Division', 'short_name' => 'SGOD', 'office_level' => 'SDO FD', 'parent_id' => 23], //24
-            // ['name' => 'Curriculum and Instruction Division', 'short_name' => 'CID', 'office_level' => 'SDO FD', 'parent_id' => 23], //25
+            ['name' => 'Agusan del Norte', 'short_name' => 'ADN', 'office_level' => 'SDO', 'parent_id' => 1], //25
+            ['name' => 'School Governance and Operations Division', 'short_name' => 'SGOD', 'office_level' => 'SDO FD', 'parent_id' => 25], //26
+            ['name' => 'Curriculum and Instruction Division', 'short_name' => 'CID', 'office_level' => 'SDO FD', 'parent_id' => 25], //27
 
-            // // Agusan del Sur and the SGOD and CID
-            // ['name' => 'Agusan del Sur', 'short_name' => 'ADS', 'office_level' => 'SDO', 'parent_id' => 1], //26
-            // ['name' => 'School Governance and Operations Division', 'short_name' => 'SGOD', 'office_level' => 'SDO FD', 'parent_id' => 26], //27
-            // ['name' => 'Curriculum and Instruction Division', 'short_name' => 'CID', 'office_level' => 'SDO FD', 'parent_id' => 26], //28
+            // Agusan del Sur and the SGOD and CID
+            ['name' => 'Agusan del Sur', 'short_name' => 'ADS', 'office_level' => 'SDO', 'parent_id' => 1], //28
+            ['name' => 'School Governance and Operations Division', 'short_name' => 'SGOD', 'office_level' => 'SDO FD', 'parent_id' => 28], //29
+            ['name' => 'Curriculum and Instruction Division', 'short_name' => 'CID', 'office_level' => 'SDO FD', 'parent_id' => 28], //30
 
-            // // Bayugan City
-            // ['name' => 'Bayugan City', 'short_name' => 'BC', 'office_level' => 'SDO', 'parent_id' => 1], //29
-            // ['name' => 'School Governance and Operations Division', 'short_name' => 'SGOD', 'office_level' => 'SDO FD', 'parent_id' => 29], //30
-            // ['name' => 'Curriculum and Instruction Division', 'short_name' => 'CID', 'office_level' => 'SDO FD', 'parent_id' => 29], //31
+            // Bayugan City
+            ['name' => 'Bayugan City', 'short_name' => 'BC', 'office_level' => 'SDO', 'parent_id' => 1], //31
+            ['name' => 'School Governance and Operations Division', 'short_name' => 'SGOD', 'office_level' => 'SDO FD', 'parent_id' => 31], //32
+            ['name' => 'Curriculum and Instruction Division', 'short_name' => 'CID', 'office_level' => 'SDO FD', 'parent_id' => 31], //33
 
-            // // Bislig City
-            // ['name' => 'Bislig City', 'short_name' => 'BC', 'office_level' => 'SDO', 'parent_id' => 1], //32
-            // ['name' => 'School Governance and Operations Division', 'short_name' => 'SGOD', 'office_level' => 'SDO FD', 'parent_id' => 32], //33
-            // ['name' => 'Curriculum and Instruction Division', 'short_name' => 'CID', 'office_level' => 'SDO FD', 'parent_id' => 32], //34
+            // Bislig City
+            ['name' => 'Bislig City', 'short_name' => 'BC', 'office_level' => 'SDO', 'parent_id' => 1], //34
+            ['name' => 'School Governance and Operations Division', 'short_name' => 'SGOD', 'office_level' => 'SDO FD', 'parent_id' => 34], //35
+            ['name' => 'Curriculum and Instruction Division', 'short_name' => 'CID', 'office_level' => 'SDO FD', 'parent_id' => 34], //36
 
-            // // Butuan City
-            // ['name' => 'Butuan City', 'short_name' => 'BC', 'office_level' => 'SDO', 'parent_id' => 1], //35
-            // ['name' => 'School Governance and Operations Division', 'short_name' => 'SGOD', 'office_level' => 'SDO FD', 'parent_id' => 35], //36
-            // ['name' => 'Curriculum and Instruction Division', 'short_name' => 'CID', 'office_level' => 'SDO FD', 'parent_id' => 35], //37
+            // Butuan City
+            ['name' => 'Butuan City', 'short_name' => 'BC', 'office_level' => 'SDO', 'parent_id' => 1], //37
+            ['name' => 'School Governance and Operations Division', 'short_name' => 'SGOD', 'office_level' => 'SDO FD', 'parent_id' => 37], //38
+            ['name' => 'Curriculum and Instruction Division', 'short_name' => 'CID', 'office_level' => 'SDO FD', 'parent_id' => 37], //39
 
-            // // Cabadbaran City
-            // ['name' => 'Cabadbaran City', 'short_name' => 'CC', 'office_level' => 'SDO', 'parent_id' => 1], //38
-            // ['name' => 'School Governance and Operations Division', 'short_name' => 'SGOD', 'office_level' => 'SDO FD', 'parent_id' => 38], //39
-            // ['name' => 'Curriculum and Instruction Division', 'short_name' => 'CID', 'office_level' => 'SDO FD', 'parent_id' => 38], //40
+            // Cabadbaran City
+            ['name' => 'Cabadbaran City', 'short_name' => 'CC', 'office_level' => 'SDO', 'parent_id' => 1], //40
+            ['name' => 'School Governance and Operations Division', 'short_name' => 'SGOD', 'office_level' => 'SDO FD', 'parent_id' => 40], //41
+            ['name' => 'Curriculum and Instruction Division', 'short_name' => 'CID', 'office_level' => 'SDO FD', 'parent_id' => 40], //42
 
-            // // Dinagat Islands
-            // ['name' => 'Dinagat Islands', 'short_name' => 'DI', 'office_level' => 'SDO', 'parent_id' => 1], //41
-            // ['name' => 'School Governance and Operations Division', 'short_name' => 'SGOD', 'office_level' => 'SDO FD', 'parent_id' => 41], //42
-            // ['name' => 'Curriculum and Instruction Division', 'short_name' => 'CID', 'office_level' => 'SDO FD', 'parent_id' => 41], //43
+            // Dinagat Islands
+            ['name' => 'Dinagat Islands', 'short_name' => 'DI', 'office_level' => 'SDO', 'parent_id' => 1], //43
+            ['name' => 'School Governance and Operations Division', 'short_name' => 'SGOD', 'office_level' => 'SDO FD', 'parent_id' => 43], //44
+            ['name' => 'Curriculum and Instruction Division', 'short_name' => 'CID', 'office_level' => 'SDO FD', 'parent_id' => 43], //45
 
-            // // Siargao Island
-            // ['name' => 'Siargao Island', 'short_name' => 'SI', 'office_level' => 'SDO', 'parent_id' => 1], //44
-            // ['name' => 'School Governance and Operations Division', 'short_name' => 'SGOD', 'office_level' => 'SDO FD', 'parent_id' => 44], //45
-            // ['name' => 'Curriculum and Instruction Division', 'short_name' => 'CID', 'office_level' => 'SDO FD', 'parent_id' => 44], //46
+            // Siargao Island
+            ['name' => 'Siargao Island', 'short_name' => 'SI', 'office_level' => 'SDO', 'parent_id' => 1], //46
+            ['name' => 'School Governance and Operations Division', 'short_name' => 'SGOD', 'office_level' => 'SDO FD', 'parent_id' => 46], //47
+            ['name' => 'Curriculum and Instruction Division', 'short_name' => 'CID', 'office_level' => 'SDO FD', 'parent_id' => 46], //48
 
-            // // Surigao City
-            // ['name' => 'Surigao City', 'short_name' => 'SC', 'office_level' => 'SDO', 'parent_id' => 1], //47
-            // ['name' => 'School Governance and Operations Division', 'short_name' => 'SGOD', 'office_level' => 'SDO FD', 'parent_id' => 47], //48
-            // ['name' => 'Curriculum and Instruction Division', 'short_name' => 'CID', 'office_level' => 'SDO FD', 'parent_id' => 47], //49
+            // Surigao City
+            ['name' => 'Surigao City', 'short_name' => 'SC', 'office_level' => 'SDO', 'parent_id' => 1], //49
+            ['name' => 'School Governance and Operations Division', 'short_name' => 'SGOD', 'office_level' => 'SDO FD', 'parent_id' => 49], //50
+            ['name' => 'Curriculum and Instruction Division', 'short_name' => 'CID', 'office_level' => 'SDO FD', 'parent_id' => 49], //51
 
-            // // Surigao del Norte
-            // ['name' => 'Surigao del Norte', 'short_name' => 'SDN', 'office_level' => 'SDO', 'parent_id' => 1], //50
-            // ['name' => 'School Governance and Operations Division', 'short_name' => 'SGOD', 'office_level' => 'SDO FD', 'parent_id' => 50], //51
-            // ['name' => 'Curriculum and Instruction Division', 'short_name' => 'CID', 'office_level' => 'SDO FD', 'parent_id' => 50], //52
+            // Surigao del Norte
+            ['name' => 'Surigao del Norte', 'short_name' => 'SDN', 'office_level' => 'SDO', 'parent_id' => 1], //52
+            ['name' => 'School Governance and Operations Division', 'short_name' => 'SGOD', 'office_level' => 'SDO FD', 'parent_id' => 52], //53
+            ['name' => 'Curriculum and Instruction Division', 'short_name' => 'CID', 'office_level' => 'SDO FD', 'parent_id' => 52], //54
 
-            // // Surigao del Sur
-            // ['name' => 'Surigao del Sur', 'short_name' => 'SDS', 'office_level' => 'SDO', 'parent_id' => 1], //53
-            // ['name' => 'School Governance and Operations Division', 'short_name' => 'SGOD', 'office_level' => 'SDO FD', 'parent_id' => 53], //54
-            // ['name' => 'Curriculum and Instruction Division', 'short_name' => 'CID', 'office_level' => 'SDO FD', 'parent_id' => 53], //55
+            // Surigao del Sur
+            ['name' => 'Surigao del Sur', 'short_name' => 'SDS', 'office_level' => 'SDO', 'parent_id' => 1], //55
+            ['name' => 'School Governance and Operations Division', 'short_name' => 'SGOD', 'office_level' => 'SDO FD', 'parent_id' => 55], //56
+            ['name' => 'Curriculum and Instruction Division', 'short_name' => 'CID', 'office_level' => 'SDO FD', 'parent_id' => 55], //57
 
-            // // Tandag City
-            // ['name' => 'Tandag City', 'short_name' => 'TC', 'office_level' => 'SDO', 'parent_id' => 1], //56
-            // ['name' => 'School Governance and Operations Division', 'short_name' => 'SGOD', 'office_level' => 'SDO FD', 'parent_id' => 56], //57
-            // ['name' => 'Curriculum and Instruction Division', 'short_name' => 'CID', 'office_level' => 'SDO FD', 'parent_id' => 56], //59
+            // Tandag City
+            ['name' => 'Tandag City', 'short_name' => 'TC', 'office_level' => 'SDO', 'parent_id' => 1], //58
+            ['name' => 'School Governance and Operations Division', 'short_name' => 'SGOD', 'office_level' => 'SDO FD', 'parent_id' => 58], //59
+            ['name' => 'Curriculum and Instruction Division', 'short_name' => 'CID', 'office_level' => 'SDO FD', 'parent_id' => 58], //60
         ]);
 
         // insert services CASH Section
@@ -421,6 +428,6 @@ class DatabaseSeeder extends Seeder
 
 
         // run the FeedbackFactory
-        // Feedback::factory()->count(100)->create();
+        Feedback::factory()->count(100)->create();
     }
 }

@@ -4,7 +4,7 @@ import forms from "@tailwindcss/forms";
 /** @type {import('tailwindcss').Config} */
 export default {
     daisyui: {
-        themes: ["light", "dark"],
+        themes: ["dark", "light"],
     },
 
     darkMode: ["class", '[data-theme="dark"]'],

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-theme="cupcake">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-theme="light">
 
 <head>
     <meta charset="utf-8">
@@ -45,7 +45,8 @@
 
         {{-- Right side actions --}}
         <x-slot:actions>
-            <x-mary-theme-toggle darkTheme="dark" lightTheme="light" class="btn btn-circle btn-ghost" />
+            <x-mary-theme-toggle darkTheme="{{ env('DARK_THEME', 'dark') }}"
+                lightTheme="{{ env('LIGHT_THEME', 'light') }}" class="btn btn-circle btn-ghost" />
             {{-- <x-mary-button label="Messages" icon="o-envelope" link="###" class="btn-ghost btn-sm" responsive />
             <x-mary-button label="Notifications" icon="o-bell" link="###" class="btn-ghost btn-sm" responsive /> --}}
         </x-slot:actions>

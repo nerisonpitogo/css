@@ -24,7 +24,7 @@ Route::group(['middleware' => 'auth'], function () {
     Volt::route('/users', 'users')->name('users')->middleware('can:Manage Users');
     Route::view('/profile', 'profile')->name('profile');
 
-    Volt::route('/offices', 'offices')->name('offices')->middleware('can:Manage Settings');
+    Volt::route('/offices', 'offices')->name('offices')->middleware('can:Manage Offices');
     Volt::route('/libservices', 'lib_service.lib-services')->name('libservices')->middleware('can:Manage Settings');
     Volt::route('/officeservices/{office_id}', 'office_service.office-services')->name('officeservices');
     Volt::route('/sqds', 'sqd.sqds')->name('sqds');

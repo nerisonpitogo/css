@@ -2,6 +2,7 @@
 
 use Livewire\Volt\Component;
 use App\Models\Office;
+use Illuminate\Support\Facades\Auth;
 
 new class extends Component {
     public $office;
@@ -22,7 +23,9 @@ new class extends Component {
 
     public function getOffices()
     {
-        $query = Office::orderBy('name')->with('allChildren');
+        $query = Office::orderBy('name')
+            ->where(['id' => Auth::user()->office_id])
+            ->with('allChildren');
 
         if ($this->searchOffice) {
             $query = $query->where(function ($q) {
@@ -32,9 +35,10 @@ new class extends Component {
                     // });
                 });
             });
-        } else {
-            $query = $query->whereNull('parent_id');
         }
+        // else {
+        //     $query = $query->whereNull('parent_id');
+        // }
 
         return $query->simplePaginate(5);
     }
@@ -46,6 +50,8 @@ new class extends Component {
             'shortName' => 'required',
             'officeLevel' => 'required',
         ]);
+
+        // check duplicate
 
         Office::create([
             'name' => $this->officeName,
@@ -71,7 +77,9 @@ new class extends Component {
                         <x-mary-input icon="o-bolt" placeholder="Search..." wire:model.live="searchOffice" clearable />
                     </x-slot:middle>
                     <x-slot:actions>
-                        <x-mary-button icon="o-plus" @click="$wire.modalOfficeShown = true" class="btn-success" />
+                        @if (Auth::user()->can('Manage Settings'))
+                            <x-mary-button icon="o-plus" @click="$wire.modalOfficeShown = true" class="btn-success" />
+                        @endif
                     </x-slot:actions>
                 </x-mary-header>
 

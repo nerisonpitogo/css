@@ -272,9 +272,9 @@ if (!function_exists('get_images')) {
     function get_images($office_id)
     {
         $images = [
-            'form_header_image' => 'https://via.placeholder.com/1920x192', // Assuming full width is 1920px and height is 192px (2 inches)
-            'report_header_image' => 'https://via.placeholder.com/1920x192', // Assuming full width is 1920px and height is 192px (2 inches)
-            'report_footer_image' => 'https://via.placeholder.com/1920x192', // Assuming full width is 1920px and height is 192px (2 inches)
+            'form_header_image' => '',
+            'report_header_image' => '',
+            'report_footer_image' => '',
 
             'prepared_by_name' => '',
             'prepared_by_position' => '',

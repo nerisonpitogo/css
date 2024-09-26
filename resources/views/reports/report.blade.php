@@ -63,10 +63,12 @@
 
 <body>
     <!-- First Page Header -->
-    <header class="first-page">
-        <img src="{{ base64_image(public_path('storage/report_header_images/' . $images['report_header_image'])) }}"
-            width="100%">
-    </header>
+    @if ($images['report_header_image'])
+        <header class="first-page">
+            <img src="{{ base64_image(public_path('storage/report_header_images/' . $images['report_header_image'])) }}"
+                width="100%">
+        </header>
+    @endif
 
     <!-- Main content of the report -->
     <main>
@@ -387,7 +389,8 @@
                 @endforeach
             </div>
         </div>
-
+        <br>
+        <br>
         <table style="border:none;margin-top:10px">
             <tr style="border:none">
                 <td style="border:none">Prepared by:</td>
@@ -415,10 +418,14 @@
     </main>
 
     <!-- Footer for every page -->
-    <footer>
-        <img src="{{ base64_image(public_path('storage/report_footer_images/' . $images['report_footer_image'])) }}"
-            width="100%">
-    </footer>
+    @if ($images['report_footer_image'])
+        <br>
+        <br>
+        <footer>
+            <img src="{{ base64_image(public_path('storage/report_footer_images/' . $images['report_footer_image'])) }}"
+                width="100%">
+        </footer>
+    @endif
 
     <!-- Page break -->
     <div style="page-break-before: always;"></div>
