@@ -42,8 +42,7 @@ class ReportController extends Controller
             'selectedOffices' => $this->selectedOffices,
         ];
         $lastOffice = end($this->selectedOffices);
-
-        // $images = get_images($lastOffice);
+        $images = get_images($lastOffice);
 
         // Format the dates
         $dateFromFormatted = Carbon::parse($this->dateFrom)->format('F d, Y');
@@ -65,7 +64,7 @@ class ReportController extends Controller
         $viewContent = "";
 
         // Generate reports for the current office and its sub-offices
-        $this->generate_reports_for_office($currentOffice, $viewContent, $data, $lastOffice);
+        $this->generate_reports_for_office($currentOffice, $viewContent, $data, $images);
 
         // Generate the PDF from the accumulated HTML content
         // $pdf = Pdf::loadHTML($viewContent)
@@ -85,11 +84,9 @@ class ReportController extends Controller
         return $pdf->stream('report.pdf');
     }
 
-    private function generate_reports_for_office($office, &$viewContent, $data, $lastOffice)
+    private function generate_reports_for_office($office, &$viewContent, $data, $images)
     {
         $feedbackService = new FeedbackService();
-
-        $images = get_images($lastOffice);
 
         if ($office->services->count() > 0) {
             $include_sub_office = 0;
@@ -110,8 +107,7 @@ class ReportController extends Controller
 
         // Recursively generate reports for sub-offices
         foreach ($office->children as $child) {
-
-            $this->generate_reports_for_office($child, $viewContent, $data, $child->id);
+            $this->generate_reports_for_office($child, $viewContent, $data, $images);
         }
     }
 
