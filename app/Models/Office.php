@@ -42,6 +42,7 @@ class Office extends Model
         return $this->hasMany(OfficeService::class);
     }
 
+
     public function allChildren()
     {
         return $this->children()->with('allChildren');
@@ -94,5 +95,10 @@ class Office extends Model
     public function hasInternalServices()
     {
         return $this->services->where('is_internal', true)->count() > 0;
+    }
+
+    public function hasChildren()
+    {
+        return $this->children->count() > 0;
     }
 }

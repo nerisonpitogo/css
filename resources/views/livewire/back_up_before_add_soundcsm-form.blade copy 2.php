@@ -9,7 +9,6 @@ use Mary\Traits\Toast;
 use Illuminate\Support\Facades\Validator;
 use App\Models\OfficeRegion;
 use App\Models\LibRegion\LibRegion;
-use Illuminate\Support\Facades\Crypt;
 
 new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component {
     use Toast;
@@ -356,8 +355,6 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                 redirectTo: null, // optional (uri)
             );
 
-            $this->js('playSuccessSound()');
-
             // reset everything
             $this->reset('step', 'language', 'clientType', 'clientSex', 'clientAge', 'clientRegion', 'clientRegionText', 'serViceAvailedOffice', 'serViceAvailed', 'cc1', 'cc2', 'cc3', 'sqd0', 'sqd1', 'sqd2', 'sqd3', 'sqd4', 'sqd5', 'sqd6', 'sqd7', 'sqd8', 'suggestion', 'email');
         } catch (\Illuminate\Validation\ValidationException $e) {
@@ -377,8 +374,6 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
 ?>
 
 <div x-data="{
-
-
     step: @entangle('step'),
     language: @entangle('language'),
     sqd_language: @js($sqd_language),
@@ -462,29 +457,6 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
     errorMessage: @entangle('errorMessage'),
     servicesArrayAll: @entangle('servicesArrayAll'),
     servicesArrayByOffice: @entangle('servicesArrayByOffice'),
-    audio: null,
-    audioError: null,
-    audioSuccess: null,
-
-    init() {
-        this.audio = new Audio('{{ url('/') }}/sounds/click2.mp3');
-        this.audioError = new Audio('{{ url('/') }}/sounds/error.mp3');
-        this.audioSuccess = new Audio('{{ url('/') }}/sounds/success5.mp3');
-    },
-
-    playClickSound() {
-        this.audio.currentTime = 1; // Reset the audio to the beginning
-        this.audio.play();
-    },
-
-    playErrorSound() {
-        this.audioError.currentTime = 1; // Reset the audio to the beginning
-        this.audioError.play();
-    },
-    playSuccessSound() {
-        this.audioSuccess.currentTime = 1; // Reset the audio to the beginning
-        this.audioSuccess.play();
-    },
 
     handle_sqd0_click(sqd0) {
         this.sqd0 = sqd0;
@@ -493,7 +465,6 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
         if (this.errorFields.includes('SQD0')) {
             this.errorFields = this.errorFields.filter(field => field !== 'SQD0');
         }
-        this.playClickSound();
     },
 
     handle_sqd1_click(sqd1) {
@@ -502,7 +473,6 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
         if (this.errorFields.includes('SQD1')) {
             this.errorFields = this.errorFields.filter(field => field !== 'SQD1');
         }
-        this.playClickSound();
     },
 
     handle_sqd2_click(sqd2) {
@@ -512,7 +482,6 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
         if (this.errorFields.includes('SQD2')) {
             this.errorFields = this.errorFields.filter(field => field !== 'SQD2');
         }
-        this.playClickSound();
     },
 
     handle_sqd3_click(sqd3) {
@@ -522,7 +491,6 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
         if (this.errorFields.includes('SQD3')) {
             this.errorFields = this.errorFields.filter(field => field !== 'SQD3');
         }
-        this.playClickSound();
     },
 
     handle_sqd4_click(sqd4) {
@@ -532,7 +500,6 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
         if (this.errorFields.includes('SQD4')) {
             this.errorFields = this.errorFields.filter(field => field !== 'SQD4');
         }
-        this.playClickSound();
     },
 
     handle_sqd5_click(sqd5) {
@@ -542,7 +509,6 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
         if (this.errorFields.includes('SQD5')) {
             this.errorFields = this.errorFields.filter(field => field !== 'SQD5');
         }
-        this.playClickSound();
     },
 
     handle_sqd6_click(sqd6) {
@@ -552,7 +518,6 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
         if (this.errorFields.includes('SQD6')) {
             this.errorFields = this.errorFields.filter(field => field !== 'SQD6');
         }
-        this.playClickSound();
     },
 
     handle_sqd7_click(sqd7) {
@@ -562,7 +527,6 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
         if (this.errorFields.includes('SQD7')) {
             this.errorFields = this.errorFields.filter(field => field !== 'SQD7');
         }
-        this.playClickSound();
     },
 
     handle_sqd8_click(sqd8) {
@@ -572,7 +536,6 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
         if (this.errorFields.includes('SQD8')) {
             this.errorFields = this.errorFields.filter(field => field !== 'SQD8');
         }
-        this.playClickSound();
     },
 
 
@@ -580,8 +543,6 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
         this.cc1 = cc1;
         this.cc1_hasError = false;
         this.cc1_selected_word = this.sqd_language[this.language]['cc1_' + cc1];
-
-        this.playClickSound();
 
         if (cc1 === '4') {
             this.cc2 = null;
@@ -599,7 +560,6 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
     },
 
     handle_cc2_click(cc2) {
-        this.playClickSound();
         this.cc2 = cc2;
         this.cc2_hasError = false;
         this.cc2_selected_word = this.sqd_language[this.language]['cc2_' + cc2];
@@ -610,7 +570,6 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
     },
 
     handle_cc3_click(cc3) {
-        this.playClickSound();
         this.cc3 = cc3;
         this.cc3_hasError = false;
         this.cc3_selected_word = this.sqd_language[this.language]['cc3_' + cc3];
@@ -638,7 +597,6 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
         this.has_sqd8 = has_sqd8;
         this.allow_na = allow_na;
 
-        this.playClickSound();
 
     },
 
@@ -647,7 +605,6 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
         this.servicesArrayAll = [];
         this.servicesArrayAll = this.servicesArrayByOffice[officeId];
         this.serViceAvailedOffice = officeId;
-        this.playClickSound();
     },
 
 
@@ -693,10 +650,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
         this.hasErrorClientType = false;
         this.selected_client_type = this.sqd_language[this.language][clientType];
         this.errorFields = this.errorFields.filter(field => field !== 'Client Type');
-        this.playClickSound();
     },
-
-
 
     handleClientSexClick(clientSex) {
         this.clientSex = clientSex;
@@ -854,7 +808,6 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
 
         if (this.errorFields.length > 0) {
             this.errorMessage = `Please provide ${this.errorFields.join(', ')}`;
-            this.playErrorSound();
             return;
         } else {
             this.errorMessage = '';
@@ -863,13 +816,11 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
             this.hasErrorSex = false;
             this.hasErrorAge = false;
             this.step++;
-            this.playClickSound();
         }
     },
 
     handlePreviousClick() {
         this.step--;
-        this.playClickSound();
     }
 
 
@@ -878,8 +829,8 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
 
     <div class="flex items-center justify-center w-full max-w-full overflow-x-auto">
         @if ($images['form_header_image'])
-            <img class="max-w-full sm:max-w-2xl img-fluid"
-                src="{{ asset('storage/header_images/' . $images['form_header_image']) }}" alt="Office Header Image">
+            <img class="max-w-2xl img-fluid" src="{{ asset('storage/header_images/' . $images['form_header_image']) }}"
+                alt="Office Header Image">
         @else
             <p>No header image available.</p>
         @endif
@@ -887,12 +838,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
     <div class="flex items-center justify-center w-full max-w-full overflow-x-auto">
         <div class="grid grid-cols-1 text-center">
             <h1 class="text-xl">
-                @php
-                    $client_type = $is_external == 1 ? 'External Client' : 'Internal Client';
-                    $form_type = $is_onsite == 1 ? 'Onsite' : 'Online';
-                @endphp
-                {{ $client_type }} Feedback Form ({{ $form_type }})
-
+                {{ $is_external == 1 ? 'External Client Form' : 'Internal Client Form' }}
             </h1>
             <x-mary-steps wire:model="step" steps-color="step-primary">
                 <x-mary-step step="1" text="" />
@@ -911,14 +857,11 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
             <div class="flex flex-col items-center justify-center mt-6 mb-4">
                 <span class="mb-2 text-lg font-semibold">Select Language</span>
                 <div class="flex space-x-2">
-                    <button @click="language = 'english'; playClickSound()"
-                        :class="{ 'btn-primary text-base-100': language === 'english' }"
+                    <button @click="language = 'english'" :class="{ 'btn-primary': language === 'english' }"
                         class="btn btn-sm">English</button>
-                    <button @click="language = 'tagalog'; playClickSound()"
-                        :class="{ 'btn-primary text-base-100': language === 'tagalog' }"
+                    <button @click="language = 'tagalog'" :class="{ 'btn-primary': language === 'tagalog' }"
                         class="btn btn-sm">Tagalog</button>
-                    <button @click="language = 'bisaya'; playClickSound()"
-                        :class="{ 'btn-primary text-base-100': language === 'bisaya' }"
+                    <button @click="language = 'bisaya'" :class="{ 'btn-primary': language === 'bisaya' }"
                         class="btn btn-sm">Bisaya</button>
                 </div>
             </div>
@@ -933,7 +876,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
             <div class="flex flex-wrap justify-center sm:space-x-2">
                 <button
                     :class="{
-                        'btn-primary text-base-100': clientType === 'citizen',
+                        'btn-primary': clientType === 'citizen',
                         'btn-primary btn-outline': clientType !== 'citizen',
                         'btn-error': clientType === null && hasErrorClientType === true,
                         'btn w-36 h-24 flex flex-col items-center justify-center': true
@@ -944,7 +887,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                 </button>
                 <button
                     :class="{
-                        'btn-primary text-base-100': clientType === 'business',
+                        'btn-primary': clientType === 'business',
                         'btn-primary btn-outline': clientType !== 'business',
                         'btn-error': clientType === null && hasErrorClientType === true,
                         'btn w-36 h-24 flex flex-col items-center justify-center': true
@@ -955,7 +898,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                 </button>
                 <button
                     :class="{
-                        'btn-primary text-base-100': clientType === 'government',
+                        'btn-primary': clientType === 'government',
                         'btn-primary btn-outline': clientType !== 'government',
                         'btn-error': clientType === null && hasErrorClientType === true,
                         'btn w-36 h-24 flex flex-col items-center justify-center': true
@@ -977,23 +920,23 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
             <div class="flex flex-wrap justify-center sm:space-x-2 xs:mt-1">
                 <button
                     :class="{
-                        'btn-primary text-base-100': clientSex === 'male',
+                        'btn-primary': clientSex === 'male',
                         'btn-primary btn-outline': clientSex !== 'male',
                         'btn-error': clientSex === null && hasErrorSex === true,
                         'btn w-36 h-24 flex flex-col items-center justify-center': true
                     }"
-                    @click="handleClientSexClick('male'); playClickSound()">
+                    @click="handleClientSexClick('male')">
                     <x-fas-male class="h-12" />
                     <span x-text="sqd_language[language].male"></span>
                 </button>
                 <button
                     :class="{
-                        'btn-primary text-base-100': clientSex === 'female',
+                        'btn-primary': clientSex === 'female',
                         'btn-primary btn-outline': clientSex !== 'female',
                         'btn-error': clientSex === null && hasErrorSex === true,
                         'btn w-36 h-24 flex flex-col items-center justify-center': true
                     }"
-                    @click="handleClientSexClick('female'); playClickSound()">
+                    @click="handleClientSexClick('female')">
                     <x-fas-female class="h-12" />
                     <span x-text="sqd_language[language].female"></span>
                 </button>
@@ -1005,8 +948,8 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                     :class="{ 'text-error': hasErrorAge }"></span>
             </div>
             <div class="flex justify-center w-full align-middle md:w-1/4">
-                <input wire:model='clientAge' @keyup="handleAgeChange; playClickSound()" type="number" min="10"
-                    max="100" placeholder="How old are you?"
+                <input wire:model='clientAge' @keyup="handleAgeChange" type="number" min="10" max="100"
+                    placeholder="How old are you?"
                     class="w-full text-xl text-center input input-bordered border-primary input-xl"
                     :class="{ '!input-error': hasErrorAge }" />
             </div>
@@ -1022,8 +965,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                 class="w-full text-xl text-center lg:w-1/2 input input-bordered input-xl"
                 :class="{ 'input-error': hasErrorRegion }" /> --}}
 
-            <x-mary-select label="" @change="handleRegionChange; playClickSound()" :options="$regions"
-                wire:model="clientRegion" />
+            <x-mary-select label="" @change="handleRegionChange" :options="$regions" wire:model="clientRegion" />
 
             {{-- END REGION --}}
         </div>
@@ -1074,7 +1016,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                                                 )"
                                     class="items-center justify-start w-full h-auto p-1 text-left btn btn-sm"
                                     :class="{
-                                        'btn-primary text-base-100': serViceAvailed === service[0],
+                                        'btn-primary ': serViceAvailed === service[0],
                                         'btn-primary btn-outline': serViceAvailed !== service[0],
                                         'btn-error': serViceAvailed === null && hasErrorServiceAvailed === true,
                                         'btn w-full': true
@@ -1091,7 +1033,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
     </div>
     {{-- END STEP 2 --}}
 
-    {{-- STEP 3 --}}
+    {{-- STEP3 --}}
     <div class="flex items-center justify-center">
         <div x-show="step === 3" class="flex flex-col max-w-3xl">
             <div class="flex items-center justify-center">
@@ -1103,7 +1045,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
 
             <button
                 :class="{
-                    'btn-primary text-base-100': cc1 === '1',
+                    'btn-primary': cc1 === '1',
                     'btn-primary btn-outline': cc1 !== '1',
                     'btn-error': cc1 === null && cc1_hasError === true,
                     'btn btn-sm w-full sm:ml-10 mt-1 flex items-center justify-start space-x-2 h-auto sm:h-auto md:h-auto lg:h-auto xl:h-auto': true
@@ -1114,7 +1056,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
             </button>
             <button
                 :class="{
-                    'btn-primary text-base-100': cc1 === '2',
+                    'btn-primary': cc1 === '2',
                     'btn-primary btn-outline': cc1 !== '2',
                     'btn-error': cc1 === null && cc1_hasError === true,
                     'btn btn-sm w-full sm:ml-10 mt-1 flex items-center justify-start space-x-2 h-auto sm:h-auto md:h-auto lg:h-auto xl:h-auto': true
@@ -1125,7 +1067,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
             </button>
             <button
                 :class="{
-                    'btn-primary text-base-100': cc1 === '3',
+                    'btn-primary': cc1 === '3',
                     'btn-primary btn-outline': cc1 !== '3',
                     'btn-error': cc1 === null && cc1_hasError === true,
                     'btn btn-sm w-full sm:ml-10 mt-1 flex items-center justify-start space-x-2 h-auto sm:h-auto md:h-auto lg:h-auto xl:h-auto': true
@@ -1136,7 +1078,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
             </button>
             <button
                 :class="{
-                    'btn-primary text-base-100': cc1 === '4',
+                    'btn-primary': cc1 === '4',
                     'btn-primary btn-outline': cc1 !== '4',
                     'btn-error': cc1 === null && cc1_hasError === true,
                     'btn btn-sm w-full sm:ml-10 mt-1 flex items-center justify-start space-x-2 h-auto sm:h-auto md:h-auto lg:h-auto xl:h-auto': true
@@ -1151,7 +1093,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                 <h1 class="mt-4 text-xl font-semibold" x-text="sqd_language[language].cc2"></h1>
                 <button
                     :class="{
-                        'btn-primary text-base-100': cc2 === '1',
+                        'btn-primary': cc2 === '1',
                         'btn-primary btn-outline': cc2 !== '1',
                         'btn-error': cc2 === null && cc2_hasError === true,
                         'btn btn-sm w-full sm:ml-10 mt-1 flex items-center justify-start space-x-2 h-auto sm:h-auto md:h-auto lg:h-auto xl:h-auto': true
@@ -1162,7 +1104,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                 </button>
                 <button
                     :class="{
-                        'btn-primary text-base-100': cc2 === '2',
+                        'btn-primary': cc2 === '2',
                         'btn-primary btn-outline': cc2 !== '2',
                         'btn-error': cc2 === null && cc2_hasError === true,
                         'btn btn-sm w-full sm:ml-10 mt-1 flex items-center justify-start space-x-2 h-auto sm:h-auto md:h-auto lg:h-auto xl:h-auto': true
@@ -1173,7 +1115,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                 </button>
                 <button
                     :class="{
-                        'btn-primary text-base-100': cc2 === '3',
+                        'btn-primary': cc2 === '3',
                         'btn-primary btn-outline': cc2 !== '3',
                         'btn-error': cc2 === null && cc2_hasError === true,
                         'btn btn-sm w-full sm:ml-10 mt-1 flex items-center justify-start space-x-2 h-auto sm:h-auto md:h-auto lg:h-auto xl:h-auto': true
@@ -1185,7 +1127,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                 {{-- 4 --}}
                 <button
                     :class="{
-                        'btn-primary text-base-100': cc2 === '4',
+                        'btn-primary': cc2 === '4',
                         'btn-primary btn-outline': cc2 !== '4',
                         'btn-error': cc2 === null && cc2_hasError === true,
                         'btn btn-sm w-full sm:ml-10 mt-1 flex items-center justify-start space-x-2 h-auto sm:h-auto md:h-auto lg:h-auto xl:h-auto': true
@@ -1197,7 +1139,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                 {{-- 5 --}}
                 <button
                     :class="{
-                        'btn-primary text-base-100': cc2 === '5',
+                        'btn-primary': cc2 === '5',
                         'btn-primary btn-outline': cc2 !== '5',
                         'btn-error': cc2 === null && cc2_hasError === true,
                         'btn btn-sm w-full sm:ml-10 mt-1 flex items-center justify-start space-x-2 h-auto sm:h-auto md:h-auto lg:h-auto xl:h-auto': true
@@ -1212,7 +1154,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                 <h1 class="mt-4 text-xl font-semibold" x-text="sqd_language[language].cc3"></h1>
                 <button
                     :class="{
-                        'btn-primary text-base-100': cc3 === '1',
+                        'btn-primary': cc3 === '1',
                         'btn-primary btn-outline': cc3 !== '1',
                         'btn-error': cc3 === null && cc3_hasError === true,
                         'btn btn-sm w-full sm:ml-10 mt-1 flex items-center justify-start space-x-2 h-auto sm:h-auto md:h-auto lg:h-auto xl:h-auto': true
@@ -1223,7 +1165,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                 </button>
                 <button
                     :class="{
-                        'btn-primary text-base-100': cc3 === '2',
+                        'btn-primary': cc3 === '2',
                         'btn-primary btn-outline': cc3 !== '2',
                         'btn-error': cc3 === null && cc3_hasError === true,
                         'btn btn-sm w-full sm:ml-10 mt-1 flex items-center justify-start space-x-2 h-auto sm:h-auto md:h-auto lg:h-auto xl:h-auto': true
@@ -1235,7 +1177,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
 
                 <button
                     :class="{
-                        'btn-primary text-base-100': cc3 === '3',
+                        'btn-primary': cc3 === '3',
                         'btn-primary btn-outline': cc3 !== '3',
                         'btn-error': cc3 === null && cc3_hasError === true,
                         'btn btn-sm w-full sm:ml-10 mt-1 flex items-center justify-start space-x-2 h-auto sm:h-auto md:h-auto lg:h-auto xl:h-auto': true
@@ -1247,7 +1189,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
 
                 <button
                     :class="{
-                        'btn-primary text-base-100': cc3 === '4',
+                        'btn-primary': cc3 === '4',
                         'btn-primary btn-outline': cc3 !== '4',
                         'btn-error': cc3 === null && cc3_hasError === true,
                         'btn btn-sm w-full sm:ml-10 mt-1 flex items-center justify-start space-x-2 h-auto sm:h-auto md:h-auto lg:h-auto xl:h-auto': true
@@ -1274,17 +1216,17 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
             </div>
 
             {{-- SQD0 --}}
-            <div x-show="has_sqd0" class="flex flex-col items-center w-full p-2 border-2 rounded-md border-primary">
-                <div class="w-full p-2 bg-primary text-base-100">
+            <div x-show="has_sqd0" class="flex flex-col items-center w-full p-1 border-2 rounded-md border-primary">
+                <div class="w-full">
                     <h1 class="p-0 m-0 font-semibold leading-none text-left text-small"
                         x-text="sqd_language[language].sqd0" :class="{ 'text-error': sqd0_hasError }"></h1>
                 </div>
 
                 <div class="flex flex-wrap justify-center gap-1 mt-1">
                     <!-- Button 1 -->
-                    <button class="flex flex-col w-20 h-auto p-2 btn"
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
-                            'btn-primary text-base-100': sqd0 === '1',
+                            'btn-primary': sqd0 === '1',
                             'btn-default btn-outline': sqd0 !== '1',
                             '!btn-error': sqd0 === null && sqd0_hasError === true,
                         }"
@@ -1299,9 +1241,9 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         </div>
                     </button>
                     <!-- Button 2 -->
-                    <button class="flex flex-col w-20 h-auto p-2 btn"
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
-                            'btn-primary text-base-100': sqd0 === '2',
+                            'btn-primary': sqd0 === '2',
                             'btn-default btn-outline': sqd0 !== '2',
                             '!btn-error': sqd0 === null && sqd0_hasError === true,
                         }"
@@ -1317,9 +1259,9 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                     </button>
 
                     <!-- Button 3 -->
-                    <button class="flex flex-col w-20 h-auto p-2 btn"
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
-                            'btn-primary text-base-100': sqd0 === '3',
+                            'btn-primary': sqd0 === '3',
                             'btn-default btn-outline': sqd0 !== '3',
                             '!btn-error': sqd0 === null && sqd0_hasError === true,
                         }"
@@ -1334,9 +1276,9 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         </div>
                     </button>
                     <!-- Button 4 -->
-                    <button class="flex flex-col w-20 h-auto p-2 btn"
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
-                            'btn-primary text-base-100': sqd0 === '4',
+                            'btn-primary': sqd0 === '4',
                             'btn-default btn-outline': sqd0 !== '4',
                             '!btn-error': sqd0 === null && sqd0_hasError === true,
                         }"
@@ -1351,7 +1293,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         </div>
                     </button>
                     <!-- Button 5 -->
-                    <button class="flex flex-col w-20 h-auto p-2 btn"
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
                             'btn-primary text-base-100': sqd0 === '5',
                             'btn-default btn-outline ': sqd0 !== '5',
@@ -1368,9 +1310,9 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         </div>
                     </button>
                     <!-- Button 6 -->
-                    <button x-show="allow_na" class="flex flex-col w-20 h-auto p-2 btn"
+                    <button x-show="allow_na" class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
-                            'btn-primary text-base-100': sqd0 === '6',
+                            'btn-primary text-gray-100': sqd0 === '6',
                             'btn-default btn-outline': sqd0 !== '6',
                             '!btn-error': sqd0 === null && sqd0_hasError === true,
                         }"
@@ -1391,16 +1333,16 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
             {{-- SQD1 --}}
             <div x-show="has_sqd1"
                 class="flex flex-col items-center w-full p-1 mt-1 border-2 rounded-md border-primary">
-                <div class="w-full p-2 bg-primary text-base-100">
+                <div class="w-full">
                     <h1 class="p-0 m-0 font-semibold leading-none text-left text-small"
                         x-text="sqd_language[language].sqd1" :class="{ 'text-error': sqd1_hasError }"></h1>
                 </div>
 
                 <div class="flex flex-wrap justify-center gap-1 mt-1">
                     <!-- Button 1 -->
-                    <button class="flex flex-col w-20 h-auto p-1 btn"
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
-                            'btn-primary text-base-100': sqd1 === '1',
+                            'btn-primary': sqd1 === '1',
                             'btn-default btn-outline': sqd1 !== '1',
                             '!btn-error': sqd1 === null && sqd1_hasError === true,
                         }"
@@ -1415,9 +1357,9 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         </div>
                     </button>
                     <!-- Button 2 -->
-                    <button class="flex flex-col w-20 h-auto p-1 btn"
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
-                            'btn-primary text-base-100': sqd1 === '2',
+                            'btn-primary': sqd1 === '2',
                             'btn-default btn-outline': sqd1 !== '2',
                             '!btn-error': sqd1 === null && sqd1_hasError === true,
                         }"
@@ -1433,9 +1375,9 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                     </button>
 
                     <!-- Button 3 -->
-                    <button class="flex flex-col w-20 h-auto p-1 btn"
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
-                            'btn-primary text-base-100': sqd1 === '3',
+                            'btn-primary': sqd1 === '3',
                             'btn-default btn-outline': sqd1 !== '3',
                             '!btn-error': sqd1 === null && sqd1_hasError === true,
                         }"
@@ -1450,9 +1392,9 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         </div>
                     </button>
                     <!-- Button 4 -->
-                    <button class="flex flex-col w-20 h-auto p-1 btn"
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
-                            'btn-primary text-base-100': sqd1 === '4',
+                            'btn-primary': sqd1 === '4',
                             'btn-default btn-outline': sqd1 !== '4',
                             '!btn-error': sqd1 === null && sqd1_hasError === true,
                         }"
@@ -1467,7 +1409,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         </div>
                     </button>
                     <!-- Button 5 -->
-                    <button class="flex flex-col w-20 h-auto p-1 btn"
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
                             'btn-primary text-base-100': sqd1 === '5',
                             'btn-default btn-outline ': sqd1 !== '5',
@@ -1484,9 +1426,9 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         </div>
                     </button>
                     <!-- Button 6 -->
-                    <button x-show="allow_na" class="flex flex-col w-20 h-auto p-1 btn"
+                    <button x-show="allow_na" class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
-                            'btn-primary text-base-100': sqd1 === '6',
+                            'btn-primary text-gray-100': sqd1 === '6',
                             'btn-default btn-outline': sqd1 !== '6',
                             '!btn-error': sqd1 === null && sqd1_hasError === true,
                         }"
@@ -1507,16 +1449,16 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
             {{-- SQD2 --}}
             <div x-show="has_sqd2"
                 class="flex flex-col items-center w-full p-1 mt-1 border-2 rounded-md border-primary">
-                <div class="w-full p-2 bg-primary text-base-100">
+                <div class="w-full">
                     <h1 class="p-0 m-0 font-semibold leading-none text-left text-small"
                         x-text="sqd_language[language].sqd2" :class="{ 'text-error': sqd2_hasError }"></h1>
                 </div>
 
                 <div class="flex flex-wrap justify-center gap-1 mt-1">
                     <!-- Button 1 -->
-                    <button class="flex flex-col w-20 h-auto p-1 btn"
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
-                            'btn-primary text-base-100': sqd2 === '1',
+                            'btn-primary': sqd2 === '1',
                             'btn-default btn-outline': sqd2 !== '1',
                             '!btn-error': sqd2 === null && sqd2_hasError === true,
                         }"
@@ -1531,9 +1473,9 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         </div>
                     </button>
                     <!-- Button 2 -->
-                    <button class="flex flex-col w-20 h-auto p-1 btn"
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
-                            'btn-primary text-base-100': sqd2 === '2',
+                            'btn-primary': sqd2 === '2',
                             'btn-default btn-outline': sqd2 !== '2',
                             '!btn-error': sqd2 === null && sqd2_hasError === true,
                         }"
@@ -1549,9 +1491,9 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                     </button>
 
                     <!-- Button 3 -->
-                    <button class="flex flex-col w-20 h-auto p-1 btn"
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
-                            'btn-primary text-base-100': sqd2 === '3',
+                            'btn-primary': sqd2 === '3',
                             'btn-default btn-outline': sqd2 !== '3',
                             '!btn-error': sqd2 === null && sqd2_hasError === true,
                         }"
@@ -1566,9 +1508,9 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         </div>
                     </button>
                     <!-- Button 4 -->
-                    <button class="flex flex-col w-20 h-auto p-1 btn"
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
-                            'btn-primary text-base-100': sqd2 === '4',
+                            'btn-primary': sqd2 === '4',
                             'btn-default btn-outline': sqd2 !== '4',
                             '!btn-error': sqd2 === null && sqd2_hasError === true,
                         }"
@@ -1583,7 +1525,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         </div>
                     </button>
                     <!-- Button 5 -->
-                    <button class="flex flex-col w-20 h-auto p-1 btn"
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
                             'btn-primary text-base-100': sqd2 === '5',
                             'btn-default btn-outline ': sqd2 !== '5',
@@ -1600,9 +1542,9 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         </div>
                     </button>
                     <!-- Button 6 -->
-                    <button x-show="allow_na" class="flex flex-col w-20 h-auto p-1 btn"
+                    <button x-show="allow_na" class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
-                            'btn-primary text-base-100': sqd2 === '6',
+                            'btn-primary text-gray-100': sqd2 === '6',
                             'btn-default btn-outline': sqd2 !== '6',
                             '!btn-error': sqd2 === null && sqd2_hasError === true,
                         }"
@@ -1623,16 +1565,16 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
             {{-- SQD3 --}}
             <div x-show="has_sqd3"
                 class="flex flex-col items-center w-full p-1 mt-1 border-2 rounded-md border-primary">
-                <div class="w-full p-2 bg-primary text-base-100">
+                <div class="w-full">
                     <h1 class="p-0 m-0 font-semibold leading-none text-left text-small"
                         x-text="sqd_language[language].sqd3" :class="{ 'text-error': sqd3_hasError }"></h1>
                 </div>
 
                 <div class="flex flex-wrap justify-center gap-1 mt-1">
                     <!-- Button 1 -->
-                    <button class="flex flex-col w-20 h-auto p-1 btn"
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
-                            'btn-primary text-base-100': sqd3 === '1',
+                            'btn-primary': sqd3 === '1',
                             'btn-default btn-outline': sqd3 !== '1',
                             '!btn-error': sqd3 === null && sqd3_hasError === true,
                         }"
@@ -1647,9 +1589,9 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         </div>
                     </button>
                     <!-- Button 2 -->
-                    <button class="flex flex-col w-20 h-auto p-1 btn"
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
-                            'btn-primary text-base-100': sqd3 === '2',
+                            'btn-primary': sqd3 === '2',
                             'btn-default btn-outline': sqd3 !== '2',
                             '!btn-error': sqd3 === null && sqd3_hasError === true,
                         }"
@@ -1665,9 +1607,9 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                     </button>
 
                     <!-- Button 3 -->
-                    <button class="flex flex-col w-20 h-auto p-1 btn"
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
-                            'btn-primary text-base-100': sqd3 === '3',
+                            'btn-primary': sqd3 === '3',
                             'btn-default btn-outline': sqd3 !== '3',
                             '!btn-error': sqd3 === null && sqd3_hasError === true,
                         }"
@@ -1682,9 +1624,9 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         </div>
                     </button>
                     <!-- Button 4 -->
-                    <button class="flex flex-col w-20 h-auto p-1 btn"
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
-                            'btn-primary text-base-100': sqd3 === '4',
+                            'btn-primary': sqd3 === '4',
                             'btn-default btn-outline': sqd3 !== '4',
                             '!btn-error': sqd3 === null && sqd3_hasError === true,
                         }"
@@ -1699,7 +1641,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         </div>
                     </button>
                     <!-- Button 5 -->
-                    <button class="flex flex-col w-20 h-auto p-1 btn"
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
                             'btn-primary text-base-100': sqd3 === '5',
                             'btn-default btn-outline ': sqd3 !== '5',
@@ -1716,9 +1658,9 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         </div>
                     </button>
                     <!-- Button 6 -->
-                    <button x-show="allow_na" class="flex flex-col w-20 h-auto p-1 btn"
+                    <button x-show="allow_na" class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
-                            'btn-primary text-base-100': sqd3 === '6',
+                            'btn-primary text-gray-100': sqd3 === '6',
                             'btn-default btn-outline': sqd3 !== '6',
                             '!btn-error': sqd3 === null && sqd3_hasError === true,
                         }"
@@ -1739,16 +1681,16 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
             {{-- SQD4 --}}
             <div x-show="has_sqd4"
                 class="flex flex-col items-center w-full p-1 mt-1 border-2 rounded-md border-primary">
-                <div class="w-full p-2 bg-primary text-base-100">
+                <div class="w-full">
                     <h1 class="p-0 m-0 font-semibold leading-none text-left text-small"
                         x-text="sqd_language[language].sqd4" :class="{ 'text-error': sqd4_hasError }"></h1>
                 </div>
 
                 <div class="flex flex-wrap justify-center gap-1 mt-1">
                     <!-- Button 1 -->
-                    <button class="flex flex-col w-20 h-auto p-1 btn"
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
-                            'btn-primary text-base-100': sqd4 === '1',
+                            'btn-primary': sqd4 === '1',
                             'btn-default btn-outline': sqd4 !== '1',
                             '!btn-error': sqd4 === null && sqd4_hasError === true,
                         }"
@@ -1763,9 +1705,9 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         </div>
                     </button>
                     <!-- Button 2 -->
-                    <button class="flex flex-col w-20 h-auto p-1 btn"
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
-                            'btn-primary text-base-100': sqd4 === '2',
+                            'btn-primary': sqd4 === '2',
                             'btn-default btn-outline': sqd4 !== '2',
                             '!btn-error': sqd4 === null && sqd4_hasError === true,
                         }"
@@ -1781,9 +1723,9 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                     </button>
 
                     <!-- Button 3 -->
-                    <button class="flex flex-col w-20 h-auto p-1 btn"
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
-                            'btn-primary text-base-100': sqd4 === '3',
+                            'btn-primary': sqd4 === '3',
                             'btn-default btn-outline': sqd4 !== '3',
                             '!btn-error': sqd4 === null && sqd4_hasError === true,
                         }"
@@ -1798,9 +1740,9 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         </div>
                     </button>
                     <!-- Button 4 -->
-                    <button class="flex flex-col w-20 h-auto p-1 btn"
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
-                            'btn-primary text-base-100': sqd4 === '4',
+                            'btn-primary': sqd4 === '4',
                             'btn-default btn-outline': sqd4 !== '4',
                             '!btn-error': sqd4 === null && sqd4_hasError === true,
                         }"
@@ -1815,7 +1757,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         </div>
                     </button>
                     <!-- Button 5 -->
-                    <button class="flex flex-col w-20 h-auto p-1 btn"
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
                             'btn-primary text-base-100': sqd4 === '5',
                             'btn-default btn-outline ': sqd4 !== '5',
@@ -1832,9 +1774,9 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         </div>
                     </button>
                     <!-- Button 6 -->
-                    <button x-show="allow_na" class="flex flex-col w-20 h-auto p-1 btn"
+                    <button x-show="allow_na" class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
-                            'btn-primary text-base-100': sqd4 === '6',
+                            'btn-primary text-gray-100': sqd4 === '6',
                             'btn-default btn-outline': sqd4 !== '6',
                             '!btn-error': sqd4 === null && sqd4_hasError === true,
                         }"
@@ -1855,16 +1797,16 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
             {{-- SQD5 --}}
             <div x-show="has_sqd5"
                 class="flex flex-col items-center w-full p-1 mt-1 border-2 rounded-md border-primary">
-                <div class="w-full p-2 bg-primary text-base-100">
+                <div class="w-full">
                     <h1 class="p-0 m-0 font-semibold leading-none text-left text-small"
                         x-text="sqd_language[language].sqd5" :class="{ 'text-error': sqd5_hasError }"></h1>
                 </div>
 
                 <div class="flex flex-wrap justify-center gap-1 mt-1">
                     <!-- Button 1 -->
-                    <button class="flex flex-col w-20 h-auto p-1 btn"
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
-                            'btn-primary text-base-100': sqd5 === '1',
+                            'btn-primary': sqd5 === '1',
                             'btn-default btn-outline': sqd5 !== '1',
                             '!btn-error': sqd5 === null && sqd5_hasError === true,
                         }"
@@ -1879,9 +1821,9 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         </div>
                     </button>
                     <!-- Button 2 -->
-                    <button class="flex flex-col w-20 h-auto p-1 btn"
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
-                            'btn-primary text-base-100': sqd5 === '2',
+                            'btn-primary': sqd5 === '2',
                             'btn-default btn-outline': sqd5 !== '2',
                             '!btn-error': sqd5 === null && sqd5_hasError === true,
                         }"
@@ -1897,9 +1839,9 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                     </button>
 
                     <!-- Button 3 -->
-                    <button class="flex flex-col w-20 h-auto p-1 btn"
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
-                            'btn-primary text-base-100': sqd5 === '3',
+                            'btn-primary': sqd5 === '3',
                             'btn-default btn-outline': sqd5 !== '3',
                             '!btn-error': sqd5 === null && sqd5_hasError === true,
                         }"
@@ -1914,9 +1856,9 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         </div>
                     </button>
                     <!-- Button 4 -->
-                    <button class="flex flex-col w-20 h-auto p-1 btn"
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
-                            'btn-primary text-base-100': sqd5 === '4',
+                            'btn-primary': sqd5 === '4',
                             'btn-default btn-outline': sqd5 !== '4',
                             '!btn-error': sqd5 === null && sqd5_hasError === true,
                         }"
@@ -1931,7 +1873,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         </div>
                     </button>
                     <!-- Button 5 -->
-                    <button class="flex flex-col w-20 h-auto p-1 btn"
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
                             'btn-primary text-base-100': sqd5 === '5',
                             'btn-default btn-outline ': sqd5 !== '5',
@@ -1948,9 +1890,9 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         </div>
                     </button>
                     <!-- Button 6 -->
-                    <button x-show="allow_na" class="flex flex-col w-20 h-auto p-1 btn"
+                    <button x-show="allow_na" class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
-                            'btn-primary text-base-100': sqd5 === '6',
+                            'btn-primary text-gray-100': sqd5 === '6',
                             'btn-default btn-outline': sqd5 !== '6',
                             '!btn-error': sqd5 === null && sqd5_hasError === true,
                         }"
@@ -1971,16 +1913,16 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
             {{-- SQD6 --}}
             <div x-show="has_sqd6"
                 class="flex flex-col items-center w-full p-1 mt-1 border-2 rounded-md border-primary">
-                <div class="w-full p-2 bg-primary text-base-100">
+                <div class="w-full">
                     <h1 class="p-0 m-0 font-semibold leading-none text-left text-small"
                         x-text="sqd_language[language].sqd6" :class="{ 'text-error': sqd6_hasError }"></h1>
                 </div>
 
                 <div class="flex flex-wrap justify-center gap-1 mt-1">
                     <!-- Button 1 -->
-                    <button class="flex flex-col w-20 h-auto p-1 btn"
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
-                            'btn-primary text-base-100': sqd6 === '1',
+                            'btn-primary': sqd6 === '1',
                             'btn-default btn-outline': sqd6 !== '1',
                             '!btn-error': sqd6 === null && sqd6_hasError === true,
                         }"
@@ -1995,9 +1937,9 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         </div>
                     </button>
                     <!-- Button 2 -->
-                    <button class="flex flex-col w-20 h-auto p-1 btn"
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
-                            'btn-primary text-base-100': sqd6 === '2',
+                            'btn-primary': sqd6 === '2',
                             'btn-default btn-outline': sqd6 !== '2',
                             '!btn-error': sqd6 === null && sqd6_hasError === true,
                         }"
@@ -2013,9 +1955,9 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                     </button>
 
                     <!-- Button 3 -->
-                    <button class="flex flex-col w-20 h-auto p-1 btn"
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
-                            'btn-primary text-base-100': sqd6 === '3',
+                            'btn-primary': sqd6 === '3',
                             'btn-default btn-outline': sqd6 !== '3',
                             '!btn-error': sqd6 === null && sqd6_hasError === true,
                         }"
@@ -2030,9 +1972,9 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         </div>
                     </button>
                     <!-- Button 4 -->
-                    <button class="flex flex-col w-20 h-auto p-1 btn"
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
-                            'btn-primary text-base-100': sqd6 === '4',
+                            'btn-primary': sqd6 === '4',
                             'btn-default btn-outline': sqd6 !== '4',
                             '!btn-error': sqd6 === null && sqd6_hasError === true,
                         }"
@@ -2047,7 +1989,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         </div>
                     </button>
                     <!-- Button 5 -->
-                    <button class="flex flex-col w-20 h-auto p-1 btn"
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
                             'btn-primary text-base-100': sqd6 === '5',
                             'btn-default btn-outline ': sqd6 !== '5',
@@ -2064,9 +2006,9 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         </div>
                     </button>
                     <!-- Button 6 -->
-                    <button x-show="allow_na" class="flex flex-col w-20 h-auto p-1 btn"
+                    <button x-show="allow_na" class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
-                            'btn-primary text-base-100': sqd6 === '6',
+                            'btn-primary text-gray-100': sqd6 === '6',
                             'btn-default btn-outline': sqd6 !== '6',
                             '!btn-error': sqd6 === null && sqd6_hasError === true,
                         }"
@@ -2087,16 +2029,16 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
             {{-- SQD7 --}}
             <div x-show="has_sqd7"
                 class="flex flex-col items-center w-full p-1 mt-1 border-2 rounded-md border-primary">
-                <div class="w-full p-2 bg-primary text-base-100">
+                <div class="w-full">
                     <h1 class="p-0 m-0 font-semibold leading-none text-left text-small"
                         x-text="sqd_language[language].sqd7" :class="{ 'text-error': sqd7_hasError }"></h1>
                 </div>
 
                 <div class="flex flex-wrap justify-center gap-1 mt-1">
                     <!-- Button 1 -->
-                    <button class="flex flex-col w-20 h-auto p-1 btn"
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
-                            'btn-primary text-base-100': sqd7 === '1',
+                            'btn-primary': sqd7 === '1',
                             'btn-default btn-outline': sqd7 !== '1',
                             '!btn-error': sqd7 === null && sqd7_hasError === true,
                         }"
@@ -2111,9 +2053,9 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         </div>
                     </button>
                     <!-- Button 2 -->
-                    <button class="flex flex-col w-20 h-auto p-1 btn"
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
-                            'btn-primary text-base-100': sqd7 === '2',
+                            'btn-primary': sqd7 === '2',
                             'btn-default btn-outline': sqd7 !== '2',
                             '!btn-error': sqd7 === null && sqd7_hasError === true,
                         }"
@@ -2129,9 +2071,9 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                     </button>
 
                     <!-- Button 3 -->
-                    <button class="flex flex-col w-20 h-auto p-1 btn"
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
-                            'btn-primary text-base-100': sqd7 === '3',
+                            'btn-primary': sqd7 === '3',
                             'btn-default btn-outline': sqd7 !== '3',
                             '!btn-error': sqd7 === null && sqd7_hasError === true,
                         }"
@@ -2146,9 +2088,9 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         </div>
                     </button>
                     <!-- Button 4 -->
-                    <button class="flex flex-col w-20 h-auto p-1 btn"
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
-                            'btn-primary text-base-100': sqd7 === '4',
+                            'btn-primary': sqd7 === '4',
                             'btn-default btn-outline': sqd7 !== '4',
                             '!btn-error': sqd7 === null && sqd7_hasError === true,
                         }"
@@ -2163,7 +2105,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         </div>
                     </button>
                     <!-- Button 5 -->
-                    <button class="flex flex-col w-20 h-auto p-1 btn"
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
                             'btn-primary text-base-100': sqd7 === '5',
                             'btn-default btn-outline ': sqd7 !== '5',
@@ -2180,9 +2122,9 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         </div>
                     </button>
                     <!-- Button 6 -->
-                    <button x-show="allow_na" class="flex flex-col w-20 h-auto p-1 btn"
+                    <button x-show="allow_na" class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
-                            'btn-primary text-base-100': sqd7 === '6',
+                            'btn-primary text-gray-100': sqd7 === '6',
                             'btn-default btn-outline': sqd7 !== '6',
                             '!btn-error': sqd7 === null && sqd7_hasError === true,
                         }"
@@ -2203,16 +2145,16 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
             {{-- SQD8 --}}
             <div x-show="has_sqd8"
                 class="flex flex-col items-center w-full p-1 mt-1 border-2 rounded-md border-primary">
-                <div class="w-full p-2 bg-primary text-base-100">
+                <div class="w-full">
                     <h1 class="p-0 m-0 font-semibold leading-none text-left text-small"
                         x-text="sqd_language[language].sqd8" :class="{ 'text-error': sqd8_hasError }"></h1>
                 </div>
 
                 <div class="flex flex-wrap justify-center gap-1 mt-1">
                     <!-- Button 1 -->
-                    <button class="flex flex-col w-20 h-auto p-1 btn"
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
-                            'btn-primary text-base-100': sqd8 === '1',
+                            'btn-primary': sqd8 === '1',
                             'btn-default btn-outline': sqd8 !== '1',
                             '!btn-error': sqd8 === null && sqd8_hasError === true,
                         }"
@@ -2227,9 +2169,9 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         </div>
                     </button>
                     <!-- Button 2 -->
-                    <button class="flex flex-col w-20 h-auto p-1 btn"
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
-                            'btn-primary text-base-100': sqd8 === '2',
+                            'btn-primary': sqd8 === '2',
                             'btn-default btn-outline': sqd8 !== '2',
                             '!btn-error': sqd8 === null && sqd8_hasError === true,
                         }"
@@ -2245,9 +2187,9 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                     </button>
 
                     <!-- Button 3 -->
-                    <button class="flex flex-col w-20 h-auto p-1 btn"
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
-                            'btn-primary text-base-100': sqd8 === '3',
+                            'btn-primary': sqd8 === '3',
                             'btn-default btn-outline': sqd8 !== '3',
                             '!btn-error': sqd8 === null && sqd8_hasError === true,
                         }"
@@ -2262,9 +2204,9 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         </div>
                     </button>
                     <!-- Button 4 -->
-                    <button class="flex flex-col w-20 h-auto p-1 btn"
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
-                            'btn-primary text-base-100': sqd8 === '4',
+                            'btn-primary': sqd8 === '4',
                             'btn-default btn-outline': sqd8 !== '4',
                             '!btn-error': sqd8 === null && sqd8_hasError === true,
                         }"
@@ -2279,7 +2221,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         </div>
                     </button>
                     <!-- Button 5 -->
-                    <button class="flex flex-col w-20 h-auto p-1 btn"
+                    <button class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
                             'btn-primary text-base-100': sqd8 === '5',
                             'btn-default btn-outline ': sqd8 !== '5',
@@ -2296,9 +2238,9 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                         </div>
                     </button>
                     <!-- Button 6 -->
-                    <button x-show="allow_na" class="flex flex-col w-20 h-auto p-1 btn"
+                    <button x-show="allow_na" class="flex flex-col w-16 h-auto p-0.5 btn"
                         :class="{
-                            'btn-primary text-base-100': sqd8 === '6',
+                            'btn-primary text-gray-100': sqd8 === '6',
                             'btn-default btn-outline': sqd8 !== '6',
                             '!btn-error': sqd8 === null && sqd8_hasError === true,
                         }"
@@ -2322,8 +2264,8 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
 
 
     {{-- STEP 5 --}}
-    <div class="flex flex-col items-center justify-center w-full">
-        <div x-show="step === 5" class="flex flex-col items-center justify-center w-full max-w-3xl">
+    <div class="flex flex-col items-center w-full">
+        <div x-show="step === 5" class="flex flex-col w-full max-w-3xl">
             <div class="mt-4 col">
                 <h1 class="text-lg font-semibold">
                     {{ $sqd_language[$language]['suggestion'] }}</h1>
@@ -2334,8 +2276,8 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                     class="items-center w-full textarea textarea-bordered textarea-lg"></textarea>
             </div>
 
-            <div class="items-center justify-center mt-4 text-center col">
-                <h1 class="items-center justify-center text-lg font-semibold text-start">
+            <div class="items-start justify-start mt-4 col text-start">
+                <h1 class="items-start justify-start text-lg font-semibold text-start">
                     {{ $sqd_language[$language]['email_address'] }}</h1>
             </div>
 
@@ -2413,9 +2355,8 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
                 <span wire:loading>Saving</span>
             </x-mary-button>
         </div>
-        <div class="flex mt-5">
-            <x-mary-theme-toggle darkTheme="{{ env('DARK_THEME', 'forest') }}"
-                lightTheme="{{ env('LIGHT_THEME', 'cupcake') }}" class="btn btn-circle btn-ghost" />
+        <div class="flex">
+            <x-mary-theme-toggle darkTheme="dark" lightTheme="light" class="btn btn-circle btn-ghost" />
         </div>
     </div>
 </div>

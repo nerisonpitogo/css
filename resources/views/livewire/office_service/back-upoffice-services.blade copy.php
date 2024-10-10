@@ -36,7 +36,6 @@ new #[Title('Office Services')] class extends Component {
         $this->form->office_id = $office_id->id;
 
         $this->libServices = LibService::orderBy('service_name')
-            ->where(['created_by' => Auth::user()->id])
             ->get()
             ->map(function ($service) {
                 return [
@@ -47,7 +46,6 @@ new #[Title('Office Services')] class extends Component {
             ->toArray();
 
         // populate selectedRegions
-        $found_office_region = false;
         $regions = LibRegion::all();
         foreach ($regions as $region) {
             $officeRegion = OfficeRegion::where('office_id', $office_id->id)
@@ -59,20 +57,9 @@ new #[Title('Office Services')] class extends Component {
                     'is_included' => true,
                     'is_priority' => $officeRegion->is_priority ? true : false,
                 ];
-                $found_office_region = true;
             } else {
                 $this->selectedRegions[$region->id] = [
                     'is_included' => false,
-                    'is_priority' => false,
-                ];
-            }
-        }
-
-        if ($found_office_region == false) {
-            // add all regions since no selected will default to all selected
-            foreach ($regions as $region) {
-                $this->selectedRegions[$region->id] = [
-                    'is_included' => true,
                     'is_priority' => false,
                 ];
             }
@@ -199,7 +186,7 @@ new #[Title('Office Services')] class extends Component {
 
 <div x-cloak>
     <x-mary-card shadow separator>
-        <x-mary-header title="{{ $office->name }}" subtitle="{!! $office->getHierarchyString() !!}">
+        <x-mary-header title="{{ $office->name }}" subtitle="{!! $office->getHierarchyString() !!} | {{ $office->office_level }}">
             <x-slot:middle class="!justify-end">
                 <x-mary-input icon="o-bolt" wire:model.live='search' placeholder="Search..." />
             </x-slot:middle>
@@ -371,7 +358,12 @@ new #[Title('Office Services')] class extends Component {
                 <x-mary-select label="Service" :options="$libServices" wire:model="form.service_id" />
             </div>
 
-
+            <div class="mt-2 col">
+                <label class="block text-sm font-medium text-gray-700">Is Simple Transaction</label>
+                <x-mary-checkbox
+                    label="Transactions like small queries and others. Check this if applicable. Most services indicated in the citizen's charter are not simple transactions."
+                    wire:model="form.is_simple" class="mt-1" />
+            </div>
 
             <div class="mt-2 col">
                 <label>Client Types</label>
@@ -407,13 +399,6 @@ new #[Title('Office Services')] class extends Component {
                 </div>
             </div>
 
-            <div class="mt-2 col">
-                <label class="block text-sm font-medium text-gray-700">Is Simple Transaction</label>
-                <x-mary-checkbox
-                    label="Transactions like small queries and others. Check this if applicable. Most services indicated in the citizen's charter are not simple transactions."
-                    wire:model="form.is_simple" class="mt-1" />
-            </div>
-
             {{-- <div class="col">
                 @php
                     $ccOptions = [['id' => '1', 'name' => 'Yes'], ['id' => '0', 'name' => 'No']];
@@ -431,84 +416,16 @@ new #[Title('Office Services')] class extends Component {
 
     <div class="grid grid-cols-1 gap-2 mt-2 lg:grid-cols-2">
 
-        @if ($office->hasChildren())
-            <div class="col">
-                <x-mary-card class="" title="Online Clients - With Sub Offices"
-                    subtitle="Use this link for services provided online. The options displayed will include services from the {{ $office->name }} as well as all its sub-offices for clients to choose from."
-                    shadow separator>
-
-                    <div x-data="{ link: '{{ url('/form/0/1/1/' . encrypt($office->id)) }}', copied: false }">
-                        External Client Form:
-                        <button @click="navigator.clipboard.writeText(link).then(() => copied = true)"
-                            x-text="copied ? 'Link Copied!' : 'Copy Link'" class="ml-2 btn btn-sm btn-primary">
-                        </button>
-                        <br>
-                        <span class="mr-2 text-blue-500 break-words break-all">
-                            {{ url('/form/0/1/1/' . encrypt($office->id)) }}
-                        </span>
-                    </div>
-
-                    <div class="mt-4" x-data="{ link: '{{ url('/form/0/1/0/' . encrypt($office->id)) }}', copied: false }">
-                        Internal Client Form:
-                        <button @click="navigator.clipboard.writeText(link).then(() => copied = true)"
-                            x-text="copied ? 'Link Copied!' : 'Copy Link'" class="ml-2 btn btn-sm btn-primary">
-                        </button>
-                        <br>
-                        <span class="mr-2 text-blue-500 break-words break-all">
-                            {{ url('/form/0/1/0/' . encrypt($office->id)) }}
-                        </span>
-                    </div>
-
-                </x-mary-card>
-            </div>
-
-            <div class="col">
-                <x-mary-card class="" title="Onsite Clients - With Sub Offices"
-                    subtitle="Use this link for services provided onsite. The options displayed will include services from the {{ $office->name }} as well as all its sub-offices for clients to choose from."
-                    shadow separator>
-
-                    <div x-data="{ link: '{{ url('/form/1/1/1/' . encrypt($office->id)) }}', copied: false }">
-                        External Client Form:
-                        <button @click="navigator.clipboard.writeText(link).then(() => copied = true)"
-                            x-text="copied ? 'Link Copied!' : 'Copy Link'" class="ml-2 btn btn-sm btn-primary">
-                        </button>
-
-                        <br>
-                        <span class="mr-2 text-blue-500 break-words break-all">
-                            {{ url('/form/1/1/1/' . encrypt($office->id)) }}
-                        </span>
-
-                    </div>
-
-                    <div class="mt-4" x-data="{ link: '{{ url('/form/1/1/0/' . encrypt($office->id)) }}', copied: false }">
-                        Internal Client Form:
-                        <button @click="navigator.clipboard.writeText(link).then(() => copied = true)"
-                            x-text="copied ? 'Link Copied!' : 'Copy Link'" class="ml-2 btn btn-sm btn-primary">
-                        </button>
-                        <br>
-                        <span class="mr-2 text-blue-500 break-words break-all">
-                            {{ url('/form/1/1/0/' . encrypt($office->id)) }}
-                        </span>
-
-                    </div>
-
-                </x-mary-card>
-            </div>
-        @endif
         <div class="col">
-            <x-mary-card class="" title="Online Clients - Office Specific"
-                subtitle="Use this link for services provided onsite.  Only the services offered by the {{ $office->name }} will be displayed, which will be the available options for clients to choose from."
+            <x-mary-card class="" title="Onsite Clients - Office Specific"
+                subtitle="Use this link for services provided onsite. Only services under the {{ $office->name }} will be displayed."
                 shadow separator>
 
-                <div x-data="{ link: '{{ url('/form/0/0/1/' . encrypt($office->id)) }}', copied: false }">
+                <div>
                     External Client Form:
                     @if ($office->hasExternalServices())
-                        <button @click="navigator.clipboard.writeText(link).then(() => copied = true)"
-                            x-text="copied ? 'Link Copied!' : 'Copy Link'" class="ml-2 btn btn-sm btn-primary">
-                        </button>
-                        <br>
-                        <span class="mr-2 text-blue-500 break-words break-all">
-                            {{ url('/form/0/0/1/' . encrypt($office->id)) }}
+                        <span class="mr-2 text-blue-500">
+                            {{ url('/form/1/0/1/' . $office->id) }}
                         </span>
                     @else
                         <span class="mr-2 text-red-400">
@@ -516,16 +433,11 @@ new #[Title('Office Services')] class extends Component {
                         </span>
                     @endif
                 </div>
-
-                <div class="mt-4" x-data="{ link: '{{ url('/form/0/0/0/' . encrypt($office->id)) }}', copied: false }">
+                <div>
                     Internal Client Form:
                     @if ($office->hasInternalServices())
-                        <button @click="navigator.clipboard.writeText(link).then(() => copied = true)"
-                            x-text="copied ? 'Link Copied!' : 'Copy Link'" class="ml-2 btn btn-sm btn-primary">
-                        </button>
-                        <br>
-                        <span class="mr-2 text-blue-500 break-words break-all">
-                            {{ url('/form/0/0/0/' . encrypt($office->id)) }}
+                        <span class="mr-2 text-blue-500">
+                            {{ url('/form/1/0/0/' . $office->id) }}
                         </span>
                     @else
                         <span class="mr-2 text-red-400">
@@ -538,20 +450,36 @@ new #[Title('Office Services')] class extends Component {
         </div>
 
         <div class="col">
-
-            <x-mary-card class="" title="Onsite Clients - Office Specific"
-                subtitle="Use this link for services provided onsite. Only the services offered by the {{ $office->name }} will be displayed, which will be the available options for clients to choose from."
+            <x-mary-card class="" title="Onsite Clients - With Sub Offices"
+                subtitle="Use this link for services provided onsite. Only services under the {{ $office->name }} will be displayed."
                 shadow separator>
 
-                <div x-data="{ link: '{{ url('/form/1/0/1/' . encrypt($office->id)) }}', copied: false }">
+                <div>
+                    External Client Form:
+                    <span class="mr-2 text-blue-500">
+                        {{ url('/form/1/1/1/' . $office->id) }}
+                    </span>
+                </div>
+                <div>
+                    Internal Client Form:
+                    <span class="mr-2 text-blue-500">
+                        {{ url('/form/1/1/0/' . $office->id) }}
+                    </span>
+                </div>
+
+            </x-mary-card>
+        </div>
+
+        <div class="col">
+            <x-mary-card class="" title="Online Clients - Office Specific"
+                subtitle="Use this link for services provided online. Only services under the {{ $office->name }} will be displayed."
+                shadow separator>
+
+                <div>
                     External Client Form:
                     @if ($office->hasExternalServices())
-                        <button @click="navigator.clipboard.writeText(link).then(() => copied = true)"
-                            x-text="copied ? 'Link Copied!' : 'Copy Link'" class="ml-2 btn btn-sm btn-primary">
-                        </button>
-                        <br>
-                        <span class="mr-2 text-blue-500 break-words break-all">
-                            {{ url('/form/1/0/1/' . encrypt($office->id)) }}
+                        <span class="mr-2 text-blue-500">
+                            {{ url('/form/0/0/1/' . $office->id) }}
                         </span>
                     @else
                         <span class="mr-2 text-red-400">
@@ -559,22 +487,39 @@ new #[Title('Office Services')] class extends Component {
                         </span>
                     @endif
                 </div>
-
-                <div class="mt-4" x-data="{ link: '{{ url('/form/1/0/0/' . encrypt($office->id)) }}', copied: false }">
+                <div>
                     Internal Client Form:
                     @if ($office->hasInternalServices())
-                        <button @click="navigator.clipboard.writeText(link).then(() => copied = true)"
-                            x-text="copied ? 'Link Copied!' : 'Copy Link'" class="ml-2 btn btn-sm btn-primary">
-                        </button>
-                        <br>
-                        <span class="mr-2 text-blue-500 break-words break-all">
-                            {{ url('/form/1/0/0/' . encrypt($office->id)) }}
+                        <span class="mr-2 text-blue-500">
+                            {{ url('/form/0/0/0/' . $office->id) }}
                         </span>
                     @else
                         <span class="mr-2 text-red-400">
                             No Internal Services
                         </span>
                     @endif
+                </div>
+
+            </x-mary-card>
+        </div>
+
+        <div class="col">
+            <x-mary-card class="" title="Online Clients - With Sub Offices"
+                subtitle="Use this link for services provided online. Only services under the {{ $office->name }} will be displayed."
+                shadow separator>
+
+                <div>
+                    External Client Form:
+                    <span class="mr-2 text-blue-500">
+                        {{ url('/form/0/1/1/' . $office->id) }}
+                    </span>
+                </div>
+                <div>
+                    Internal Client Form:
+                    <span class="mr-2 text-blue-500">
+                        {{ url('/form/0/1/0/' . $office->id) }}
+                    </span>
+
                 </div>
 
             </x-mary-card>
@@ -588,7 +533,6 @@ new #[Title('Office Services')] class extends Component {
                 shadow separator>
 
                 <div class="overflow-x-auto">
-
                     <table class="table table-xs">
                         <thead>
                             <tr>
@@ -598,47 +542,16 @@ new #[Title('Office Services')] class extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {{-- @foreach ($regions as $region)
-                                <tr wire:key='selections-{{ $region->id }}'>
-                                    <td>{{ $region->name }} - {{ $region->id }}</td>
-                                    <td>
-                                        <input wire:model="officeRegions" value="{{ $region->id }}"
-                                            type="checkbox" class="checkbox checkbox-primary" />
-
-                                    </td>
-                                    <td>
-                                        <input wire:model="officePriority" value="{{ $region->id }}"
-                                            type="checkbox" class="checkbox checkbox-primary" />
-                                    </td>
-
-                                </tr>
-                            @endforeach --}}
                             @foreach ($regions as $region)
                                 <tr>
                                     <td>{{ $region->name }}</td>
                                     <td>
-                                        <x-mary-checkbox label=""
-                                            wire:model="selectedRegions.{{ $region->id }}.is_included">
-                                            <x-slot:label>
-                                                <div class="items-center">
-                                                    <div class="mb-[-6px]">
-
-                                                    </div>
-                                                </div>
-                                            </x-slot:label>
-                                        </x-mary-checkbox>
-
+                                        <x-mary-checkbox
+                                            wire:model="selectedRegions.{{ $region->id }}.is_included" />
                                     </td>
                                     <td>
-                                        <x-mary-checkbox wire:model="selectedRegions.{{ $region->id }}.is_priority">
-                                            <x-slot:label>
-                                                <div class="items-center">
-                                                    <div class="mb-[-6px]">
-
-                                                    </div>
-                                                </div>
-                                            </x-slot:label>
-                                        </x-mary-checkbox>
+                                        <x-mary-checkbox
+                                            wire:model="selectedRegions.{{ $region->id }}.is_priority" />
                                     </td>
 
                                 </tr>
