@@ -246,6 +246,10 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
     private function getServices(Office $office, $services_array = [])
     {
         foreach ($office->services as $service) {
+            if ($service->service->service_name == 'Others') {
+                continue;
+            }
+            // dd($service->office_id);
             // $services_array[] = [$service->id, $service->service->service_name, $office->name, $service->has_sqd0, $service->has_sqd1, $service->has_sqd2, $service->has_sqd3, $service->has_sqd4, $service->has_sqd5, $service->has_sqd6, $service->has_sqd7, $service->has_sqd8, $service->allow_na];
             // dd($service->is_external);
             if ($this->is_external == 1 && $service->is_external == 1) {
