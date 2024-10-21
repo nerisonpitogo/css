@@ -471,9 +471,9 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
     audioSuccess: null,
 
     init() {
-        this.audio = new Audio('{{ url('/') }}/sounds/click2.mp3');
-        this.audioError = new Audio('{{ url('/') }}/sounds/error.mp3');
-        this.audioSuccess = new Audio('{{ url('/') }}/sounds/success5.mp3');
+        this.audio = new Audio('{{ url('/sounds/click2.mp3') }}');
+        this.audioError = new Audio('{{ url('/sounds/error.mp3') }}');
+        this.audioSuccess = new Audio('{{ url('/sounds/success5.mp3') }}');
     },
 
     playClickSound() {
