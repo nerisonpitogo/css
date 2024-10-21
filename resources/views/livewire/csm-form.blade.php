@@ -494,7 +494,6 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
     playClickSound() {
         this.audio.currentTime = 1; // Reset the audio to the beginning
         this.audio.play();
-        alert('play');
     },
 
     playErrorSound() {
