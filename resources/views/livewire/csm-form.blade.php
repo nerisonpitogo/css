@@ -471,9 +471,24 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
     audioSuccess: null,
 
     init() {
-        this.audio = new Audio('{{ url('/sounds/click2.mp3') }}');
-        this.audioError = new Audio('{{ url('/sounds/error.mp3') }}');
-        this.audioSuccess = new Audio('{{ url('/sounds/success5.mp3') }}');
+        // Construct the audio file URLs using Laravel's asset helper
+        this.audio = new Audio('{{ asset('sounds/click2.mp3') }}');
+        this.audioError = new Audio('{{ asset('sounds/error.mp3') }}');
+        this.audioSuccess = new Audio('{{ asset('sounds/success5.mp3') }}');
+
+        // Optional: Add event listeners to handle load errors
+        this.audio.onerror = (e) => {
+            console.error('Error loading click sound:', e);
+        };
+        this.audioError.onerror = (e) => {
+            console.error('Error loading error sound:', e);
+        };
+        this.audioSuccess.onerror = (e) => {
+            console.error('Error loading success sound:', e);
+        };
+
+        // Log successful initialization
+        console.log('Audio initialized successfully');
     },
 
     playClickSound() {
