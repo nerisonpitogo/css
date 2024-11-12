@@ -161,8 +161,8 @@ new class extends Component {
                                     'dateTo' => $dateTo,
                                     'includeSubOffice' => $includeSubOffice,
                                     'selectedOffices' => $selectedOffices,
-                                ]) }}">More
-                                Details</a>
+                                ]) }}">Generate
+                                Report</a>
 
                         </div>
                     </div>

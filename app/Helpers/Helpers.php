@@ -300,6 +300,11 @@ if (!function_exists('get_images')) {
                     $images['form_header_image'] = $parent->header_image;
                     $images['report_header_image'] = $parent->report_header_image;
                     $images['report_footer_image'] = $parent->report_footer_image;
+                    $images['prepared_by_name'] = $parent->prepared_by_name;
+                    $images['prepared_by_position'] = $parent->prepared_by_position;
+                    $images['attested_by_name'] = $parent->attested_by_name;
+                    $images['attested_by_position'] = $parent->attested_by_position;
+
                     break;
                 }
                 $parent = $parent->parent;
