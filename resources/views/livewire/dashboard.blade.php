@@ -204,6 +204,13 @@ new class extends Component {
                     :includeSubOffice="$includeSubOffice" :selectedOffices="$selectedOffices" />
 
             </x-mary-tab>
+
+            <x-mary-tab name="raw-tab" label="Raw Data" icon="o-document-text">
+
+                <livewire:dashboard-raw-data lazy :selType="$selType" :dateFrom="$dateFrom" :dateTo="$dateTo"
+                    :includeSubOffice="$includeSubOffice" :selectedOffices="$selectedOffices" />
+
+            </x-mary-tab>
         </x-mary-tabs>
     </div>
 

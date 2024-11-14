@@ -876,4 +876,26 @@ class FeedbackService
 
         return $comments;
     }
+
+
+    function get_raw_data($dateFrom, $dateTo, $office, $include_sub_offices)
+    {
+        // return array[value, word]
+        $dateFrom = date('Y-m-d 00:00:00', strtotime($dateFrom));
+        $dateTo = date('Y-m-d 23:59:59', strtotime($dateTo));
+
+        $officeIds = [$office];
+        if ($include_sub_offices) {
+            $officeIds = get_office_and_sub_offices($office);
+        }
+
+        $raw_data = Feedback::join('office_services', 'office_services.id', '=', 'feedbacks.office_service_id')
+            ->whereIn('office_services.office_id', $officeIds)
+            ->whereBetween('feedbacks.created_at', [$dateFrom, $dateTo])
+            ->orderBy('feedbacks.created_at', 'desc')
+            ->select('feedbacks.*')
+            ->get();
+
+        return $raw_data;
+    }
 }
