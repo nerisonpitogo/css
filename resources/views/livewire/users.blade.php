@@ -142,7 +142,7 @@ new class extends Component {
         if ($this->search) {
             // $query = $query->where('name', 'like', '%' . $this->search . '%')
             // orWhere('email', 'like', '%' . $this->search . '%');
-            $query = $query->whereAny(['name', 'email'], 'like', "%$this->search%");
+            $query = $query->whereAny(['users.name', 'email'], 'like', "%$this->search%");
         }
 
         $query = $query->paginate(10);
