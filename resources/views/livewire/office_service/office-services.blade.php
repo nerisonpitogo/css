@@ -36,7 +36,7 @@ new #[Title('Office Services')] class extends Component {
         $this->form->office_id = $office_id->id;
 
         $this->libServices = LibService::orderBy('service_name')
-            ->where(['created_by' => Auth::user()->id])
+            // ->where(['created_by' => Auth::user()->id])
             ->get()
             ->map(function ($service) {
                 return [
