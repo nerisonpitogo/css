@@ -60,7 +60,7 @@ class DatabaseSeeder extends Seeder
 
         // THE FOLOWING IS A DEPED MIGRATION DATA IF YOU ARE NOT FROM DEPED, COMMENT OUT THE FOLLOWING CODE
         // insert data
-        DB::table('offices')->insert([
+        // DB::table('offices')->insert([
 
         //     ['name' => 'Caraga Region', 'short_name' => 'ORD', 'office_level' => 'RO', 'parent_id' => null], //1
         //     ['name' => 'Regional Office', 'short_name' => 'ORD', 'office_level' => 'RO', 'parent_id' => 1], //2
