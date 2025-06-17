@@ -422,8 +422,8 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         // delete all uploaded photos in the storage
-        $files = Storage::disk('public')->allFiles();
-        Storage::disk('public')->delete($files);
+        // $files = Storage::disk('public')->allFiles();
+        // Storage::disk('public')->delete($files);
 
 
 
