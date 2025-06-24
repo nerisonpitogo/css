@@ -2431,7 +2431,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
             </x-mary-button>
         </div>
         <div class="flex mt-5">
-            <x-mary-theme-toggle darkTheme="{{ env('DARK_THEME', 'forest') }}"
+            <x-mary-theme-toggle darkTheme="{{ env('DARK_THEME', 'dark') }}"
                 lightTheme="{{ env('LIGHT_THEME', 'cupcake') }}" class="btn btn-circle btn-ghost" />
         </div>
     </div>
