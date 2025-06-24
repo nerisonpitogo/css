@@ -173,9 +173,7 @@ new #[Layout('components.layouts.form')] #[Title('CSM')] class extends Component
 
     private function getRegions()
     {
-        $regions = OfficeRegion::where('office_id', $this->office_id)
-            ->orderBy('is_priority', 'desc')
-            ->get();
+        $regions = OfficeRegion::where('office_id', $this->office_id)->orderBy('is_priority', 'desc')->get();
 
         // get the first row and set the region
         if ($regions->isNotEmpty()) {
